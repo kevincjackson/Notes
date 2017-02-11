@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Git Notes</title>
+	<style>
+		html, body, h1, h2, h3, h4 {margin: 0; padding: 0;}
+		html {background-color: #F0F0E7;}
+		#myDoc {width: 800px; margin-left: auto; margin-right: auto;}
+			body {color: #333333;}
+		#myTitle {margin: 10px;}
+		#myBody {background-color: white; border-radius: 5px; padding: 10px;}
+			h2 {color: orangeRed; margin: 10px 0px;}
+			h3 {color: darkCyan; margin: 10px 0px;}
+			h4 {color: sienna; margin: 10px 0px;}
+			table {width: 780px; background-color: #EEEEEE;}
+					table tr:nth-child(2n+0) {background-color: white;}
+					td {padding: 2px 0px;}
+		#myFooter {text-align: right; margin: 10px; color: gray;}
+	</style>	
+	</head>
+<body>
+<div id="myDoc">
+<div id="myTitle"><h1>Git Notes</h1></div>
+<div id="myBody">
+
+<h2>Git Files States</h2>
+<table>
+<tr><td>ignored</td><td>files and directories indicated in .gitignore are ignored</td></tr>
+<tr><td>untracked</td><td>files are not part of the tracking system, but are reported as untracked by the git status command.</td></tr>
+<tr><td>staged</td><td>files added to the git tracking system, but not yet committed.</td></tr>
+<tr><td>commit</td><td>committed files are a snapshot at a point in time of all tracked files.</td></tr>
+<tr><td>modified</td><td>files that have been committed, but have been modified.</td></tr>
+</table>
+
+<h2>Git Commands</h2>
+
+<h3>Getting Help</h3>
+<table>
+<tr><td>git help myCommand<br>man git-myCommand<br>git myCommand --help</td><td># Get help for myCommand.</td></tr>
+</table>
+
+<h3>Setting Up Git</h3>
+<table>
+<tr><td>git myCommand myRepository myBranch</td><td># git BASIC SYNTAX</td></tr>
+<tr><td>git init</td><td># start a new git directory tree</td></tr>
+<tr><td>git clone [existing repository] </td><td># copy an existing git location</td></tr>
+<tr><td>git config --global user.name "John Doe"</td><td># REQUIRED: Set your name.</td></tr>
+<tr><td>git config --global user.email johndoe@example.com</td><td># REQUIRED: Set your email.</td></tr>
+<tr><td>git config --global core.editor emacs</td><td># Set your editor.</td></tr>
+<tr><td>git config --list</td><td># List your settings.</td></tr>
+</table>
+
+<h3>Basic Commands</h3>
+<table>
+<tr><td>git add myFile</td><td># Add modified / previously untracked myFile to git.</td></tr>
+<tr><td>git mv myFile</td><td># Rename file. Equivalent to  git rm &amp; git add.</td></tr>
+<tr><td>rm myFile</td><td># Delete an untracked file.</td></tr>
+<tr><td>git add -u</td><td># Convenience command. Add deleted files (u stands for update).</td></tr>
+<tr><td>git add -A</td><td># Convenience command. Add all new files and deleted files.</td></tr>
+<tr><td>git rm --cached myFile</td><td># UNSTAGE myFile; does NOT delete file.</td></tr>
+<tr><td>git rm myFile</td><td># Remove tracked files from git AND the file system.</td></tr>
+<tr><td>git rm -f myFile</td><td># Force Command: Remove file from git AND the files system, including staged files.</td></tr>
+<tr><td>git commit -m "My Commit Note"</td><td># Take a snapshot of your files system.</td></tr>
+<tr><td>git commit -a -m "myMessage"</td><td># Convenience command: Add and commit. Will NOT add new files.</td></tr>
+<tr><td>git commit --amend</td><td># Convenience command. Add any changes to the previous commit.</td></tr>
+<tr><td>git commit --amend --reuse-message HEAD</td><td>Same as above + reuse the same message.</td></tr>
+</table>
+
+<h3>Git Branching</h3>
+<table>
+<tr><td>git branch myNewBranch</td><td># Make a new branch.</td></tr>
+<tr><td>git checkout myBranch</td><td># Switch to my branch.</td></tr>
+<tr><td>git checkout -b myNewBranch</td><td># Convenience command: Make and switch to myNewBranch.</td></tr>
+</table>
+
+<h3>Reporting</h3>
+<table>
+<tr><td>git status</td><td> # General report on files.</td></tr>
+<tr><td>git log</td><td> # Report on commits</td></tr>
+<tr><td>git log --oneline -3</td><td> # Report with one line for the last 3 commits.</td></tr>
+<tr><td>git diff</td><td> # Report what has been modified, but not staged.</td></tr>
+<tr><td>git diff --cached</td><td> # Report what has been staged, but not committed.</td></tr>
+<tr><td>gitk</td><td> # Launch a GUI program to examine your commits.</td></tr>
+</table>
+
+<h3>Rollback / Undo</h3>
+<table>
+<tr><td>git reset HEAD myFile<br>git rm --cached myFile</td><td># unstage myFile.</td></tr>
+<tr><td>git checkout -- myFile</td><td># Go back to last committed version of myFile.</td></tr>
+<tr><td>git checkout abc1234 myFile</td><td># Go to commit abc1234 of myFile.</td></tr>
+<tr><td>git reset [tag/branch/commit ID]</td><td># rollback commit, but KEEP your newer files.</td></tr>
+<tr><td>git reset --hard [tag/branch/commit ID]</td><td># rollback commit to previous files system state.</td></tr>
+<tr><td>git reflog</td><td># See complete list of commits and resets. *Useful for undoing undos.*<br>
+        Just look at reflog and do "git reset yourDesiredID".
+    </td>
+</tr>
+<tr><td>git stash</td><td>Store current work (in dirty state) to the stash stack, and return to last commit.</td></tr>
+<tr><td>git stash apply</td><td>Restore stashed work (from the top of the stash stack).</td></tr>
+</table>
+
+<h3>Working with Remotes</h3>
+<table>
+<tr> <td>git remote</td> <td>List remote names.</td> </tr>
+<tr> <td>git remote -v</td> <td>List remotes and their URL's.</td> </tr>
+<tr> <td>git remote add newRemoteName myRemoteURL</td> <td>Add newRemoteName.</td> </tr>
+<tr> <td>git fetch myRemote</td> <td>Get data from myRemote (but don't merge it).</td> </tr>
+<tr> <td>git merge myRemote</td> <td>Merge data from myRemote.</td> </tr>
+<tr> <td>git pull myRemote</td> <td>Convenience command:  Fetch and merge data from myRemote.</td> </tr>
+<tr> <td>git push myRemote</td> <td>Upload your data (but don't merge) to myRemote.</td> </tr>
+<tr> <td>git remote show myRemote</td> <td>Get information about myRemote.</td> </tr>
+<tr> <td>git remote rename myRemote myNewRemoteName</td> <td>Change the name of myRemote.</td> </tr>
+<tr> <td>git remote rm myRemote</td> <td>Delete your <i>pointer</i> to myRemote.</td> </tr>
+
+</table>
+
+<h3>Tags</h3>
+<table>
+<tr> <td>git tag</td> <td>List tags.</td> </tr>
+<tr> <td>git tag -l '*myPattern*'</td> <td>List tags that match myPattern. </td> </tr>
+<tr> <td>git tag myTag</td> <td>Add a lightweight tag (checksummed only).</td> </tr>
+<tr> <td>git tag 9fceb02</td> <td>Add a tag the 9fceb02 commit, instead of the current commit.</td> </tr>
+<tr> <td>git tag -a myTag -m "myMessage"</td> <td>Add an annotated tag (checksummed w/ name, email, and message).</td> </tr>
+<tr> <td>git tag -s myTag -m "myMessage"</td> <td>Same as above, except tag is PGP signed.</td> </tr>
+<tr> <td>git tag show myTag</td> <td>Get long info about myTag.</td> </tr>
+<tr> <td>git push myBranch myTag</td> <td>Push tag to myBranch. Note: Tags aren't automatically included in push/pulls.</td> </tr>
+<tr> <td>git push myBranch --tags</td> <td>Push all tags to myBranch.</td> </tr>
+
+</table>
+
+<h3>Branching</h3>
+<table>
+<tr> <td>git branch</td> <td>List branches</td> </tr>
+<tr> <td>git branch -v</td> <td>List branches with commit info.</td> </tr>
+<tr> <td>git branch --merged</td> <td>List branches that have been merged already.</td> </tr>
+<tr> <td>git branch --no-merged</td><td>List branches that have not been merged.</td> </tr>
+<tr> <td>git branch myNewBranch</td> <td>Make myNewBranch (without switching to it).</td> </tr>
+<tr> <td>git checkout myBranch</td> <td>Switch to myBranch.</td> </tr>
+<tr> <td>git checkout -b myNewBranch</td> <td>Make and switch to myNewBranch.</td> </tr>
+<tr> <td>git merge myBranch</td> <td>Merge myBranch into current one.</td> </tr>
+<tr> <td>git branch -d myBranch</td> <td>Delete myBranch.</td> </tr>
+<tr> <td>git branch -D branch</td> <td>Force delete branch that has not been merged.</td> </tr>
+<tr> <td>git mergetool</td> <td>Run your mergetool to manually merge files.</td> </tr>
+<tr> <td>git checkout -b myLocalBranch remoteRepository/remoteBranch</td> <td>Create and switch to myLocalBranch...</td> </tr>
+<tr> <td>git checkout --track origin/Branch</td> <td>Convenience command: (Similar to above) but name is same as remote's.</td> </tr>
+<tr> <td>git push remote localBranch:remoteBranch</td> <td>Push and rename your localBranch to remoteBranch.</td> </tr>
+<tr> <td>git push remote :remoteBranch</td> <td>Delete's remote's remoteBranch.</td> </tr>
+</table>
+
+<h3>Rebase</h3>
+<table>
+<tr> <td>git checkout myBranch<br>
+		 git rebase master<br>
+		 git checkout master<br>
+		 git merge myBranch</td> <td>Basic Rebase - undo myBranch changes and reapply to the latest master.</td> </tr>
+<tr> <td>git rebase master myBranch<br>
+		 git checkout master<br>
+		 git merge myBranch</td> <td>Same as above with first two lines in one command.</td> </tr>
+<tr> <td>git rebase --onto A B C<br>
+		 git checkout A<br>
+		 git merge C</td> <td>This will merge a third fork (C) back onto the main branch (A), while leaving (B).<br>Undo &amp; reapply C based on the source of A &amp; B.</td>
+		 </tr>
+</table>
+<i>*Warning: do not rebase if collaborators have used your branch. You leave them hanging!!</i>
+
+</div><!--closes myBody-->			
+<div id="myFooter">Jackson 2014</div>
+</div><!--closes myDoc-->
+</body>
+</html>
