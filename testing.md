@@ -1,69 +1,64 @@
-
-
-# Git
-  It's a good idea to backup your code, and common to do on a public
-  repository such as github.
-  * First setup ssh keys for git hub if needed.
-  * Set up you git directory to push
-      git init
-      git commit -m "First commit."
-      git remote add origin https://github.com/kechja/Ticketee.git
-      git push -u origin master
-
-## Error Driven: What We Want, Error, Fix
-## Test First: What We Want, Error, Fix: Same as above + below concepts
-## Basic TDD / BDD 
-* Fail, Pass, Refactor, Repeat
-* Red, Green, Refactor                  #same thing
-* Provides regression testing - testing focused on verifying previously
+---
+# Testing
+---
+## Development Types
+  * Error Driven: What We Want, Error, Fix
+  * Test First: What We Want, Error, Fix: Same as above + below concepts
+  * TDD / BDD (Fail, Pass, Refactor _or_ Red, Green, Refactor)
+     * Provides regression testing - testing focused on verifying previously
     developed and tested software still performs correctly.
-  * Clarify what a feature should do
-  * Focus on measurable goal
-  * Make change with confidence
-  * Faster workfow
-
-## Agile
-  A an iterative development methodology focusing on finishing one feature at 
+     * Clarify what a feature should do
+     * Focus on measurable goal
+     * Make change with confidence
+     * Faster workfow
+  * Agile -  A an iterative development methodology focusing on finishing one feature at 
   a time before moving on to the next feature.
-## Story Driven Development
-  BDD is BDD with an emphasis on things a user can do with the system.
+  * Story Driven Development - BDD with an emphasis on things a user can do with the system.
+  
+ ## Types of Tests
+  * Unit Tests : test Models : test::unit
+    * Use to test all business logic
+    * Use to test corner cases
+  * Functional Tests - test Views & Controllers
+  * Integration Tests - test workflows, user stories, sequence of requests
+  * Feature / Acceptance Test - test user expectation 
+    * Use to test happy path of a feature 
+    * not to corner cases 
+    * high level black box tests.
+  * Performance Testing - test speed of requests handled
+  * Load Testing - now many requests can be handled
+  * Security Testing - test for security vulnerabilities
+    
 ## Testing Tools
+  * MiniTest - pure Ruby, standard
+  * RSpec - DSL for business 
+    * Gotcha: Note it's RSpec, not Rspec !
   * Test::Unit (Rails out the box)
-  * Cucumber
+  * Cucumber (out of favor)
   * Shoulda
-  * MiniTest
-  * RSpec # ! Gotcha: Note it's RSpec, not Rspec !
   * Capybara - Acceptance Test program designed to web interaction
   * FactoryGirl - provides a singular source for creating test models, to
-      addres your tests breaking as your model changes.
+      address your tests breaking as your model changes.
 
-Sample FactoryGirl factory
-  spec/factories/ticket_factory.rb>
+## FactoryGirl 
+spec/factories/ticket_factory.rb>
+  ```ruby
     FactoryGirl.define do
       factory :ticket do
         name "Example Ticket"
         description "An example ticket, nothing more"
       end
     end
+  ```
 
-##Workflow
+## Rails Workflow
   * Install RSpec and Capybara
   * setup the project to use Rspec
   * create a feature spec file
   * use example groups to group related code examples
   * write code examples with expectations
   * run automated specs
-##Types of Tests
-  ###Unit Tests : test Models : test::unit
-    * Use to test all business logic
-    * Use to test corner cases
-  ###Functional Tests - test Views & Controllers
-  ###Integration Tests - test workflows, user stories, sequence of requests ###Feature? / Acceptance Test - test user expectation * Use to test happy path of a feature / not corner cases * Test navigation links
-  ?  Acceptance / Feature tests - high level black box tests.
-  ###Performance Testing - test speed of requests handled
-  ###Load Testing - now many requests can be handled
-  ###Security Testing - test for security vulnerabilities
-
+  
 ##Gotchas
 >spring stop (another rails is running in bg)
 >rails generate rspec:install
@@ -73,27 +68,28 @@ Sample FactoryGirl factory
 I had pasted sample code down below and forgotten about it! It was
 overwriting my production code! 
   !!! Next time, put in comments !!!
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-RSpec
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## Rspec
 
-##Setup
-    Gemfile>
-      group :test :development do
-        gem "rspec-rails", "3.5.0.beta3"
-      end
-      group :test do
-        gem "capybara", "2.7.1"
-      end
-    >bundle install
-    >rails generate rspec:install
-    >rspec                              #check to see if it runs
-    # disable stubs - very annoying auto generating files
-    >config/application.rb> config.generators { |g| g.test_framwork false }
-    (>rails g controller name --no-test-framework)
-    >mkdir spec/{controllers, features, models, support} as needed
-    >New files must be name *_spec.rb.
-    
+### Setup
+Gemfile
+```ruby
+group :test :development do
+  gem "rspec-rails", "3.5.0.beta3"
+end
+group :test do
+  gem "capybara", "2.7.1"
+end
+```
+```bash
+>bundle install
+>rails generate rspec:install
+>rspec                              #check to see if it runs
+  # disable stubs - very annoying auto generating files
+>config/application.rb> config.generators { |g| g.test_framwork false }
+(>rails g controller name --no-test-framework)
+>mkdir spec/{controllers, features, models, support} as needed
+>New files must be name *_spec.rb.
+```
 
 ##Basics
     Docs:
@@ -104,6 +100,7 @@ RSpec
             --format documentation  #verbose
     High Level Concept: 1) Arrange (Setup data) 2) Act (visit_page) 3) Assert (expect)
     specfile> 
+```ruby
               # There's also subject {} where you can define the main
               # purpose of your test, 
               # eg) subject { ProjectPolicy }
@@ -159,7 +156,7 @@ RSpec
                   expect(page).to         have_text "text"
                 end
               end
-
+```
 ### Testing Controllers
   
  Stubbing - providing fake method responses for the purpose of testing
@@ -198,20 +195,22 @@ RSpec
     end
 
 Custom RSpec Method
+```ruby
 it "should permit the show action" do
   expect(subject).to permit_action :show
-  end
-
+end
+```
 Can be replaced by
+```ruby
 it { should permit_action :show} # *or* 
 it { is_expected.to permit_action :how}
-
+```
 You can use a custom RSpec matcher to define permit_action
 
-##Unit testing (tests on Classes nad Models)
+##Unit testing (tests on Classes and Models)
     Don't do math yourself.
     Let your test get the initial value and do math for you.
-    Use @instance @variables.
+    Use @instance variables.
 
 ##Context if for setting different before initializers.
     Example say you initialize most of your test by setting all variables,
@@ -228,10 +227,14 @@ You can use a custom RSpec matcher to define permit_action
           end
 ##Rspec Versions
     Version 2
+```ruby
       @model.should == '...'
-    Version 3
+```
+Version 3
+```ruby
       expect(@model).to eq('...')
       expect(@model).not_to eq('...')
+```
 ###Gotchas
     Silence output 
       $stdout = StringIO.new  #ruby accesses stdout in $stdout
