@@ -157,25 +157,65 @@ end
                 end
               end
 ```
-### Testing Controllers
-  
- Stubbing - providing fake method responses for the purpose of testing
-  something other than the stub.  
-  
-  1. Stubbing eliminates false failures.
+
+
+
+---
+### Stubbing
+
+#### What is stubbing?
+
+Stubbing is when an object, real or test double, returns a known value in response to a message.
+
+#### When do you stub?
+
+Imagine a game which has a `die` object, which returns random numbers based on it's `roll` method. You would like to test the `player` object based on the effect of different die rolls.  The stub gives you the ability to fake the die rolls as needed.
+
+Stubbing is ideal for unit testing.
+
+Stubbing should not be used for feature testing.
+
+#### Why do you stub?
+
+
+Stubbing eliminates false failures.
   For example, if every test that relied on a login, used an actual
   login, every test for fail, even if the logic they were testing 
   was correct.  With stubbing, only the login logic would fail.
 
-  2. Stubbing is encouraged for controllers, but discouraged for
-  feature tests. Controllers are testing specific logic, so
-  unrelated behavior is not the purpose of the test.
-  Features are testing integration, so all behavior is important.
-    
-    # Sample Controller Test
-    # The allow method simulates the a successful current_user method.
+#### How do you stub?
+
+You use the `allow` and `receive` methods.
+
+```ruby
+describe "die" do
+  it "rolls a three" do
+    die = Object.new
+    allow(die).to receive(:roll) { 3 }
+    expect(die.roll).to equal 3
+  end
+end
+```
+
+#### How do you stub chained methods?
+
+Use the methods `allow` and `receive_message_chain`.
+
+```ruby
+allow(double).to receive_message_chain("foo.bar") { :baz }
+```
+
+Simulates the following:
+
+```ruby
+double.foo.bar # => :baz
+```
+
+### Testing Controllers with stubbing
+
+```ruby
     require 'rails_helper'
-    
+
     RSpec.describe Admin::ApplicationController, { :type => :controller } do
     
       let(:user) { FactoryGirl.create(:user) }
@@ -193,8 +233,11 @@ end
       end
     
     end
+```
+---
 
-Custom RSpec Method
+## Custom RSpec Method
+
 ```ruby
 it "should permit the show action" do
   expect(subject).to permit_action :show
