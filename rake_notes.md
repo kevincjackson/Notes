@@ -1,11 +1,11 @@
 # RAKE
 
-
 ## Description
-Rake (Ruby + Make) is a software task management and build tool written by the late Jim Weirich.
+Rake (Ruby + Make), written by the late Jim Weirich,
+is a software task management and build tool
+which specializes in running tasks based on dependencies. 
 It is one of the most popular Ruby programs of all time.
-It specializes in running tasks based on dependencies. 
-
+ 
 ## Basics
 ### Running Rake
 Rake code is put in a `Rakefile` and executed using `rake <task-name>` The primary method in rake is `task`.
