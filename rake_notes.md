@@ -68,6 +68,31 @@ In the shell:
 echo 'Lunchtime!'
 Lunchtime!
 ```
+
+### Namespace
+To protect against naming collisions, rake provides a `namespace` block.
+```ruby
+desc "Prep for breakfast."
+namespace :breakfast do
+  task :prep do
+    puts "Breakfast prepped."
+  end
+end
+
+desc "Prep for lunch."
+namespace :lunch do
+  task :prep do
+    puts "Lunch prepped."
+  end
+end
+```
+```sh
+> rake breakfast:prep
+Breakfast prepped.
+> rake lunch:prep
+Lunch prepped.
+```
+
 ## Beyond The Basics
 ### Files
 Similar to `task` is the `file` method.
@@ -135,7 +160,7 @@ A done.
 There's also `Rake::Task[<name>].execute` which runs the rake task without satisfying dependencies.
 ```ruby
 task :prep_a do
-  puts "Prep for a done."
+  puts "Prep for A done."
 end
 
 task :a => :prep_a do
@@ -152,7 +177,7 @@ end
 ```
 ```sh
 > rake invoking
-Prep for a done.
+Prep for A done.
 A done.
 > rake executing
 A done.
