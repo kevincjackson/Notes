@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+    <title>JQuery Mobile Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+  <div data-role="page">
+
+    <div data-role="header" data-theme="b">
+        <h1>JQuery Mobile Notes</h1>
+    </div>
+
+
+    <div role="main" class="ui-content">
+
+      <div class="ui-content">
+        <h2>Overview</h2>
+        <p> JQuery Mobile is a mobile web framework. 
+            The last major release, version 1.4, was released in 2014,
+            and their <a href="http://blog.jquerymobile.com/">blog</a> indicates version 1.5 is in the works, albeit with delays.
+            Top competitors to jQuery mobile at the time of this writing (early 2017) are Bootstrap, PhoneGap, Apache Cordova, and Ionic. 
+        </p>
+        <p> 
+            A particular strength of the framework is the ease of setting up page transitions, similar to those of the iphone.
+        </p>
+      </div>
+
+      <div class="ui-content">
+          <h2>How To Setup</h2>
+          <pre>
+           # Initialize jQuery in the head
+              &lt;meta name="viewport" content="width=device-width, initial-scale=1">
+              &lt;link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+              &lt;script src="https://code.jquery.com/jquery-1.11.3.min.js">&lt;/script>
+              &lt;script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js">&lt;/script>
+            
+           # Put your content in a "page" data-role div
+              &lt;div data-role="page" id="mycontent">
+                ... your content ...
+              &lt;/div>
+          </pre>
+      </div>
+
+      <div class="ui-content">
+        <h2>Layout</h2>
+        <p>Divs with <code>data-role="page"</code> wrap all elements, and typically additional divs with
+           <code>data-role="header|main|footer"</code> demarcate those page elements. Note that header and footer
+           create a toolbar style, which may not be what you want.
+        </p>
+        <p>Additionaly adding <code>class="ui-content</code> adds extra padding and margin.
+      </div>
+
+      <div class="ui-content">
+
+        <h2>Sample Code</h2>
+        <p>
+          View source in your browser to see how to implement. The code is
+          straight-forward, and in most cases it is the "data-role" or
+          "data-transition" attribute creating the effect.
+        </p>
+
+        <div data-role="collapsible">
+          <h3>Sample (Search) Filter &amp; List<br><code>data-filter="true"</code></h3>
+          <h3> Sample List<br><code>ul data-role="listview"</code>
+          </h3>
+
+          <ul data-role="listview" data-inset="true" data-filter="true">
+            <li><a href="#">Acura</a></li>
+            <li><a href="#">Audi</a></li>
+            <li><a href="#">BMW</a></li>
+            <li><a href="#">Cadillac</a></li>
+            <li><a href="#">Ferrari</a></li>
+          </ul>
+        </div>
+
+        <div data-role="collapsible">
+          <h3>Sample Icon<br><code>data-icon="star"</code></h3>
+          <a href="#" data-role="button" data-icon="star">Link with Icon</a>
+        </div>
+
+        <div data-role="collapsible">
+          <h3>Sample Collapsible</h3>
+          <code>
+            &lt;div data-role="collapsible"&gt;<br>
+            &lt;h1-6&gt;&lt;/h1-6&gt;
+          </code>
+        </div>
+
+        <div data-role="collapsible">
+          <h3>Transition: Slide Right</h3>
+          <a href="#slide_left" data-transition="slide">Slide Right</a>
+          <div>
+            <code>
+              data-transition="slide" [data-direction="reverse"]
+            </code>
+
+            <pre>
+             # Add data-transition to any *link*. 
+                &lt;a href="#settings" data-transition="slide">Slide Right&lt;/a>
+
+             # Reverse using data-direction reverse.
+                &lt;a href="#settings" data-transition="slide" data-direction="reverse">Slide Left&lt;/a>
+                
+            </pre> 
+          </div>
+        </div>
+      </div>
+
+      <div class="ui-content">
+        <h2>Getting Up To Speed / Resources</h2>
+          <p>
+            Read through the links <i>in the order below</i> to get up to speed with the framework.
+          </p>
+
+          <div class="ui-content">
+            <ul data-role="listview">
+              <li><a href="http://learn.jquery.com/jquery-mobile/">JQuery Learning Center: Mobile</a></li>
+              <li><a href="https://www.w3schools.com/jquerymobile/">W3C</a></li>
+              <li><a href="http://api.jquerymobile.com/">API</a></li>
+            </ul>
+          </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!--/page -->
+
+  <div id="slide_left" data-role="page">
+    <h1>Slide Left</h1>
+    <a href="JQUERY_MOBILE_NOTES.html"
+      data-transition="slide"
+      data-direction="reverse">Slide Left</a>
+  </div>
+
+</body>
+</html>
+
