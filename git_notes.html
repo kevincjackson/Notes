@@ -140,7 +140,23 @@
 <tr> <td>git merge myBranch</td> <td>Merge myBranch into current one.</td> </tr>
 <tr> <td>git branch -d myBranch</td> <td>Delete myBranch.</td> </tr>
 <tr> <td>git branch -D branch</td> <td>Force delete branch that has not been merged.</td> </tr>
-<tr> <td>git mergetool</td> <td>Run your mergetool to manually merge files.</td> </tr>
+<tr> <td>git mergetool</td> 
+     <td>
+        Run your mergetool to manually merge files.
+<pre>
+Quickie fix.
+
+|LOCAL|BASE|REMOTE| Base is the common ancestry. 
+|     MERGED      | &lt;- The bottom window will be saved.
+:%diffg RE  # get from REMOTE  
+:%diffg BA  # get from BASE
+:%diffg LO  # get from LOCAL
+$ git commit -am 'merged from several branches'
+</pre>
+
+
+        
+     </td> </tr>
 <tr> <td>git checkout -b myLocalBranch remoteRepository/remoteBranch</td> <td>Create and switch to myLocalBranch...</td> </tr>
 <tr> <td>git checkout --track origin/Branch</td> <td>Convenience command: (Similar to above) but name is same as remote's.</td> </tr>
 <tr> <td>git push remote localBranch:remoteBranch</td> <td>Push and rename your localBranch to remoteBranch.</td> </tr>
