@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <title>Custom Theme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- CUSTOM THEME LOADED BELOW -->
+    <link rel="stylesheet" href="sample_baby_blue.min.css" />
+
+    <link rel="stylesheet" href="jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+  <div data-role="page" data-theme="a">
+
+    <div data-role="header">
+        <h1>Custom Theme</h1>
+    </div><!-- /header -->
+
+
+    <div role="main" class="ui-content">
+
+      <h2>Sample Filter<br><code>data-filter="true"</code></h2>
+      <h2> Sample List<br><code>ul data-role="listview"</code>
+      </h2>
+
+      <ul data-role="listview" data-inset="true" data-filter="true">
+        <li><a href="#">Acura</a></li>
+        <li><a href="#">Audi</a></li>
+        <li><a href="#">BMW</a></li>
+        <li><a href="#">Cadillac</a></li>
+        <li><a href="#">Ferrari</a></li>
+      </ul>
+
+      <form class="ui-content">
+          <label for="slider-0">Input slider:</label>
+          <input type="range" name="slider" id="slider-0" value="25" min="0" max="100" />
+      </form>
+
+      <h2>Sample Icon<br><code>data-icon="star"</code></h2>
+      <a href="#" data-role="button" data-icon="star">Link with Icon</a>
+
+    </div><!-- /content -->
+
+
+    <div data-role="footer">
+        <h4>My Footer</h4>
+    </div><!-- /footer -->
+
+  </div><!-- /page -->
+</body>
+</html>

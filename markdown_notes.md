@@ -1,10 +1,14 @@
-# Markdown Cheatsheet #
+# Markdown Cheatsheet 
+
+## Overview
+Markdown was released by Mark Gruber in 2004 as a plain-text-to-html tool/language, with an emphasis on readability.  
 
 ## Structure
   Headings: `# Title`  
   Paragraphs: separate by a line  
   Line Breaks: leave two spaces after the line  
   Lists: `* Item, - Item, 1. Ordered Item`
+  Another test.
 
 ## Code
   Inline: \`surround with backticks\`  
@@ -33,8 +37,7 @@ Emoji (Github only): `:simple_smile:` :simple_smile:
   Escape Character:  Use `\` for  **\`\*\_\[\]\{\}\(\)\#\+\-\.\!**
 
 ## Credits: 
-  1. Markdown was released by Mark Gruber in 2004 as a plain-text-to-html tool/language, with an emphasis on readability.  
-  2. Wikipedia and Github provided some of these examples. 
+  1. Wikipedia and Github provided some of these examples. 
 
 ## Links:
   * [Markdown Previewer: http://dillinger.io/](http://dillinger.io/)
