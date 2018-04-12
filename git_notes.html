@@ -63,7 +63,7 @@
 <tr><td>git rm -f myFile</td><td># Force Command: Remove file from git AND the files system, including staged files.</td></tr>
 <tr><td>git commit -m "My Commit Note"</td><td># Take a snapshot of your files system.</td></tr>
 <tr><td>git commit -a -m "myMessage"</td><td># Convenience command: Add and commit. Will NOT add new files.</td></tr>
-<tr><td>git commit --amend</td><td># Convenience command. Add any changes to the previous commit.</td></tr>
+<tr><td>git commit --amend</td><td># Convenience command. Add any changes to the previous commit. Use to reword last commit.</td></tr>
 <tr><td>git commit --amend --reuse-message HEAD</td><td>Same as above + reuse the same message.</td></tr>
 </table>
 
@@ -108,6 +108,7 @@
 <tr> <td>git merge myRemote</td> <td>Merge data from myRemote.</td> </tr>
 <tr> <td>git pull myRemote</td> <td>Convenience command:  Fetch and merge data from myRemote.</td> </tr>
 <tr> <td>git push myRemote</td> <td>Upload your data (but don't merge) to myRemote.</td> </tr>
+<tr> <td>git push -force myRemote</td> <td>Force your commit after even after it's been pushed. Make sure you aren't messing up collaborators.</td> </tr>
 <tr> <td>git remote show myRemote</td> <td>Get information about myRemote.</td> </tr>
 <tr> <td>git remote rename myRemote myNewRemoteName</td> <td>Change the name of myRemote.</td> </tr>
 <tr> <td>git remote rm myRemote</td> <td>Delete your <i>pointer</i> to myRemote.</td> </tr>

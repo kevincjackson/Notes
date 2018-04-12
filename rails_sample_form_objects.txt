@@ -1,0 +1,126 @@
+################################################################################
+AGGREGATION EXAMPLE
+################################################################################
+# config/routes.rb
+  resource :abc_form, :only => [:new, :create]
+
+# app/views/abc_forms/new.html.erb
+```
+<h1>ABC Form</h1>
+<%= form_for @abc_form, :url => "/abc_form"  do |f| %>
+  <p> <%= f.label :aaa_name %><%= f.text_field :aaa_name %> </p>
+  <p> <%= f.label :bbb_name %><%= f.text_field :bbb_name %> </p>
+  <p> <%= f.label :ccc_name %><%= f.text_field :ccc_name %> </p>
+  <%= f.submit %>
+<% end %>
+```
+
+# app/controllers/abc_forms_controller.rb
+class AbcFormsController < ApplicationController
+  def new
+    @abc_form = AbcForm.new
+  end
+  def create
+    @abc_form = AbcForm.new( abc_form_params )
+    if @abc_form.save 
+      redirect_to root_url, :notice => "Success" 
+    else
+      render :new
+    end
+  end
+private
+  def abc_form_params
+    params.require( :abc_form ).permit( 
+      :aaa_name,
+      :bbb_name,
+      :ccc_name
+    )
+  end
+end
+
+# app/forms/abc_form.rb
+class AbcForm
+  include ActiveModel::Model 
+
+  attr_accessor :aaa_name, :bbb_name, :ccc_name
+
+  validates :aaa_name, :bbb_name, :ccc_name, :presence => true
+
+  def save
+    if valid?
+      persist!
+      true
+    else
+      false
+    end
+  end
+
+private
+
+  def persist!
+    @aaa = Aaa.create!(name: aaa_name)
+    @bbb = Bbb.create!(name: bbb_name)
+    @ccc = Ccc.create!(name: ccc_name)
+  end
+end
+
+################################################################################
+CONTACT FORM EXAMPLE
+################################################################################
+
+# config/routes.rb
+  resources :contact_forms, :only => [:new, :create]
+
+# app/controllers/contact_forms_controller.rb
+class ContactFormsController < ApplicationController
+  def new
+    @contact_form = ContactForm.new
+  end
+  def create
+    @contact_form = ContactForm.new( contact_form_params )
+    if @contact_form.valid?
+      redirect_to root_url, notice: "Success"
+    else
+      render :new
+    end
+  end
+private
+  def contact_form_params
+    params.require( :contact_form ).permit( 
+      :name,
+      :email,
+      :message
+    )
+  end
+end
+
+# app/forms/contact_form.rb
+# AciveModel::Model adds the following functionality
+#   Initialize with a hash
+#   Add validations
+#   Add validation errors
+#   Interact with form_for and form_with
+
+class ContactForm
+  include ActiveModel::Model 
+  attr_accessor :name, :email, :message
+  validates :name, :email, :message, :presence => true
+end
+
+# app/views/contact_forms/new.html.erb
+```
+<h1>New Contact</h1>
+
+<% if @contact_form && @contact_form.errors.any? %>
+  <% @contact_form.errors.full_messages.map do |err| %>
+    <p class="error"><%= err %></p>
+  <% end %>
+<% end %>
+
+<%= form_for @contact_form do |f| %>
+  <p><%=f.label :name %> <%=f.text_field :name %></p>
+  <p><%=f.label :email %> <%=f.text_field :email %></p>
+  <p><%=f.label :message %> <%=f.text_field :message %></p>
+  <p><%=f.submit %></p>
+<% end %>
+```

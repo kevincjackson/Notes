@@ -1,0 +1,67 @@
+Project 1
+
+Conclusion:
+
+HTML
+  Rails requires an AUTHENTICITY TOKEN for all non-GET requests. The can set value=<%= form_authenticity_token %>.
+  You should put in an accept-charset="UTF-8" (best practice).
+  FORM_TAG really doesn't do much, but it does provide the above two.
+  FORM_TAG requires you to name your hashes your self as in user[address][line1]
+  editing requires you setting your own values.
+  editing also requires a hidden input of _method as PATCH.
+  form_for does all of the above.
+  FIELDS_FOR primarlity set up the name properly, without creating the form overhead.
+
+CONTROLLER
+  #save does *not* take a hash fo attributes.
+  You may use #update_attributes and then save.
+  #update( attributes ) is a shorthand for the above.
+
+
+SAMPLE CODE
+
+  Controller
+      def user_params
+        params.require(:user).permit(:username, :email, :password)     # Require indicates the the hash name
+      end                                                              # Permit indicates the hash keys
+
+  I inverted the require permit by accident and got a strange error about the authenticity token...
+
+   BY HAND VERSION 
+   <form action="/users" method="post" accept-charset="UTF-8"> 
+     <input type="hidden" name="authenticity_token" > 
+     <p><label for="username">Username</label><input type="text" name="user[username]"><p> 
+     <p><label for="email">Email</label><input type="email" name="user[email]"></p> 
+     <p><label for="password">Password</label><input type="password" name="user[password]"></p> 
+     <p><input type="submit"></p> 
+   </form> 
+
+   FORM TAG+ VERSION 
+   <%= form_tag( users_path, :method => :post )do %> 
+     <%= content_tag :p do %> <%= label_tag :username %> <%= text_field_tag "user[username]" %> <% end %>  
+     <%= content_tag :p do %> <%= label_tag :email %> <%= email_field_tag "user[email]" %> <% end %> 
+     <%= content_tag :p do %> <%= label_tag :password %> <%= password_field_tag "user[password]" %> <% end %> 
+     <%= content_tag :p do %> <%= submit_tag "Submit" %> <% end %> 
+   <% end %> 
+
+   FORM FOR VERSION 
+   <%= form_for @user do |u| %> 
+     <p><%= u.label :username %><%= u.text_field :username %></p> 
+     <p><%= u.label :email %> <%= u.email_field :email %></p> 
+     <p><%= u.label :password %> <%= u.password_field :password %></p> 
+     <%= u.submit "Submit" %> 
+   <% end %> 
+
+   BY HAND RECREATION OF FORM_FOR EDITING 
+   PASSES HIDDEN _METHOD AS PATCH 
+   MANUALLY SETS THE USER 
+   MANUALLY SETS ALL THE VALUES 
+  <form action="/users/<%= params[:id] %>" method="post" accept-charset="UTF-8">  
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">  
+    <input type="hidden" name="_method" value="patch"> 
+    <p><label for="username">Username</label><input type="text" name="user[username]" value="<%= @user.username %>"><p>  
+    <p><label for="email">Email</label><input type="email" name="user[email]" value="<%= @user.email %>"></p>  
+    <p><label for="password">Password</label><input type="password" name="user[password]" value="<%= @user.password %>"></p>  
+    <p><input type="submit"></p>  
+  </form>  
+

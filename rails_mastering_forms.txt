@@ -1,0 +1,398 @@
+Mastering Forms
+  Goal: Be able to handle *any* form, from simple to complex.
+
+HTML Basics
+  Form
+      <form action=... method=...>
+      </form>
+    action is a URI
+    method is either "get" or "post"
+      get is visible and supposed to be human friendly
+      post is designed to be secret, for the application (dev only)
+
+  Input
+      <input name=... value=...>
+  name and value are transmitted
+      <button>...</button>
+
+      
+  W3C recommends adding labels such as this
+      <p><label for="first_name">First Name</label><input name="first_name">
+      <p><label for="last_name">Last Name</label><input name="last_name">
+
+  HTML only transmits name-value pairs in the form of:
+        name1=value1&name2=value2
+
+Submitting Hashes 
+  Implemented by Rails, not part of a web standard
+  Rails simulates hashes using the standard hash assessor 
+  inside the name attribute: my_hash[my_key]
+    Example
+      <input name="user[login]" value="w00tw00t">
+    Yields
+      params                # => {'user' => {'login' => 'w00tw00t'}}
+      params[:user][:login] # => 'w00tw00t'
+    Note the hash has indifferent access, string ('user') or symbol (:user)
+    Nesting works.
+      <input name="user[address][line1]"> 
+      # May be accessed by params[user][address][line1]
+       basic forms sub-forms( ajax ) calendar( drag-n-drop )
+Submitting Arrays
+    Implemented by Rails, not part of a web standard
+    Repeating a name with [] will yield an array
+      Example
+        <input name="grocery_list[]" value="bacon">
+        <input name="grocery_list[]" value="eggs">
+        <input name="grocery_list[]" value="rice">
+    Yields
+        params # => {'grocery_list' => ["bacon", "eggs", "rice"] }
+Array of Hashes
+    Collecting an array of hashes works.
+        <input name="student[][name] value="Adam"> 
+        <input name="student[][id]" value="1"> 
+        <input name="student[][name]" value="Bob""> 
+        <input name="student[][id]" value="2" > 
+      Yields
+        params # => {student => [ 
+                      {'name' => "Adam"},
+                      {'id' => "1"},
+                      {'name' => "Bob"},
+                      {'id' => "2"}
+                    ]
+An array of arrays 
+    *Not supported*
+    <input name="list_of_lists[]"> # *not supported*
+    <input name="list_of_lists[][]"> # *not supported*
+
+Rails Helpers
+  # Turn a name into an HTML text input
+  # String / Symbol -> String
+  text_field_tag( :first_name ) # => <input type="text" name="first_name">
+
+  # Turn an object and name into an a Rails-friendly hash string
+  # String / Symbol, String / Symbol -> String
+  text_field( :person, :first_name ) # => <input type="text" name="person[first_name]">
+  text_field( "person", :first_name ) # => <input type="text" name="person[first_name]">
+  text_field( @person, :first_name ) # => <input type="text" name="person[first_name]">
+
+  # Turn an object into a FormBuilder instance with form tags
+  # Symbol | String | Instance -> FormBuilder.new
+  form_for( Symbol|String|Instance ) do |f| 
+    f.text_field( :first_name ) ...
+
+  # Turn an object into a FormBuilder instance without form tags
+  # Symbol | String | Instance -> FormBuilder.new
+  fields_for( Symbol|String|Instance ) do |f| ...
+    f.text_field( :first_name ) ...
+    Eg)
+      fields_for :a do |ff|
+        ff.text_field :b      
+      Yields
+        <input type="text" name="a[b]" id="a_b">
+        params # =>  { "a" => { "b" => "" } }
+
+  # Fields for has an index option to help with nesting
+    form_for @person do |person_form|
+      @person.addresses.each do |address|
+        person_form.fields_for address, index: address.id do |address_form|
+          address_form.text_field :city
+      # Yields "person[address][23][city]
+
+    Eg2) Note that a many association will *automagically loop and include an index*
+      Assuming a Person that has_many Addresses...
+      form_for @person do |person_form|
+        person_form.fields_for :addresses do |address| 
+          <h3>Address <%= address.index %></h3>
+          address.text_field :street
+        end
+      end
+    Yields
+      <h3>Address 0</h3>
+      <input type="text" name="person[addresses_attributes][0][street]">
+      params # => { "person" => { addresses_attributes => { "0" => { "street" => "" } } } }
+
+    Eg3) Here's another example:
+    Assuming A Booking model which has_many Passengers...
+      <% @booking.passengers.each_with_index do |pass, ind| %>
+        <%= f.fields_for :passengers_attributes, :index => ind do |ff| %> 
+          <h3>Passenger #<%= ff.index + 1 %></h3>
+          <p><%= ff.label :name %><%= ff.text_field :name %></p>
+        <% end %>
+      <% end %>
+    Yields
+      <h3>Passenger #1</h3>
+      <p>
+        <label for="booking_passengers_attributes_0_name">Name</label>
+        <input type="text" name="booking[passengers_attributes][0][name]" id="booking_passengers_attributes_0_name" />
+      </p>
+
+Adding Methods to a formbuilder
+  Create your own form builder which inherits the applications
+#   models/my_form_builder.rb
+    class MyFormBuilder < ActionView::Helpers::FormBuilder
+      def helloworld
+        "Hello World!"
+      end
+    end
+
+# anyview
+  <%= form_for @myobject, :builder => MyFormBuilder do |f| %> 
+    <%= f.helloworld %>
+  <% end %>
+
+# Yields "Hello World!"
+  
+  Production Example
+    Note: Helper methods are available from @template (a preexisting Rails object)
+  # app/models/next_gen_form_builder
+    class NextGenFormBuilder < ActionView::Helpers::FormBuilder
+      def delete_link
+        ( "\n" +
+          self.hidden_field( :_destroy ) + "\n" +
+          @template.link_to( "x", "#", class: "deleter" ) + "\n"
+        ).html_safe
+      end
+    end
+  # app/
+  <%= form_for @service, :url => [:manager, :service, :assigned_tutors],
+    :builder => NextGenFormBuilder do |f| %>
+     <%= f.fields_for :assigned_tutors do |ff| %>
+      # ... Brevity
+      <%= ff.delete_link %>
+     <% end %>
+  <% end %>
+  # Yields
+  #  <input type="hidden" value="false" name="service[assigned_tutors_attributes][0][_destroy]" id="service_assigned_tutors_attributes_0__destroy" />
+  #  <a class="deleter" href="#">x</a>
+
+# Set a custom builder globally in Rails 5
+# application_controller
+  class ApplicationController < ActionController::Base
+    default_form_builder MyCustomBuilder
+  end
+
+
+
+Rails Select
+  Basic Select
+    # Build a select tag from a name
+    Use select_tag and options_for_select
+    select_tag( :myname, options_string )
+    
+    # Build HTML options from an array
+    Array [ Array .. ] -> String
+    options_for_select( [ ["One",1], ["Two",2], ["Three",3] ] )
+
+    # As above but provides a collection object
+    Object, Method, Method -> String
+    options_from_collection_for_select( collection, value_method, description_method)
+    options_from_collection_for_select( Person.all, :id, :name)
+
+    # Combine select tag and options into one
+    String, Object, Method, Method -> String
+    collection_select( name, collection, value_method, description_method )
+
+Rails Forms
+  authenticity_token is required
+  submit tag includes name, and is hence usable by the controller!
+    case params['submit']
+    when 'update' ...
+    when 'create' ...
+    end
+
+Rails Persistance Gotcha.
+  It's not very clear from the docs, but does *not* take a hash of attributes!
+
+  nil -> nil ?
+  @widget.save()
+  @widget.save( name: "widget1" )  # Succeds, but doesn't save changes!
+
+  Hash -> nil ?
+  @widget.update( name: "widget1" )
+
+Odin Non-Standard Forms Tip
+  Start with basic HTML.  If you don't understand what's going on in the
+  basic HTML (don't forget your CSRF token), then you'll be hopeless
+  trying to use helpers. Once you've got a good handle on things, gradually
+  bring in the Rails helpers like #form_tag and #form_for. 
+
+How to Submit "" (for setting nils)
+  input="hidden" name="your_name" value=""
+
+Rail Naming Gotcha
+  A name that includes the type gets filtered out of the hash.
+  <input type="checkbox" name="checkbox[foo]" value="x"> 
+    should map to { "checkbox" => { "foo" => "x"  }
+    instead it maps to { "foo" => "x" }
+
+Permitted?
+  Designed to check for an allowed *set* of params
+  params -> bool
+
+Form Builder
+  This is surprisingly simple!
+  Why and when to use? When your forms get repetitious.
+    repetitous view pattern -> write a custom helper
+    repetitions form pattern -> write a custom form builder
+  Pretty well documented: one thing that's a little hidden
+  form_for optional argument is :builder => MyFormBuilder
+    http://guides.rubyonrails.org/form_helpers.html#customizing-form-builders
+    https://coderwall.com/p/-biuug/custom-form-builders-in-rails
+
+Form Object
+  What is it?
+    A plain old ruby class, that's not saved to a database.
+  When do you use?
+    Basically to
+      A) Handle temporary data
+      B) Handle partial data from large model / use case.
+      B) Handle data from multiple models
+    Use cases:
+      1) Have a plain old Ruby class use Rails validations and hash initialization.
+      Send a contact form (external) that just generates an email. 
+          No model requires saving (persistance).
+      2) As a FACADE.
+        You have one model that needs multiple kinds of interaction.
+        From Ryan Bates railscasts imagine form.
+        Eg) One form to sign up.
+        Eg) Another form to change the password.
+      3) As an AGGREGATOR
+        You have multiple models that need to be interacted with in one form
+         you *may* want to use form objects.
+        There is some debate on this issue between two different solutions.
+        Option A) 
+          accepts_nested_attributes solution: 
+            + less overhead (rails programmers wrote it for you)
+            - may not fit unnested models.
+        Option B)
+          form object: 
+            - more overhead, you write custom code
+            + can handle complicated multiple model interaction
+        
+  How do you use it?
+    include ActiveModel::Model 
+      # Adds the following functionality
+      #   Initialize with a hash
+      #   Add validations
+      #   Add validation errors
+      #   Interact with form_for and form_with
+
+    The form view should not use fields_for. 
+      The save function should handle multiple functionality. 
+
+    Form object may remove the need for strong parameters.
+      The create function can assign the attributes.
+
+    FormObject#submit may replace FormObject#save in the create
+      #submit will handle the success path and yield true/false to the controller
+      Now the controller is free to just redirect to success page or re-render new
+        as usual.
+
+    Form Object negative: many implemenations move validatations from the model
+    to the form object. This may be a bad idea. Solution, have the form object
+    ask the model for it's own validations.  The form object may still have it's
+    own validations.
+
+Design Overview
+  Use Case / Reduce Monolithic Form:  Use Form Object
+  Collection / Aggregate:             Use Form Object
+  Repeated Forms:                     Use Partials
+  Simple (< 3 ?) Nested Relationship: Use accepts_nested_attributes
+
+! Checkout Reform - a Form Object gem
+! Checkout Virtus - a Ruby type caster
+    
+
+Rails JS
+  Scope
+    Global space pollution prevented by self executing anonymous function
+    Adding to global space by explicity setting to window or global this.
+    Example
+      a = -> console.log "a: called"  (in console a is undefined)
+        Yields
+      @a = -> console.log "a: called" (in console a is defined )
+
+  Timing
+    Ready
+      With turbolinks replace
+        $(document).ready ->
+      with
+        $(document).on "turbolinks:load", ->
+
+    Basic Page Layout
+    # generic handlers that don't need the page
+      a = -> alert "a"
+      b = -> alert "b"
+      c = -> alert "c"
+
+    # anything that refers to elements that don't exist until the page is loaded
+      $(document).on "turbolinks:load", ->
+        $('.a').click -> a()
+        $('.b').click -> b()
+        $('.c').click -> c()
+
+Rails JS (Server not required)
+  Unobtrusive Javascript means that javascript is not mixed into the view layer.
+    <div onclick="myclickhandler(e)"> would be obtrusive (js code)
+    <div data="mydata"> would be unobtrusive (no js code)
+
+Rails AJAX (Server required)
+  Overview
+    View indicates AJAX request with 'data-remote="true"'
+      ->
+    Controller 'respond_to' a the 'js'|'json' request and routes to...
+      ->
+    JS || JSON Erb View
+      -> Modifies view
+
+Rails AJAX Helpers
+  link_to ... data: remote, easier to style, not for public sites, bots will click it.
+  button_to  -> Public safer version of link to a one line form.
+  form_with -> Full scale form
+
+Gotcha: Careful not to redefine your functions in JS!!!
+  JS does not automatically extend your open classes, functions.
+  It redefines them.
+
+  $ -> alert a
+  ...
+  $ -> alert b   # ready function is now redefined!
+
+----------------------------
+| Required Technology      |
+----------------------------
+|   basic forms, search    |
+|     above                |                                          
+|                          |                                 
+|   sub-forms              |                                                     
+|     nest | form object   |                                        
+|                          |                                 
+|   js                     |                                                     
+|     js handlers attach   |                                        
+|       to view objects    |
+|                          |                                 
+|   ajax                   |                                                     
+|     view objects call    |                                        
+|      rails controllers   |
+|      which call js views |
+|                          |                                 
+|   calendar - drag-n-drop |                                                          
+|     ...                  |                                        
+----------------------------                                                        
+
+Library Code
+# Select Tag Which Changes Pages
+change_page_to = (target)->
+  if target
+    window.location.href = target
+
+$(document).on "turbolinks:load", ->
+  $("#links").change -> 
+    target = $(this).val()
+    change_page_to target
+
+Notes: 
+  Review Partials, they have some surprising shortcuts
+  render @comments expands out
+    to render @comment expands to
+      render :partial '_comment' :comment => @comment

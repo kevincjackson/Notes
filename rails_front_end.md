@@ -1,49 +1,113 @@
-Rails Cheat Sheet
-=================
-#Unique Rails Methods
-attr?             #return true or false for any attribute
-nil.try(:method)  # converts Exceptions to nils
-                  # can be interpreted as code smell, if you 
-                  # use it when you don't know what you're doing.
+---
+JS Add / Remove Buttons for Nested Models
+---
+Modified from Ryan Bates' Railscasts #196 (Revised)
+```
+# Models
+class Survey < ActiveRecord::Base
+  has_many :questions
+  accepts_nested_attributes_for :questions, allow_destroy: true
+end
 
-#RVM              # controls which Ruby you use
->rvm install rubyversion                #install ruby
->rvm install 1.9.2                      #install ruby v1.9.2
->rvm install jruby                      #install jruby
->rvm list                               #list rvm rubys installed
+class Question < ActiveRecord::Base
+  belongs_to :survey, :optional => true
+  has_many :answers
+  accepts_nested_attributes_for :answers, allow_destroy: true
+end
 
-## rvmrc                                #put this file in the app root
-rvmrc> rvm 1.9.2@yourgemset                 #tell rvm to use ruby 1.9.2 with yourgemset
-                                            #gemset is usually your the same as your app name
->rvm gemset create yourgemset               #create the gemset
-                                            #ruby and gemset is now specifoc to the app
+class Answer < ApplicationRecord
+  belongs_to :question, :optional => true
+end
+
+# Survey Controller
+# Note nested *_attributes code.
+# Don't forget to whitelist :id & :_destroy !
+  def unit_params
+    params.require(:unit).permit(:name,
+      :questions_attributes => [:id, :name, :_destroy,
+        :answers_attributes => [:id, :name, :_destroy] ])
+  end
+
+# views/surveys/_form.html.erb
+  <%= f.fields_for :questions do |que| %>
+    <%= render "questions", :f => que %>
+  <% end %>
+  <%= link_to_add_nested_fields "+ New Question", f, :questions %>
 
 
-#Gotchas
-Gotchas - Updating files...
-1) New Models    > reload!
-  Gotcha! reload! in the console updates code, but note existing objects
-2) New Gems      > bundle install
-3) New Migration > rails db:migrate
-4) New Routes    > rails routes
+# views/surveys/_questions.html.erb
+# Note this partial lives in the surveys folder (not the questions folder)
+<fieldset>
+  <%= f.label :name, "Question" %>
+  <%= f.text_field :name %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to_delete_fieldset %>
 
-## Make a New Rails App
->rails new app_name     # Make a new rails app.
->rails _4.2.1_ new name # Use a specific version of rails.
->cd app_name            # go to your rails apps root
->rails s                # start the server & open "localhost3000:" in a browser
+  <%= f.fields_for :answers do |ans| %>
+    <%= render "answers", :f => ans %>
+  <% end %>
 
-## Gems
-Gems are downloadable ruby programs. They're declared in /app_name/Gemfile
-If the gems ever change, run the command below.
->bundle install         #Download any missing gems.
->bundle check           #Check for any missing gems.
+  <div>
+    <%= link_to_add_nested_fields "+ Add Answer", f, :answers %>
+  </div>
+</fieldset>
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Routing
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# application_helper.rb
+module ApplicationHelper
+  def link_to_add_nested_fields(name, f, association)
+    new_object = f.object.send(association).klass.new
+    id = new_object.object_id
+    fields = f.fields_for(association, new_object, child_index: id) do |builder|
+      render(association.to_s, f: builder)
+    end
+    link_to(name, '#', class: "add_nested_object", data: {id: id, fields: fields.gsub("\n", "")})
+  end
 
-??? Where in the guides or API can I learn about the *_path *_url methods?
+  def link_to_delete_fieldset 
+    render 'shared/delete_fieldset'
+  end
+end
+
+# views/surveys/_answers.html.erb
+# Note this partial lives in the surveys folder (not the answers folder)
+<fieldset>
+  <%= f.label :name, "Answer" %>
+  <%= f.text_field :name %>
+  <%= f.hidden_field :_destroy  %>
+  <%= link_to_delete_fieldset %>
+</fieldset>
+
+# surveys.js
+jQuery(function() {
+
+// The link already has everything it needs to make a new database entry.
+// This make the object unique by substituting the current time.
+  return $('form').on('click', '.add_nested_object', function(e) {
+    var regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    $(this).before($(this).data('fields').replace(regexp, time));
+    return e.preventDefault();
+  });
+
+  $('form').on('click', '.delete_fieldset', function(e) {
+    // Indicate the hidden field (of destroy) as true.
+    $(this).prev('input[type=hidden]').val('1');
+    // Hide it now that you're done with it.
+    $(this).closest('fieldset').hide();
+    return e.preventDefault();
+  });
+
+});
+
+
+# app/views/shared/delete_fieldset
+    <%= link_to sanitize("&#128465;"), "#", class: "delete_fieldset" %>
+```
+
+---
+# Routing
+---
 
 Basic Routes
 There are 4 types of routes in Rails:
@@ -79,7 +143,6 @@ routes.db>
       http://doc.bccnsoft.com/docs/rails-guides-3.2-en/routing.html
       http://stackoverflow.com/questions/20320263/what-does-format-mean-in-rake-routes
 
-
 !Gotchas
   Run rails routes after you update your routes.
   The order of the routes is important!
@@ -95,9 +158,7 @@ _path vs _url:
   Both will work, path takes up less space, 
   but for redirects, standards dictate using the complete url.
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Custom Routes / Routing Strategies
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## Custom Routes / Routing Strategies
   High Level Concept
     Change your routes file to take a scope right after the existing path
       or with a new name space.
@@ -167,9 +228,8 @@ routes.db>
     restful routes under this category are show/edit/update/destroy
   Collection Routes - performed on group: projects/search || autocomplete || export
     a RESTful route under this category are index 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Resources
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Resources
 
 rails g scaffold
   # To turn off all the jbuilder noise
@@ -266,10 +326,10 @@ Video example
       end
     parents/parent_id/children/id
     So params now holds a params[:parent_id] and a params[:id]
-  
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Controllers
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+--- 
+# Controllers
+--- 
 The full name should be *View* Controller.
 Work Hand In hand with view templates.
 Examples
@@ -361,8 +421,6 @@ Concept
     <%= ruby code to be printed %>
     <% ruby code to not be printed %>
     <%# comment only %>
-
-
 
 ###Helpers / (View) Helpers
 Concept
@@ -457,7 +515,7 @@ Formatting Time
   date_time_formats>Date::DATE_FORMATS[:default] = "%B %e, %Y"
   date_time_formats>Date::DATE_FORMATS[:custom] = "%B %e, %Y"
                                                   "%h %d, %Y" => Sep 16, 2016  => 3:11 pm
-                                                    "%l:%M %P"  => 3:11 pm
+                                                    "%-l:%M %P"  => 3:11 pm
   Call with <%= %>
   Gotcha! > Reboot the server for your format to take effect.
 
@@ -507,55 +565,6 @@ Concept
   + Aply business logic (to models): methods & validation
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Validations                                 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    * Concept: Prevent bad data from entering the database.  
-        Bad data causes nasty bugs which break your whole app.
-    * When you use a validation method, like validates, rails creates a 
-      model.errors hash.  
-    * Rails generates default error messages, which can customized
-      with the :message attribute.
-    * Rails also uses type casting !!!  *Before validation* rails will
-      _change_ your attribute based on it's sql type. For example
-      an invalid date, will be converted to nil _before_ your validation
-      runs.  *** Need to research this more. ***
-
-    #validate_attribute vs validates  :attr     Below are all the same command
-    model> validates_presence_of :attr
-    model> validates :attr, :presence => true 
-    model> validates :attr, presence: true    # most common syntax.
-    model> validates list of attributes, list of hashes     
-                                              #this is not in the docs
-    model> validates :attr1, attr2, attr3, presence: true   #list of attr
-    model> validates :attr, length: {minimum: 25}            #set length
-    model> validates :attr numericality: {only_integer: true} #set number only
-    model> validates :attr, allow_blank: true,  
-    model> validates :title, presence: { message: "custom message" } #see rails guides for more info
-
-    validates :attr,  :presence => boolean,
-                      :numericality => boolean,
-                      :length => options_hash,
-                      :format => {:with => regex},
-                      :inclusion => {:in => array_or_range}
-                      :exclusion => {:in => array_or_range}
-                      :acceptance => boolean
-                      :uniqueness => boolean
-                      :confirmation => boolean
-                      :validation method => {:requirement => value
-                                             :option => option_value}
-                      :length => {:minimum => 4, :message => "too short"}
-                      
-    (Console) Model Validation Methods
-    >model.valid?                             # !This runs validates
-    >model.errors                             # produce a non-friendly list of errors
-    >model.errors.full_messages               # produce a friendlier list of errors
-                                              # use below to be styled!
-    >model.errors.full_messages.to_sentence   # array of error messages
-    >model.errors[:attribute]
-    >model.errors.any?                        # check for >= 1 errors
-    >model.errors.many?                       # check for >1 errors
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Handling Errors in the View
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 In your any _form file right after <%= form %>
@@ -577,295 +586,6 @@ Styling Error Messages
   *Rails wraps any form errors in an HTML div with class set 
     to "field_with_errors"
   View source to check out.
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  ###ActiveRecord::Calculations
-      Rail methods for columns of a database
-        count (like length / size)
-        maximum, minumum
-        average
-        sum
-        calculate #long form of the above commands
-        ids       #return an array of column id's
-        pluck     #return an array of column values
-
->class Model < ActiveRecord::Base       #Model inherits form ActiveRecord
->rails g model mymodel name:string price:decimal #make mymodel and create database schema
-DATABASE TYPES: 
-  .string | text                          #string :limit = 255
-  .integer | decimal | float              #use decimal for up 38 digits
-  .boolean | binary
-  .date | time | datetime
-  .primary_key
-  .timestamp
->rake db:migrate                        #Rails 4, 
->rails db:migrate                       #Advance database 
->rails db:migrate:status                #Check on database status
->rails db:rollback                      #Revert database 1 step
->cat db/schema.rb                       #look at the current schema
-
-#Database
-  ##Seeding
-  Concept put in default data into your database
-    app/db/seeds.rb>  put in create date in a hash
-  >rails db:reset       #clear database *and* run db:seed the database
-  >rails db:seed        #seed data (it's additive), run twice and you'll have double data
-                        #note db:reset runs this for you.
-  >rake db:drop db:create db:migrate  
-                        #purge your database and return to current schema
----
-# Migrations 
-ActiveRecord::Migration  
-
-Naming convention: use yourMigrationChangesToTablename /
-your_migrations_changes_to_tablename Rails will select the tablename in the
-suffix. If you don't name it that, you can select the table yourself in the
-migration file.
-
-Question: 
-  When do you use a >rails g migration|model|resource|scaffold ?
-Answer:
-  You need to think ahead for what you need.
-    A migration updates your database tables.
-    A model     updates your database tables, and makes a model (for defining relationships).
-    A resource  does the first two, and makes a controller.
-    A scaffold  does the first two, makes a controller and 7 views.
-
-Setup
->rails g migration model name:string color:string
-
-Changes
->rails g migration addAdminColumnToModel 
-
-Search for migration at http://api.rubyonrails.org/
-  for clear instructions on changing your schema.
-
-####Defaults
->rails g migration setDefaultsToModel
-Methods
-  change_table :models do |t|
-    t.change_default(:column, :from => nil, :to => "...")
-  # use :from, :to with the change method to enable rollbacks!!!
-
-####Ripple Effects Checklist
-    * generate and apply the migration
-    * add values for the new fields, if necessary
-    * update all the affected templates
-
-
----
-##Rails Console
->reload!                                #run this to refresh the console
-
-##CRUD 
-  Concept: Create, Read, Update, Destroy for Web Objects
-
-###Create
-Model.create, Model.find(#) |  Model.find_by(attr: "string"), Model.update(), Model.destroy
-Create objects and assign attributes individually
->e = Model.new          #instantiate
->e.name = "Name"        #assign attribute
->e.save                 #save to database
-
-Create objects and assign with hash
->e = Model.new(name: "Name", price: 15.00)
->e = Model.new(:name => "Name", :price => 15.00)  #same as above, alternate hash syntax
->e.save
-
-Create and save in one step with a hash
->e = Model.create(name: "Name", price: 15.00)
->Model.create(name: "Name", price: 15.00) #Same as above, with a variable assignment
-
-###Read
->count = Movie.count                    #return how many Movies there are.
->e = Movie.find(3)
->e = Movie.find_by(price: 15.00)
->e = Movie.all                          #returns an array of all table Models
-
-###Update
->e.Event.find_by(price: 15.00)
->Model.destroy(3)           #destroy by primary key using the Class method
->e.update(name:"Kata Kamp", price: 30.00) #writes the database
-
-###Destroy
->e = Event.find(3)
->e.destroy
-
-##Rails Database Console
->rails dbconsole
-sqlite> .schema                 #output all schemas
-sqlite> .schema models          #output schema for models table
-
-# Database 
-
-## Design
-Object Oriented -> RAILS Object Relational Mapping / Mismatch
-
-  1. Built-ins -> Map directly to tables, idiosyncratic (string -> varcar (limit to length 255)
-      Eg) User; attr_reader :name -> users table with name column
-  2. Collections -> Serialization or Associations
-    1. Serialization: not recommended, slow, but does store order, uses YAML  
-      Eg) Person; favorite_foods = ["pizza", "popcorn"] -> persons table with favorite_foods column with ["pizza", "popcorn"].to_yaml in it  
-    2. Separate Tables / Associations: recommended, fast, does not store order, use filters  
-      Note that it is the child table which references the parent. The parent does not need to reference the child table (other than the method has_*)
-      1. Basic - all this quantification is necessary for speed
-        1. One-to-one
-        2. One-to-many
-        3. Many-to-one
-        4. Many-to-many
-      2. Through: convenience methods for bypassing join table
-      3. has_and_belongs_to_many - if no join table is needed, you can use this convenience method
-  3. Inheritance -> Single Table Inheritance, a separate object tables are in one table which now has a type column.
-  4. Composition ->  Polymorphic: A join table which stores foreign_ids and foreign_types
-
-##Queries
-??? If I make parent.children query I get back an 
-  ActiveRecord::Associations::CollectionProxy, not an array!
-  what's going on here?
-  ActiveRecord refers to the database code library
-
-!!! model.select is database expensive!!! creating a db hit for every record.
-
- !!! Do not put queries in the controller
-
-   Make a method in the model
-   model>def self.myquerymethod
-   model>    where('attr > 1000').order('attr asc')
-   model>end
-   controller>@Models = model.myquerymethod
-
-  Play with in rails console
-  Methods: (Model.method)
-    * count(), 
-    * all, 
-    * order(:first_name => :asc) # defaults to alphabetical / asc / ascending
-    * order(:first_name)         # same as above, asc is default
-    * order(:week, :day => :desc) # sort first by week, & nested reverse days 
-    * first 
-    * last
-    * find(id)
-    * find_by(attr)
-    * find_by(attr1, attr2)
-    * where(key: "value")               #where, means conditionals in database-speak
-    * where.not(key: "value")
-    * where('price <= 10.00')
-    * where('price <= ?', max_price)    #substitute variable into ?
-    * where("starts_at >= ?", Time.now) #return upcoming event
-    * to_sql                            #return the sql
-    finished examples
-      >Movie.where("released_on <= ?", Time.now).order("released_on desc")
-
-  Article: 
-  http://guides.rubyonrails.org/active_record_querying.html
-
-    find
-    create_with
-    distinct
-    eager_load
-    extending
-    from
-    group
-    having
-    includes
-    joins
-    left_outer_joins
-    limit
-    lock
-    none
-    offset
-    order
-    preload
-    readonly
-    references
-    reorder
-    reverse_order
-    select
-    distinct
-    where
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Scope
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  Basic concept             # A way to name a custom query
-  Why not a method?         # Expressive, Syntactic Sugar     
-  Like a method,but         # enforces correct # of arguments, and
-                            # supports defaults
-  scope :name, lambda{sql}  # Two parameter method 
-  scope :name, ->{sql}
-  scope :name, -> {}
-  scope :name, -> (name=default){name} # Pass in argument(s)
-  scope :past, -> { where('starts_at <?', Time.now).order(:starts_at)}
-  scope :recent, -> (max=3) { past.limit(max) }
-  console> Model.scopename
-  console> Model.recent(3)
-  console> Model.hits.where("total_gross > 4000000")   #chain sql 
-  console> Model.hits.recent                           #chain scopes
-  console> user.favorite_movies.hits            #chain on through associations
-  # Adding an attribute column
-  # Class Method
-  total = Model.scoped.pluck(:id).sum  #not tested ~~~something like this
-  # Collection Method
-  total = @items.map(&:id)
-
-##Advanced
-  #Use a lambda in the model declaration to adjust how a model is ordered
-  model.rb> has_many :reviews, :dependent => :destroy
-  model.rb> has_many :reviews, -> { order(created_at: :desc) }, 
-                     :dependent => :destroy
-
-##Gotcha
-    scope :name, lambda sql   #gotcha! you need a block {}
-
-##Database Question
-    When I delete a row, the deleted number stays taken.
-    How do I reset the database to reuse those numbers?
-    Is that something I want to do?
-
-    When I set up :dependent => :destroy on a through model
-      is the opposing model destroyed, or only the join model?
-
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-RELATIONSHIPS
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-Foreign Keys
-    Child objects always get the foreign key
-    Names are always singular, eg) foo_id, parent_id
-    Non-conventional foreign keys can be set with { :foreign_key => foo_id }
-      in the model file.
-    Foreign keys can reference different columns, eg
-      author_id can contain #{user.id} Rails4InAction, pg 164
-
-console> delete versus destroy
-    delete will set the foreign key to nil
-      eg) parent.child.delete (leaves an orphanted child object)
-    destroy will set the foreign key to nil and destroy the child object
-      eg) parent.child.destroy (deletes the child objects
-    Rails 5 does not allow the creation of orphaned child objects
-    Rails 5 also runs a *save* on new child objects if you set a foreign key
-
-##One-to-many | 1:M
-    >rails g resource child attr:string parent:references
-        (migration> t.references :parent, foreign_key:true)
-                                  #'t.references :parent' addes the parent_id
-                                  #'foreign_key: true' requires a valid parent_id 
-    childmodel> class Child <ActiveRecord::Base
-                  belongs_to :parent
-                end
-    parentmodel> has_many :registrations, dependent: :destroy  #notice the colon in :destroy
-          #dependent: :destroy is necessary or there will be orphaned children
-
-    # has_many creates the child methods, as well as the build method
-
-###New Methods
-    >parent.children   #lists children objects
-    >child.parent      #lists parent object
-    >child.parent_id = index_number     #two ways to set
-    >child.parent = parent_instance     #convenience method, same as above
-
-###Gotcha!
-    Work in your console to make sure everything is working before you switch to UI setup.
-    controller> @child = Child.new #don't do this, reference the use the parent relationship
-    controller> @child = parent.children.new    #This sets the foreign key for you!
 
 ##Forms
   4 Levels of Forms
@@ -961,8 +681,8 @@ class Address
 Template
   form_for :person do |f|
     ...
-    fields_for :addresses |a| # Note that address is specified as *symbol*
-                              # Need to practice raw html and form builders.
+    fields_for :addresses do |a| # Note that address is specified as *symbol*
+                                 # Need to practice raw html and form builders.
       a.text_field :street
     end
   end
@@ -1097,174 +817,6 @@ The HTML is you are trying to generate is this:
     end
 
 ---
-## Associations ( ActiveRecord::Associations::ClassMethods )
-
-### What Are They?
-They map the relationship of object-oriented models to the relationship of database tables.
-
-### Why Use Them?
-They save a lot of manual work (SQL searches) by providing convenience methods.
-
-### How Do They Work?
-Each model gets a primary key.  A model may reference another by name and primary key.
-Since almost all models have their own primary key, a reference to another model is called a 
-foreign key. 
-
-If you are familiar with the idea of dependency injection - this is like
-dependency injection for databases - instead of trying to piecemeal another model's data
-into another, your just provide reference to the whole table.
-
-### Common Cases
-#### Ex 1) A an Account has an AccountHistory
-This is a simple 1-to-1 association. `belongs_to` is the main method. `belongs_to`
-always indicates singular ownership.
-
-#### Ex 2) Lots of Students and lots of Classes
-This is a Many-to-Many (M-to-M) association. The most likely situation is that
-the join table, let's call it Registrations will have additional information. This
-will be setup using `has_many <association> :through :registrations` on both models.
-Normally accessing each table would require it's own database hit, but by using 
-`:though`, only one database his is used.
-
-#### Ex 3) Users "like" Movies.
-Since no information is necessary in the join table, this should be set up as a 
-`has_and_belongs_to_many` relationship.  Note the join table gets no primary key.
-
-#### Ex 4) An Avatar is used by multiple models, such Player and Monster
-Setup Avatar as `belongs_to :polymorphic => true`. This adds
-a foreign_key *and* a foreign_key_type. To quote the rails guide: "think of a
-polymorphic `belongs_to` declaration as setting up an interface that any other
-model can use." Note that AvatarImage *is* the join table (not a standalone model).
-`AS` indicates use of a polymorph.
-
-```ruby
-  Avatar < ActiveRecord::Base
-    belongs_to :avatarable, :polymorphic => true
-
-  Player < ActiveRecord::Base
-    has_one :avatar, :as => :avatarable
-
-  Monster < ActiveRecord::Base
-    has_one :avatar, :as => :avatarable
-```
-
-#### Ex 5) An Employee table holds references *Within Itself* to Managers
-Tables referring to themselves is allowed. This is handled by passing
-the tables own name to "class_name". In the example below a manager_id
-refers to the employee_id of the manager. The unusual foreign_key declaration
-(it's usually an option on the child model), broadcasts the *name* of the foreign
-key column, since it normally match the table name ("employee_id")
-
-```ruby
-  class Employee < ApplicationRecord
-    has_many :subordinates, class_name: "Employee",
-                            foreign_key: "manager_id"
-   
-    belongs_to :manager, class_name: "Employee"
-  end
-```
-
-#### Commands
-
-##### `build`
- * Build a convenience command for Model.new 
- * `belongs_to` uses `build_association`  
-    Eg) account.build_account_history( ... )
- * `has_many` uses `collection.build`
-    Eg) author.books.build( ... )
-```
-
-##### `inverse_of`
- * Rails will normally work bidirectionally assuming normally
- named items (database hit = 1), except for
- :through, :polymorphic / :as, :class_name, :foreign_key, and :conditions.
-
-:through and :polymorphic / :as cannot be remedied,
-but  
-:class_name, :foreign_key, and :conditions can be remedied by using :inverse_of
-
-:inverse_of is an option on `has_many`
-```ruby
-  class Author < ApplicationRecord
-    has_many :books, inverse_of: 'writer'
-  end
-   
-  class Book < ApplicationRecord
-    belongs_to :writer, class_name: 'Author', foreign_key: 'author_id'
-  end
-```
-
-
-    >  rails g migration CreateMediaJoinTable artists musics:uniq
-    > rails g resource child parent1:references parent2:references
-
-    routes.rb> next the child in desired parent
-          #You'll need one of the parents in the params[]
-    parent1.rb> has_many :children, :dependent => :destroy
-                has_many :children, :dependent => :delete_all 
-                  # faster if there are no callbacks, minimizes the sql
-                has_many :parent2s, :through => :children
-
-                #custom naming version below
-                has_many :parent2s_custom_name, 
-                         :through => :children, 
-                         :source => :parent2 (singular)
-    Repeat for parent2.rb
-    Example:
-      class.rb>   has_many :enrollments, :dependent => :destroy
-                  has_many :students,    :through => :enrollments
-      student.rb> has_many :enrollments, :dependent => :destroy
-                  has_many :classes,     :through => :enrollments
-
-    methods
-        After instantiating parent1 and parent2
-
-        # List
-        console>  parent1.parent2s  #list
-                  parent2.parent1s
-                  parent1.parent2_ids    #return an array of ids
-        example>a student.classes
-                  class.students
-                  john = Student.find_by(name: "John")
-                  algebra = Class.find_by(name: "algebra")
-
-        # Create 
-            Preferred Way
-                  parent1.parent2s.create!(parent2: parent2_instance_name)                
-                    john.classes.create!(class: algebra)
-                    algebra.students.create!(student: john)
-                  parent1.parent2s << parent2_instance_name
-                    john.classes << algebra
-                    algebra.students << john
-            Long Way
-                  e = Enrollment.create!(student: john, class: algebra)
-
-        Gotcha!
-                  If you use the create! method use the parent 
-                    and child names without the alternatives
-                  if you use a :source, the shorthand (push) method
-                    only works on the alternative name!
-        example   user and movie are joined by favorites
-                  movie.rb> has_many :fans,            
-                              :through => :favorites, 
-                              :source => user
-                  user.rb>  has_many :favorite_movies, 
-                              :through => :favorites, 
-                              :source => movie
-        console>  movie.favorites.create!(user: user)          # Good
-                  movie.fans.create!(user: user)               # Bad
-
-                  movie.fans << user                           # Good
-                  movie.favorites << user                      # Bad
-
-                  user.favorites.create(movie: movie)          # Good
-                  user.favorites_movies.create!(movie: movie)  # Bad
-
-                  user.favorite_movies << movie                # Good
-                  user.favorites << movie                      # Bad
-```
-
----
 ## Exceptions
 In development mode all errors get a full stack trace because
   config/environments/development.rb has
@@ -1297,80 +849,62 @@ application_controller.rb>
       end 
 
 
----
-# Git
-  It's a good idea to backup your code, and common to do on a public
-  repository such as github.
-  * First setup ssh keys for git hub if needed.
-  * Set up you git directory to push
-      git init
-      git commit -m "First commit."
-      git remote add origin https://github.com/kechja/Ticketee.git
-      git push -u origin master
-
-## Deployment
-  config/environments/
-    * development
-        * code reloading
-        * verbose logging
-        * caching disabled
-        * exceptions
-    * production
-        * no code reloading
-        * less verbose logging
-        * caching enabled
-        * friendly error pages
-        * precompiled assets
-    * test
-
-  1) *Don't* change database.yaml file
-  2) Gem file> 
-      source 'https://rubygems.org' 
-      ruby '2.3.0' #Specify exact version
-  3) Put gem 'sqlite3' into group
-    group :development, :test do
-      gem 'sqlite3'
-    end
-    group :production do
-      gem 'pg'
-    end
-  4) bundle install --without production #or pg / postgres will attempt on your machine and fail
-
-## Initial Heroku Deployment
-  concept
-    git init/commit on your machine, then push onto heroku
-  1) run all your tests
-  2) git commit
-  3) heroku login
-  4) heroku create (if needed)
-  5) git push heroku master
-  6) heroku run rake db:migrate
-  7) heroku open
-
-## Folloup Heroku Deployment
-  1) run tests
-  2) git add -A; git commit -m "..."
-  3) git push heroku master
-
-## Heroku troubleshooting
-  heroku logs
-  heroku run console # your production console!
-
-### Gotcha
-  Precompiling assets failed on heroku push.
-  Solution: 
-    RAILS_ENV=production bundle exec rake assets:precompile
-      showed I had an extra semicolon in my application.css file!
-
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Asset Pipeline
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  The 'Sprockets' gem manages the your css and javascript, which
-    it calls the 'asset pipeline'
-  asset pipeline = CSS + JS + csrf meta tags managed 
+
+  'Sprockets' gem = 'Asset Pipeline'
+  Features
+    Coffeescript -> JS
+    Sass -> CSS
+    Human readable JS, CS -> Compressed JS, CS
+    Multiple file JS, CS -> Single File JS, CS
+
+  Precompiling
+    /public/\* no preprocessing
+    /assets/\* preprocessed
+
+  Getting images
+    <%= image_tag "rails.png" %>
+    First searches "public/images/"
+    Then searches "app/assets/images"
+
+  Adding images to CSS ans JS
+    Append .erb to css or js file
+      "application.css.erb" (enable helpers)
+
+  Referencing Images
+    image-url("rails.png") returns url(/assets/rails.png)
+    image-path("rails.png") returns "/assets/rails.png"
+
+    Generic alternative
+    asset-url("rails.png") returns url(/assets/rails.png)
+    asset-path("rails.png") returns "/assets/rails.png"
+
+    Example
+      $('#logo').attr({ src: "<%= asset_path('logo.png') %>" });
+
+  Scope
+    Raw JS
+      var greet = function() { return "Hi!"; }; # sprockets doesn't touch.
+    Browser console: "greet()" => "Hi!"
+    Coffee
+      greet -> "Hi!" 
+    Yields
+      (function() {
+        var greet;
+
+        greet = function() {
+          return "Hi!";
+        };
+
+      }).call(this);
+
+    
+  
+
   CSRF metatags is basically an encryption service. Every page reload changes
     the csrf-token (passkey). 
-    In development files are kept separate for debugging
     In production files are bundles and minified for speed
   Sprockets looks for /assets/application-[digest].css and will preprocess
     if there's any additional extensions on it such as .scss (multiple
@@ -1506,20 +1040,20 @@ Users
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Gemfile> Uncomment bcrypt 
 >        bundle install
->        rails g resource user name:string email:string password:digest
-            admin:boolean
+>        rails g resource user name:string email:string password:digest admin:boolean
 >        rails db:migrate
 routes.rb> resources :users
 user.rb> validates :name, presence: true
-         validates :email, presence: true,
-                           format: /\A\S+@\S+\.\S+\z/,
+         validates :email, 
+           presence: true, 
+           format: /\A\S+@\S+\.\S+\z/, 
+           uniqueness: { case_sensitive: false }
                               # \A start of string
                               # \S+ one or more non-white space 
                               # \.
                               # @ literal
                               # \z end of string
                               # test at http://www.rubular.com/
-                           uniqueness: { case_sensitive: false }
 console> add an admin user
 user view template
   <%= form_for(@user) do |f| %>
@@ -1740,4 +1274,3 @@ javascript
   add = function(x,y) {
     return x + y;
   }
-
