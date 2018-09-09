@@ -1,9 +1,8 @@
 # C
 
 ## Philosophy
-C requires the following:
 1. Programmers know what they are doing.
-2. Programmers state their intentions explicitly.
+2. Programmers must state their intentions explicitly.
 
 ## Compiling
   * preprocess: substitutes library functions into your code.
@@ -33,9 +32,9 @@ All C programs need a main function.
 ```
 
 ## Protocol
+The protocol declares the return type and input types (without the function definition).  
 A protocol is a *heads_up* for the compiler.
 It's required if you want to use a function before its definition.
-The protocol declares the return type and input types.
 ```c
 // This is a protocol
 int square(int n);
@@ -87,6 +86,22 @@ All are dependent on the machine! the compiler is free to implement.
   * float: fractional 32 bits, about 7 digits
   * double: fractional 64 bits, about 16 digits
 
+
+```c
+      char a_char;
+      int an_integer;
+      long a_long;
+      float a_float;
+      double a_double;
+
+      printf("char: %lu bytes\n", sizeof(a_char));      // char: 1 bytes
+      printf("int: %lu bytes\n", sizeof(an_integer));   // int: 4 bytes
+      printf("long: %lu bytes\n", sizeof(a_long));      // long: 8 bytes
+      printf("float: %lu bytes\n", sizeof(a_float));    // float: 4 bytes
+      printf("double: %lu bytes\n", sizeof(a_double));  // double: 8 bytes
+```
+
+
 ## Magic Numbers & Constants
 Avoid magic numbers by using constants.
 
@@ -96,79 +111,84 @@ Avoid magic numbers by using constants.
     #define ANSWER_TO_THE_UNIVERSE 42    
 ```
 
-## Arrays / Vector
-    declare by indicating type, name, and quantity
-    passed by *reference* (they're expensive so they're saved)
-    ```c
-        int myNumbers[3];
-        int myNumbers[] = { 0, 1, 2 } // Special initiation syntax.
-    ```
-    Arrays are not assignable
-    char name[64];
-    name = "Kevin"  // Error Array type 'char [64]' is not assignable
-    strcpy(name, "Kevin"); // Works
+## Arrays / Vectors
+Declare by indicating type, name, and quantity.
+Passed by *reference* (they're expensive so they're saved)
+```c
+    int myNumbers[3];
+    int myNumbers[] = { 0, 1, 2 } // Special initiation syntax.
+```
+Arrays are **not** assignable.  
+Bad
+```c
+  char name[64];
+  name = "Kevin"  // Error Array type 'char [64]' is not assignable
+```
+Good
+```c
+  char name[64];
+  strcpy(name, "Kevin"); // Works
+```
 
 ## Passwords
-    Don'ts
-        Don't store in plain text.
-        Don't encrypt / decrypt passwords (two way encryption).
-            Key's get stolen easily.
-        Don't just hash passwords.
-            Rainbow (lookup) tables exist for common passwords and hashing
-            algorithms.
+Dont's
+* Don't store in plain text.
+* Don't encrypt / decrypt passwords (two way encryption).
+     Key's get stolen easily.
+* Don't just hash passwords.
+     Rainbow (lookup) tables exist for common passwords and hashing algorithms.
 
-    Do use hash + salt / pepper.
-        Salt:
-            a random string added to each password, stored with the password.
-        Pepper:
-            a random string added to each password,
-            *not* stored with the password.
-            Logins have to try all the combinations of peppers only.
-            Example a pepper of 'f' would require tryping 'a', 'b', 'c',
-            etc until the 'f' pepper matches.
+Do's
+* Do use hash + salt / pepper.
+  * Salt: a random string added to each password, stored with the password.
+  * Pepper: a random string added to each password, *not* stored with the password. Logins have to try all the combinations of peppers only. Example a pepper of 'f' would require typing 'a', 'b', 'c', etc until the 'f' pepper matches.
 
 ## String
-    In C Strings are constants.
-    To make strings mutable add a [] to the declaration
-    Don't forget to include space for the '\0' at the end.
+In C Strings are constants.
+To make strings mutable add a [] to the declaration
+Don't forget to include space for the '\0' at the end.
 
-    These two are equivalent;
-        char cat1[] = "cat";
-        char cat2[] = { 'c', 'a', 't', '\0' };
-        if (strcmp(cat1, cat2) == 0)
-            puts("True");   // True
-
-    Because strings are arrays, they're handling is a
-        littler weird.
-
-        char breakfast_foods[3][10] = {
-            "bacon",
-            "eggs",
-            "ham"
-        };
-
-        for (int i = 0; i < 3; i++)
-            printf("%s\n", breakfast_foods[i]);
-
-## Struct
-    struct account
-    {
-        char name[64];
-        int number;
-        int balance;
+These two are equivalent;
+```c
+   char cat1[] = "cat";
+   char cat2[] = { 'c', 'a', 't', '\0' };
+   if (strcmp(cat1, cat2) == 0)
+       puts("True");   // True
+```
+Because strings are arrays, their handling is weird.
+```
+    char breakfast_foods[3][10] = {
+        "bacon",
+        "eggs",
+        "ham"
     };
 
-    struct account my_account;
-    strcpy(my_account.name, "Kevin"); // Note arrays not assignable!
-    my_account.number = 123456789;
-    my_account.balance = 1000000;
+    for (int i = 0; i < 3; i++)
+        printf("%s\n", breakfast_foods[i]);
+```
+
+## Struct
+```c
+    struct pet
+    {
+        char name[64];
+        int age;
+    };
+
+    struct pet dog1; // Declaration
+
+    strcpy(pet.name, "Fido"); // Note arrays not assignable!
+    pet.age = 3;
+```
 
 ## Time
-    Keys
-        #include <time.h>
-        time()
-        localtime()
-        ctime()
+Main methods
+* `time()`
+* `localtime()`
+* `ctime()`
+
+```c
+    #include <time.h>
 
     time_t now;
     time(&now);
@@ -184,71 +204,50 @@ Avoid magic numbers by using constants.
            mylocaltime->tm_hour,
            mylocaltime->tm_min
     );
+```
 
-#include <time.h>
-
-## Variables
-    int an_integer;
-    long a_long;
-    char a_char;
-    float a_float;
-    double a_double;
-
-    printf("int: %lu bytes\n", sizeof(an_integer));   // int: 4 bytes
-    printf("long: %lu bytes\n", sizeof(a_long));      // long: 8 bytes
-    printf("char: %lu bytes\n", sizeof(a_char));      // char: 1 bytes
-    printf("float: %lu bytes\n", sizeof(a_float));    // float: 4 bytes
-    printf("double: %lu bytes\n", sizeof(a_double));  // double: 8 bytes
 
 ## Pointer
-  A pointer is a memory address and a type to be expected in that memory address.
-  It's the computers internal locker box name.
-  The memory address always refers to volatile, not stored memory.
-    Volatile means if the comoputer is turned off the data is lost.
-  Arrays are a shortand syntax (sugar) for memory addresses.
-  Always initialize to a meaningful value or set to null.
-    Segmentation fault from a null reference is preferable to
-    unknown effects on a the computer, including other programs.
+A pointer is a memory address *and* type to be expected in that memory address.
 
-  int n = 42;
-  // Declaration
-  // Three different syntaxes
+It's the computers internal locker box name.
+
+* Unfortunately the it suffers from **confusing syntax** more than anything (`*` is context dependent!)
+* The memory address always refers to volatile, not stored memory. Volatile means if the comoputer is turned off the data is lost.
+* Arrays are a shortand syntax (sugar) for memory addresses.
+* Always initialize to a meaningful value or set to null.
+* Segmentation fault from a null reference is preferable to unknown effects on a the computer, including other programs.
+
+### Pointer: Declaration `*`  
+Three different syntaxes!
+```c
   int *mypointer;   // declare a pointer
   int* mypointer;   // declare a pointer
   int * mypointer;  // declare a pointer. Note this has nothing to do with multiplication
-                    // it must be the same type as what it points to
+```
+
+### Pointer: Get Memory Address of `&`
+```c
   mypointer = &n;   // & means get_memory_address_of n
   printf("mypointer address: %p\n", mypointer);  // %p format
+```
+### Pointer: Get contents of `*`
+Once a pointer has been declared, `*` changes it's meaning, and becomes *get contents of*.
+```c
   printf("mypointer's variable's contents: %i", *mypointer);
-    // *mypointer means get the contents of this address.
+  // *mypointer means get the contents of this address.
+```
+Arrays are a shorthand syntax for memory addresses.
 
-    Arrays are a shortand syntax for memory addresses
-
+```c
     char *greeting = "hello";  // At memory address I call greeting store this...
     char greeting2[] = "hello";  // At the memory address I call greeting2, store this
-
-    for (int i = 0; i < 5; i++)
-    {
-        putchar(*greeting);    // print this: * = the contents, greeting = memory address
-        greeting++;            // go to the next memory address
-    }                          // ++ uses the type char to know how far to go
-
-    printf("\n");
-
-    for (int i = 0; i < 5; i++)
-    {
-        putchar(greeting2[i]);   // print this:
-                                 // greeting2: go to this memory address I've called greeting2
-                                 // []: get the contents of
-                                 // i: go this far from the beginning
-    }
-
-    return 0;
+```
 
 ## File Pointers
-Required library:
-#include <stdio.h>
+Required library: `#include <stdio.h>`
 
+```c
 fopen( <filename>,  <operation> )
   Example
   FILE *fruitsfilepointer = fopen("fruits.txt", "r");
@@ -304,17 +303,16 @@ More functions:
     ftell:          gives you the current location
     feof:           check if you're at the end of the file
     ferror:         check if there's an error
+```
 
-Hexadecimal
-    A 16 base numbering system more friendly than binary.
-    Useful for memory addresses.
-    Not used for math.
-    1 char = 1 byte = 2 hex = 8 bits = contains 256 possibilities
+## Hexadecimal
+A 16 base numbering system more friendly than binary.
+* Useful for memory addresses.
+* Not used for math.
+* 1 char = 1 byte = 2 hex = 8 bits = contains 256 possibilities
 
 ## Bitwise Operators
-    int main()
-{
-
+```c
     int one = 1;                         // 00000001
     int two = 2;                         // 00000010
 
@@ -338,6 +336,7 @@ Hexadecimal
     printf("not_number: %i\n", not_number);
 
     printf("%i\n", 225 >> 4);
+```
 
 ## Silence Unused Variable
 
@@ -355,8 +354,8 @@ Hexadecimal
 ### Gotcha
 Good
 ```c
-  char *string1 = malloc(100); // Put on HEAP
-  char string2 = "string2";    // Put on STACK
+  char *string1 = malloc(256); // Put on HEAP
+  char string2[256] = "string2";    // Put on STACK
 ```
 Bad
 ```c
@@ -364,3 +363,32 @@ Bad
   string3[0] = 'x';            // Segmentation fault!!!
 ```
 *Read more on [stackoverflow](https://stackoverflow.com/questions/1011455/is-it-possible-to-modify-a-string-of-char-in-c).
+
+## Data Structures
+### The Two Basics
+1. Array
+  * A bucket of the same stuff.
+  * A memory address where all this same stuff starts
+  * stored without any gaps.
+2. Struct
+  * A bucket of (potentially) different stuff.
+  * A bucket of stuff that you can name.
+  * stored without any gaps
+
+### The Two Intermediates
+1. Pointer
+  * A bucket that holds a memory address and an expected type.
+2. Node
+  * A bucket that has a pointer to another similar bucket.
+
+### Lots of Stuff You Can Build
+| Concept | Name |
+| - | - |
+| An array of arrays | Matrix |
+| An array of different buckets | Hash Table |
+| A node that has a `next` pointer | Single Linked List |
+| A node that has a `next` and a `prev` pointer | Double Linked List
+| Nodes that have `child` nodes | Tree |
+| Nodes that only have `left`, `right` child nodes | Binary Search Tree |
+| Nodes that can may loop to themselves | Graph |
+| Nodes that use their parent nodes keys as part of their keys, (useful in string search)| Trie (Retrieval) |
