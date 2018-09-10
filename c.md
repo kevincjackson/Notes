@@ -15,6 +15,25 @@
   2. Design: works well
   3. Style: code looks pretty
 
+## Booleans
+C uses 0 and 1 for Booleans.  
+`true` / `false` are **not** language keywords.
+```c
+  for (int i = 0; i <= 1; i++)
+  {
+      printf("%i: %s\n", i, i ? "Truthy": "Falsey");
+  }
+  // 0: Falsey
+  // 1: Truthy
+```
+Include `stdbool.h` if you want to use `true` / `false`.
+```c
+  #include <stdbool.h>
+  // ...
+  bool bool1 = true;
+  bool bool2 = false;
+```
+
 ## Functions
 Syntax
 ```c
@@ -129,6 +148,12 @@ Good
   char name[64];
   strcpy(name, "Kevin"); // Works
 ```
+Array length / size is **not** built in!  
+*Note: this does not work for pointers! Use a separate variable if needed.*
+```c
+  int myarray = { 1, 2, 3};
+  size_t my_array_length = sizeof(myarray) / sizeof(myarray[0]);
+```
 
 ## Passwords
 Dont's
@@ -242,6 +267,25 @@ Arrays are a shorthand syntax for memory addresses.
 ```c
     char *greeting = "hello";  // At memory address I call greeting store this...
     char greeting2[] = "hello";  // At the memory address I call greeting2, store this
+```
+### Realloc
+If `realloc` succeeds it frees the input pointer for you.
+If it fails you need to handle it.
+```c
+    int *ptr = malloc(sizeof(int) * 1);
+    int *tmp = realloc(ptr, sizeof(int) * 2);
+    if (!tmp)
+    {
+        // Failure path
+        free(ptr);
+        return 1;
+    }
+
+    // Success path
+    ptr = tmp;
+    // Only one free is needed
+    // ptr and tmp are pointing to the same location
+    free(ptr);
 ```
 
 ## File Pointers
