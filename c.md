@@ -10,6 +10,46 @@
   * assemble: turn assembly into binary
   * link: add binary from other files to your file
 
+### Basic Compiling
+Setup
+* `myprogram.c` is your code.
+* `myprogram` will be executable
+
+```bash
+$ clang myprogram.c -o myprogram
+```
+Shortcut using `make`.
+
+```bash
+$ make myprogram
+```
+### Compiling with a Makefile
+A `Makefile` is used to make your compiling command reusable; so you don't have to rely on your terminal history.  
+Makefile *Syntax*
+```txt
+FILE/ACTION: DEPENDENCIES (FILES)
+  <tab>SYSTEM COMMAND(S)
+
+# The code above is called a rule.
+# The file / action is called a target.
+# The system commands are called a recipe.
+
+```
+Example `Makefile`
+```
+# Note the space before the system command must be tabs!
+myprogram: myprogram.c
+    clang myprogram.c -o myprogram
+
+clean:
+    rm myprogram
+
+testme:
+    echo "I'm a test action."
+    echo "Yes I am."
+```
+
+
 ## CS50 Program Requirements
   1. Correctness: works
   2. Design: works well
@@ -205,6 +245,44 @@ Because strings are arrays, their handling is weird.
     strcpy(pet.name, "Fido"); // Note arrays not assignable!
     pet.age = 3;
 ```
+## Typedef
+An alias or shorthand specifically for types
+### syntax
+```c
+typedef OLD NEW
+```
+Example
+```c
+typedef unsigned int whole_number;
+
+whole_number x = 42;
+// This is the same as writing
+// unsigned int x = 42;
+```
+Often used to alias structs.
+```c
+struct person_struct
+{
+  char first_name[64];
+  char last_name[64];
+};
+
+typedef struct person_struct person;
+```
+Typically the above is written inline.
+```c
+// typedef is using an immediate definition as the 'old'
+// Note the struct name is optional
+typedef struct
+{
+  char first_name[64];
+  char last_name[64];
+}
+person;
+
+// Example declaration
+person p1;
+```
 
 ## Time
 Main methods
@@ -291,25 +369,37 @@ If it fails you need to handle it.
 ## File Pointers
 Required library: `#include <stdio.h>`
 
+### `fopen` & `fclose`
+Syntax: `fopen(FILENAME, OPERATION)`
+
+Operation may be
+* `r` Read
+* `w` Write
+* `a` Append  
+Returns `NULL` or FILEPOINTER.
+
 ```c
-fopen( <filename>,  <operation> )
-  Example
+  // Open a file
   FILE *fruitsfilepointer = fopen("fruits.txt", "r");
-  <operations> may be read, write, or append, designated by "r", "w", "a"
-  fopen may return NULL, so you need to write a condition to handle that.
 
-fclose
-    fclose(<filepointer>);
-    fclose(fruitsfilepointer);
+  // Check file open worked
+  if (!fruitsfilepointer)
+  {
+      printf("File open failed.");
+      return 1;
+  }  
+  // Close a file  
+  fclose(fruitsfilepointer);
+```
 
-fgetc
+### `fgetc`
     Requires that the file pointer has a read operation.
     This duplicates the linux program cat
         char c;
         while (c = fgetc(myfile) != EOF)
             printf("%c", c);
         // EOF is a special object defined stdio.h that identifies the end of a file
-fputc
+### `fputc`
     Requires that the file pointer has write or append operation.
     fputc( <character>, <filepointer> )
     fputc('a', myfilepointer);
@@ -319,7 +409,7 @@ fputc
         while (c = fgetc(myfile) != EOF)
             fputc(c, mynewfile);
 
-fread
+### `fread`
     fread( <buffer/memory address>, <unit size>, <unit quantity>, <file pointer> )
     Example
         // On the stack
@@ -334,20 +424,19 @@ fread
         char c;
         fread(&c, sizeof(char), 1, myfilepointer);
 
-fwrite
+### `fwrite`
     fwrite( <buffer/memory address>, <unit size>, <unit quantity>, <file pointer> )
     Example
       int arr[3] = { 10, 20, 30 };
       fwrite(arr, sizeof(int), 3, myfilepointer)
 
-More functions:
-    fgets / fputs:  work with strings
-    fprintf:        similar to printf, but outputs to the file pointer
-    fseek:          allows you to move rewind or fastforward in the file pointer
-    ftell:          gives you the current location
-    feof:           check if you're at the end of the file
-    ferror:         check if there's an error
-```
+### More functions:
+*   `fgets` / `fputs`:  work with strings
+*   `fprintf`:        similar to printf, but outputs to the file pointer
+*   `fseek`:          allows you to move rewind or fastforward in the file pointer
+*   `ftell`:          gives you the current location
+*   `feof`:           check if you're at the end of the file
+*   `ferror`:         check if there's an error
 
 ## Hexadecimal
 A 16 base numbering system more friendly than binary.
