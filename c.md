@@ -48,30 +48,45 @@ testme:
     echo "I'm a test action."
     echo "Yes I am."
 ```
+### What goes in a .h file?
+Declarations
+* prototypes
+* typedefs
+* structs
+* etc
+```c
+int my_global_int;
+struct my_global_struct { ... };
+void my_global_function(void);
+```
 
+### What goes in a .c file?
+Runtime Code
+* initialization
+* function bodies
+```c
+my_global_int = 3;
+void my_global_function(void) { ... };
+```
 
 ## CS50 Program Requirements
   1. Correctness: works
   2. Design: works well
   3. Style: code looks pretty
 
-## Booleans
+## Booleans - Not!
+Note that 'true' and 'false' are **not** language keywords.  
 C uses 0 and 1 for Booleans.  
-`true` / `false` are **not** language keywords.
 ```c
-  for (int i = 0; i <= 1; i++)
-  {
-      printf("%i: %s\n", i, i ? "Truthy": "Falsey");
-  }
-  // 0: Falsey
-  // 1: Truthy
+  printf("%i: %s\n", 0, i ? "Truthy": "Falsey");  // 0: Falsey
+  printf("%i: %s\n", 1, i ? "Truthy": "Falsey");  // 1: Truthy
 ```
 Include `stdbool.h` if you want to use `true` / `false`.
 ```c
   #include <stdbool.h>
   // ...
-  bool bool1 = true;
-  bool bool2 = false;
+  bool my_bool1 = true;
+  bool my_bool2 = false;
 ```
 
 ## Functions
