@@ -137,9 +137,45 @@ status[0] # 200
 status[1] # 'OK'
 ```
 
-# TODO
 ## Intermediate
-    -Learn input and output (reading and saving data).
+## Input and Output
+### Simulating Main From C
+```py
+def main():
+    print("hello, world")
+
+if __name__ == "__main__":
+    main()
+```
+### Import
+Import Specific Functions (Recommended)
+```py
+from cs50 import get_string
+
+s = get_string("name: ")
+```
+Import Everything
+```py
+# Functions are bound to the 'module object'
+import cs50
+
+s = cs50.get_string("name: ")
+```
+### Command Line Arguments
+```py
+import sys
+
+for s in sys.argv:
+    print(s)
+```
+
+Exit Program With Code
+```py
+import sys
+
+sys.exit(0)  # Normal exit
+```
+# TODO
     -Learn events (for interactive programs).
     -Learn patterns and regular expression handling.
     -Learn debugging.

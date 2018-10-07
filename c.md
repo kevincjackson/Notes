@@ -4,6 +4,9 @@
 1. Programmers know what they are doing.
 2. Programmers must state their intentions explicitly.
 
+## Description
+Appeared in 1972, written by Dennis Ritchie for the purpose of creating UNIX.
+
 ## Compiling
   * preprocess: substitutes library functions into your code.
   * compile: turn source code into assembly
@@ -540,3 +543,33 @@ Bad
 | Nodes that only have `left`, `right` child nodes | Binary Search Tree |
 | Nodes that can may loop to themselves | Graph |
 | Nodes that use their parent nodes keys as part of their keys, (useful in string search)| Trie (Retrieval) |
+
+### Programs
+#### Hello World
+```c
+#include <stdio.h>
+
+int main()
+{
+    printf("Hello, World!");
+}
+```
+#### These Are The Basics
+> We want to get you as quickly as possible to the point where you can write
+> useful programs, and to do that we have to concentrate on the basics:
+> variables and constants, arithmetic, control flow, functions, and the
+> rudiments of input and output.
+
+The C Programming Language, Kernighan and Ritchie, pg 5
+
+So the basics of programming are the following: 
+* Variables
+* Constants
+* Arithmetic
+* Control Flow
+* Function
+* Input and Output
+
+#### References
+<https://www.wired.com/2011/10/thedennisritchieeffect/>
+<https://en.wikipedia.org/wiki/C_(programming_language)>

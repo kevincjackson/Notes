@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</head>
+<style>
+  .grey1 { background-color: #eee; }
+  .grey2 { background-color: #ddd; }
+  .grey3 { background-color: #ccc; }
+  .my-pad { 
+    padding: 10px;
+  }
+  .ng-border { 
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+</style>
+<body>
+
+  <div class="container grey1">
+    <div class="row">
+      <div class="col-sm">
+        <div class="mb-5 ng-border">
+          <p>First Column</p>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="mb-3 ng-border">
+          <p>Second Column</p>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="mb-1 ng-border">
+          <p>Third Column</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br><br>
+
+  <div class="container grey1">
+    <p>Container without row or column</p>
+  </div>
+
+  <div class="container-fluid grey1">
+    <p>Container-fluid without row or column</p>
+  </div>
+  
+
+  <div class="container grey1">
+     <div class="row">
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+    </div> 
+  </div>
+
+  <div class="container grey1">
+    <div class="row">
+      <div class="col-4">.col-4</div>
+      <div class="col-4">.col-4</div>
+      <div class="col-4">.col-4</div>
+    </div> 
+  </div>
+
+  <div class="container grey1">
+    <div class="row">
+      <div class="col-sm-4">.col-sm-4</div>
+      <div class="col-sm-4">.col-sm-4</div>
+      <div class="col-sm-4">.col-sm-4</div>
+    </div> 
+  </div>
+
+  <div class="container grey1">
+    <div class="row">
+      <div class="col-sm">.col-sm</div>
+      <div class="col-sm">.col-sm</div>
+      <div class="col-sm">.col-sm</div>
+    </div> 
+  </div>
+  
+  
+  
+  <div class="container">
+    <div class="row grey2">
+      <div class="col-12">
+        <h1>How Bootstrap Padding and Margin is setup</h1>
+      </div>
+    </div>
+    <div class="row grey2">
+      <div class="col-sm-auto">
+        <p>'Column creates a 15px padding'. Adjoining columns will have 30px padding.</p>
+      </div>
+      <div class="col-sm-auto">
+        <p>'Row' undoes the left and right padding using negative margin, so that the edges will line up.</p>
+      </div>
+      <div class="col-sm-auto">
+        <p>'Container' center and horizontally pad your content. If you want 100% width you can omit it.</p>
+      </div>
+    </div>
+    <div class="row no-gutters grey1">
+      <div class="col-sm-12">
+        <p>Here's the same as above but with 'no-gutters' applied to the row.</p>
+      </div>
+      <div class="col-sm">
+        <p>'Column creates a 15px padding'. Adjoining columns will have 30px padding.</p>
+      </div>
+      <div class="col-sm">
+        <p>'Row' undoes the left and right padding using negative margin, so that the edges will line up.</p>
+      </div>
+      <div class="col-sm">
+        <p>'Container' center and horizontally pad your content. If you want 100% width you can omit it.</p>
+      </div>
+    </div>
+  </div>
+  <div class="container grey1">
+     <div class="row">
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+    </div> 
+  </div>
+  <div class="container grey1">
+     <div class="row">
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+    </div> 
+  </div>
+
+  <div class="container grey1">
+     <div class="row">
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+      <div class="col">.col</div>
+    </div> 
+  </div>
+
+
+  <div class="container">
+    <div class="row grey1">
+     <div class="col-sm-6">
+       <div class="col-md-12 border border-dark rounded pr-3">
+         <h2>Default Classes</h2>
+         <p>Are effectively for the phone. All the col-*-* are overrides for the breakpoints.</p>
+       </div>
+     </div><!-- col -->
+     <div class="col-sm-6">
+       <div class="col-md-12 border border-dark rounded pr-3">
+         <h2>The're are five breakpoints</h2>
+         <p>
+           Phone (portrait) Defualt. Phone landscape (sm). Tablet (md). Desktop (lg).  Desktop-XL (xl)
+           extra large. Sass mixins are available to target breakpoints, which are
+           go from min up.
+         </p>
+       </div>
+    </div><!-- col -->
+   </div><!-- row -->
+   <div class="row">
+    <div class=" col-sm-5 col-md-3 col-lg-2 col-xl-1 grey1">
+      <h2>Why are there rows?</h2>
+      <p>Rows counteract the padding of columns using negative margin.</p>
+    </div><!-- col -->
+    <div class=" col-sm-7 col-md-9 col-lg-10 col-xl-11 grey2">
+      <div class="my-pad">
+        <div class="my-border">
+          <h2>Required!</h2>
+          <p>In the grid, all content must be in rows and columns, and columns must be immediate children of rows. </p>
+          <p>If you don't specify a number after the column designation, columns will automatically be equally subdivided.</p>
+        </div>
+      </div>
+    </div><!-- col -->
+   </div><!-- row -->
+
+   <div class="row">
+    <div class="col-6 col-md-4 grey3">
+      <p>Access the xs breakpoint by just writing col-*.</p>
+    </div><!-- col -->
+    <div class="col-6 col-md-8 grey1">
+      <p>Padding is 15px all around excluding the top. So internal columns meeting get 30px padding, where the page left, bottom, and right edges get 15px padding.</p>
+      <p>Just writing 'col' will provide equal widths for all viewports.</p>
+    </div><!-- col -->
+   </div><!--row-->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-6 grey1">
+        <p>Note 'col' is different! Col will always have a gutter even on small!</p>
+        <p>1 of 2</p>
+      </div><!-- col -->
+      <div class="col-6 grey2">
+        2 of 2
+      </div><!-- col -->
+    </div>
+    <div class="row">
+      <div class="col grey1">
+        1 of 3
+      </div>
+      <div class="col grey2">
+        2 of 3
+      </div>
+      <div class="col grey3">
+        3 of 3
+      </div>
+    </div>
+   </div><!--row-->
+
+  <div class="row">
+    <div class="col-sm">Insert w-100 to force "line-breaks"</div>
+    <div class="col-sm">col</div>
+    <div class="w-100"></div>
+    <div class="col-sm">col</div>
+    <div class="col-sm">col</div>
+  </div><!--row-->
+
+  <div class="row">
+    <div class="col-6 col-md-4 grey3">
+      <p>Access the xs breakpoint by just writing col-*.</p>
+    </div><!-- col -->
+    <div class="col-6 col-md-8 grey1">
+      <p>Padding is 15px all around excluding the top. So internal columns meeting get 30px padding, where the page left, bottom, and right edges get 15px padding.</p>
+      <p>Just writing 'col' will provide equal widths for all viewports.</p>
+    </div><!-- col -->
+  </div><!--row-->
+ </div><!-- container -->
+
+  <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+  <!-- <div class="row"> -->
+  <!--   <div class="col"> -->
+  <!--     <p>For edge to edge design simply remove the container or container-fluid</p> -->
+  <!--   </div> -->
+  <!--   <div class="col"> -->
+  <!--     <p>Everything else still works as normal.</p> -->
+  <!--   </div> -->
+  <!-- </div> -->
+
+  <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+  <!-- <div class="row"> -->
+  <!--   <div class="col-6 col-md-4">.col-6 .col-md-4</div> -->
+  <!--   <div class="col-6 col-md-4">.col-6 .col-md-4</div> -->
+  <!--   <div class="col-6 col-md-4">.col-6 .col-md-4</div> -->
+  <!-- </div> -->
+
+  <!-- Columns are always 50% wide, on mobile and desktop -->
+  <!-- <div class="row"> -->
+  <!--   <div class="col-6">.col-6</div> -->
+  <!--   <div class="col-6">.col-6</div> -->
+  <!-- </div> -->
+
+</body>
+</html>
+
