@@ -2,13 +2,15 @@
 
 ### Node Package Manager Key Concepts
 
-| Question | Answer |
-| Who? | Original Author: Isaac Z. Schlueter |
-| What? | Share (download) Javascript code easily. |
-| Where? | <https://www.npmjs.com/> |
-| Why? | Make it faster and easier than manually doing it. |
-| When? | Started 2010. |
-| How? | `npm install CODE_YOU_WANT` |
+| Question | Answer                                                                |
+| -------- | --------------------------------------------------------------------- |
+| Who?     | Original Author: Isaac Z. Schlueter                                   |
+| What?    | Share (download) Javascript code easily. Also used to automate tasks. |
+| Where?   | <https://www.npmjs.com/>                                              |
+| Why?     | Makes code management a lot easier than doing it yourself.            |
+| When?    | Started 2010.                                                         |
+| How?     | `npm install DESIRED_CODE` for installing.                            |
+| How?     | `npm run TASK` for task running.                                      |
 
 ### Cheatsheet
 
@@ -25,8 +27,7 @@ npm install --save-dev  # Useful for developing only, not needed for production.
 
 Node is an implementation of CommonJS, a project to liberate JS from the browser,
 and onto desktop, servers, etc. It uses `require` statements as opposed to
-`webpack`, a more modern program which uses `import` / `export` statements but is not
-standardized yet.
+`webpack`, a more modern program which uses `import` / `export` statements but fully implemented.
 
 ```bash
 node script.js # Interpret js without the browser.
@@ -39,15 +40,13 @@ browserify script1.js script2.js > bundle.js  # Bundle javascript files.
 
 ### Overview
 
-| Concept                                            | Name               | Tools                           |
-| -------------------------------------------------- | ------------------ | ------------------------------- |
-| Manually download and manage css, and js yourself. | Old School         | All You                         |
-| Code is downloaded for you.                        | Package Management | `yarn`, `npm`                   |
-| Multiple JS files are bundled into one file.       | Bundling           | `webpack`, `browserify`         |
-| Automatically common tasks, such as the above.     | Task Running       | `npm run TASK`, `gulp`, `grunt` |
-
-| Convert modern code into older code for older
-browsers (usual use case) | Transpiling | `babel` |
+| Concept                                                                 | Name               | Tools                           |
+| ----------------------------------------------------------------------- | ------------------ | ------------------------------- |
+| Manually download and manage css, and js yourself.                      | Old School         | All You                         |
+| Code is downloaded for you.                                             | Package Management | `yarn`, `npm`                   |
+| Multiple JS files are bundled into one file.                            | Bundling           | `webpack`, `browserify`         |
+| Automatically common tasks, such as the above.                          | Task Running       | `npm run TASK`, `gulp`, `grunt` |
+| Convert modern code into older code for older browsers (usual use case) | Transpiling        | `babel`                         |
 
 ### Solution 1: Inline
 
@@ -90,8 +89,8 @@ Drawbacks:
 
 ```js
 var myApp = (function() {
-  var private_stuff = {not_shared: 'secret'}; // invisible
-  var public_stuff = {shared: 'Hello!'};
+  var private_stuff = { not_shared: "secret" }; // invisible
+  var public_stuff = { shared: "Hello!" };
   return public_stuff;
 })();
 myApp.shared; // "Hello!"
@@ -108,11 +107,11 @@ Drawbacks:
 ```js
 // foo.js
 module.exports = function foo() {
-  return 'foo';
+  return "foo";
 };
 
 // index.js
-var foo = require('./foo');
+var foo = require("./foo");
 ```
 
 ```bash
@@ -131,11 +130,11 @@ Drawbacks:
 
 ```js
 // sayings.js
-export const welcome = () => 'hi';
-export const goodbye = () => 'bye';
+export const welcome = () => "hi";
+export const goodbye = () => "bye";
 
 // File 2
-import {welcome, goodbye} from './sayings';
+import { welcome, goodbye } from "./sayings";
 ```
 
 #### Export One Thing Only
@@ -219,11 +218,11 @@ $ npm install @babel/core @babel/preset-env babel-loader --save-dev
 ```js
 // webpack.config.js
 module.exports = {
-  mode: 'development',
-  entry: './index.js',
+  mode: "development",
+  entry: "./index.js",
   output: {
-    filename: 'main.js',
-    publicPath: 'dist',
+    filename: "main.js",
+    publicPath: "dist"
   },
   module: {
     rules: [
@@ -231,14 +230,14 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
-      },
-    ],
-  },
+            presets: ["@babel/preset-env"]
+          }
+        }
+      }
+    ]
+  }
 };
 ```
 
@@ -262,10 +261,10 @@ See [StateofJS](https://stateofjs.com/) for current trends.
 | CSS               | SASS, CSS        |
 | Build             | NPM, Webpack     |
 | Mobile            | Native, Electron |
-| Package Mananager | Yardn, NPM       |
+| Package Mananager | Yard, NPM        |
 | Utilities         | lodash, jQuery   |
 | Editor            | VSCode, Atom     |
-| Linter            | esint, prettier  |
+| Linter            | eslint, prettier |
 
 ## ES6 Features
 
@@ -338,8 +337,8 @@ c; // 33
 You _must_ use the same key name.
 
 ```js
-const reindeer = {name: 'Rudolph', position: 1};
-const {name, position} = reindeer; // Assigns name and position
+const reindeer = { name: "Rudolph", position: 1 };
+const { name, position } = reindeer; // Assigns name and position
 name; // "Rudolph"
 position; // 1
 ```
@@ -349,7 +348,7 @@ position; // 1
 Expressions in the key are evaluated. You must use `[]` to force the evaluation.
 
 ```js
-obj = {['a' + 'b']: 'a' + 'b'};
+obj = { ["a" + "b"]: "a" + "b" };
 // Object { ab: "ab" }
 ```
 
@@ -358,13 +357,13 @@ The value will be assigned the variable value if no value is given.
 ```js
 const x = 11;
 const y = 22;
-const obj = {x, y}; // Object { x: 11, y: 22 }
+const obj = { x, y }; // Object { x: 11, y: 22 }
 ```
 
 ### Template Strings
 
 ```js
-const name = 'Santa';
+const name = "Santa";
 `${name}`; // "Santa"
 ```
 
@@ -392,7 +391,7 @@ Async allows you to write async code in a synchronous fashion.
 ### Promise
 
 ```js
-fetch('https://jsonplaceholder.typicode.com/users')
+fetch("https://jsonplaceholder.typicode.com/users")
   .then(response => response.json())
   .then(users => console.log(users));
 ```
@@ -401,7 +400,7 @@ fetch('https://jsonplaceholder.typicode.com/users')
 
 ```js
 async function getUsers() {
-  const response = await fetch('https://jsonplaceholder.typicode.com/users');
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
   const users = await response.json();
   console.log(users);
 }
@@ -412,10 +411,10 @@ These two examples are the same as above with error handling.
 ### Promise With Catch
 
 ```js
-fetch('https://jsonplaceholder.typicode.com/users')
+fetch("https://jsonplaceholder.typicode.com/users")
   .then(response => response.json())
   .then(users => console.log(users))
-  .catch('Error');
+  .catch("Error");
 ```
 
 ### Async Await With Try-Catch
@@ -423,11 +422,11 @@ fetch('https://jsonplaceholder.typicode.com/users')
 ```js
 async function getUsers() {
   try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
     const users = await response.json();
     console.log(users);
   } catch (error) {
-    console.log('Error');
+    console.log("Error");
   }
 }
 ```
