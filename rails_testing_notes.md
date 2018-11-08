@@ -7,60 +7,61 @@
   4. Running Tests
   5. Gotchas
 
----
 ## Methodology & Tools
-BDD and TDD are two methodologies which do the same thing from different starting points. 
+BDD and TDD are two methodologies which do the same thing from different starting points.
 Both test features. TDD tests internal behavior first and moves out
 toward the boundaries.  BDD does the the opposite.
 
-  ## Error Driven: What We Want, Error, Fix
-    ## Test First: What We Want, Error, Fix: Same as above + below concepts
-    ## Basic TDD / BDD 
-      * Fail, Pass, Refactor, Repeat
-      * Red, Green, Refactor                  #same thing
-      * Provides regression testing - testing focused on verifying previously
-          developed and tested software still performs correctly.
-        * Clarify what a feature should do
-        * Focus on measurable goal
-        * Make change with confidence
-        * Faster workfow
-    
-    ## Agile
-        A an iterative development methodology focusing on finishing one feature at 
-        a time before moving on to the next feature.
-    ## Story Driven Development
-        BDD is BDD with an emphasis on things a user can do with the system.
-    ## Testing Tools
-        * Test::Unit (Rails out the box)
-        * Cucumber
-        * Shoulda
-        * MiniTest
-        * RSpec # ! Gotcha: Note it's RSpec, not Rspec !
-        * Capybara - Acceptance Test program designed to web interaction
-        * FactoryGirl - provides a singular source for creating test models, to
-            addres your tests breaking as your model changes.
-    
-    ##Types of Tests
-        ###Unit Tests : test Models : test::unit
-          * Use to test all business logic
-          * Use to test corner cases
-        ###Functional Tests - test Views & Controllers
-        ###Integration Tests - test workflows, user stories, sequence of requests ###Feature? / Acceptance Test - test user expectation * Use to test happy path of a feature / not corner cases * Test navigation links
-        ?  Acceptance / Feature tests - high level black box tests.
-        ###Performance Testing - test speed of requests handled
-        ###Load Testing - now many requests can be handled
-        ###Security Testing - test for security vulnerabilities
+## Error Driven: What We Want, Error, Fix
+## Test First: What We Want, Error, Fix: Same as above + below concepts
+## Basic TDD / BDD
+* Fail, Pass, Refactor, Repeat
+* Red, Green, Refactor                  #same thing
+* Provides regression testing - testing focused on verifying previously
+developed and tested software still performs correctly.
+* Clarify what a feature should do
+* Focus on measurable goal
+* Make change with confidence
+* Faster workfow
+
+## Agile
+A an iterative development methodology focusing on finishing one feature at a time before moving on to the next feature.
+
+## Story Driven Development
+  BDD is BDD with an emphasis on things a user can do with the system.
+
+## Testing Tools
+* Test::Unit (Rails out the box)
+* Cucumber
+* Shoulda
+* MiniTest
+* RSpec # ! Gotcha: Note it's RSpec, not Rspec !
+* Capybara - Acceptance Test program designed to web interaction
+* FactoryGirl - provides a singular source for creating test models, to
+    address your tests breaking as your model changes.
+
+## Types of Tests
+
+* Unit Tests : test Models : test::unit
+  * Use to test all business logic
+  * Use to test corner cases
+* Functional Tests - test Views & Controllers
+* Integration Tests - test workflows, user stories, sequence of requests ###Feature? / Acceptance Test - test user expectation * Use to test happy path of a feature / not corner cases * Test navigation links
+?  Acceptance / Feature tests - high level black box tests.
+* Performance Testing - test speed of requests handled
+* Load Testing - now many requests can be handled
+* Security Testing - test for security vulnerabilities
 ---
 
 ## Setup
 
 ### Workflow
-        * Install RSpec and Capybara
-        * setup the project to use Rspec
-        * create a feature spec file
-        * use example groups to group related code examples
-        * write code examples with expectations
-        * run automated specs
+* Install RSpec and Capybara
+* setup the project to use Rspec
+* create a feature spec file
+* use example groups to group related code examples
+* write code examples with expectations
+* run automated specs
 
 ### Gemfile
 ```ruby
@@ -75,7 +76,7 @@ toward the boundaries.  BDD does the the opposite.
     >rails generate rspec:install
     >rspec                              #check to see if it runs
 
-### Disable Test Stubs 
+### Disable Test Stubs
 These are annoying auto generated files.
 
       >config/application.rb> config.generators { |g| g.test_framwork false }
@@ -88,11 +89,11 @@ These are annoying auto generated files.
 
 ## Basics
 ### Docs
-  [Capybara Docs](https://github.com/jnicklas/capybara#the-dsl) 
+  [Capybara Docs](https://github.com/jnicklas/capybara#the-dsl)
 
 ### High Level Concept
-      1. Arrange (Setup data) 
-      2. Act (visit_page) 
+      1. Arrange (Setup data)
+      2. Act (visit_page)
       3. Assert (expect)
 
 ### Sample Spec File
@@ -101,10 +102,10 @@ These are annoying auto generated files.
 
     require 'rails_helper'
     # There's also subject {} where you can define the main
-    # purpose of your test, 
+    # purpose of your test,
     # eg) subject { ProjectPolicy }
     # eg) subject { ProjectPolicy.some_method }
-  
+
     describe "high level feature" do
         examples: [Viewing $somepage, navigating, a model]
 
@@ -112,7 +113,7 @@ These are annoying auto generated files.
       #to run before multiple it methods
       before :each do
         User.create(email: 'user@example.com', password: 'password')
-      end 
+      end
 
       # Let provides a function definition
       let(:project) { Factory.Girl.create(:project) }
@@ -131,7 +132,7 @@ These are annoying auto generated files.
       it "allows navigation from the listing page to the detail page"
       it "shows the total gross if the total gross exceeds $50M"
       it "shows 'Flop!' if the total gross is less than $50M"
-      
+
         #Arrange
         user = User.create!(user_attributes)
         visit page_url
@@ -162,29 +163,29 @@ These are annoying auto generated files.
 ### Testing Controllers
      Stubbing - providing fake method responses for the purpose of testing
       something other than the stub.  
-      
+
       1. Stubbing eliminates false failures.
       For example, if every test that relied on a login, used an actual
-      login, every test for fail, even if the logic they were testing 
+      login, every test for fail, even if the logic they were testing
       was correct.  With stubbing, only the login logic would fail.
-    
+
       2. Stubbing is encouraged for controllers, but discouraged for
       feature tests. Controllers are testing specific logic, so
       unrelated behavior is not the purpose of the test.
       Features are testing integration, so all behavior is important.
-        
+
         # Sample Controller Test
         # The allow method simulates the a successful current_user method.
         require 'rails_helper'
-        
+
         RSpec.describe Admin::ApplicationController, { :type => :controller } do
-        
+
           let(:user) { FactoryGirl.create(:user) }
-        
+
           before do
             allow(controller).to receive(:current_user).and_return(user)
           end
-        
+
           context "non-admin users" do
             it "are not able to access the index action" do
               get :index
@@ -192,18 +193,18 @@ These are annoying auto generated files.
               expect(flash[:alert]).to eq "You must be an admin to do that."
             end
           end
-        
+
         end
-    
+
     Custom RSpec Method
     it "should permit the show action" do
       expect(subject).to permit_action :show
       end
-    
+
     Can be replaced by
-    it { should permit_action :show} # *or* 
+    it { should permit_action :show} # *or*
     it { is_expected.to permit_action :how}
-    
+
     You can use a custom RSpec matcher to define permit_action
 
 ##Unit testing (tests on Classes nad Models)
@@ -270,7 +271,7 @@ I had pasted sample code down which was overwriting production code.
 !!! Next time, put in comments !!!
 ```
 
-### Silence Output 
+### Silence Output
 ```ruby
   $stdout = StringIO.new  #ruby accesses stdout in $stdout
                           #StringIO.new takes the string
@@ -285,4 +286,3 @@ Version 2 & 3 of RSpec change **the main method!**
   expect(@model).to eq('...')      # Version 3
   expect(@model).not_to eq('...')
 ```
-
