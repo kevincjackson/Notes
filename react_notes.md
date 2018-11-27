@@ -46,3 +46,23 @@ onRouteChange = route => {
 // Event
 <a onClick={onRouteChange("home")}>Home</a>;
 ```
+
+## Making Non Mutating Changes
+In order for React to efficiently make updates, it looks for new objects (not mutated objects). Use the following methods.
+
+Array: Use `slice`.
+```js
+const board = ['x', 'o', null];
+const new_board = board.slice();
+new_board[2] = 'x';
+board // ['x', 'o', null]
+new_board // ['x', 'o', 'x']
+```
+
+Object: Use `Object.assign(target, ...sources)`
+```js
+const color = { id: 1, name: "blue" };
+const new_color = Object.assign({}, color, {name: "Blue"});
+color; // { id: 1, name: "blue" }
+new_color // { id: 1, name: "Blue" }
+```
