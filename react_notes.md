@@ -66,3 +66,11 @@ const new_color = Object.assign({}, color, {name: "Blue"});
 color; // { id: 1, name: "blue" }
 new_color // { id: 1, name: "Blue" }
 ```
+
+## Thinking in React (Procedure)
+TLDR: Make all your data flow from the top down.
+1. Make mock data / model. **Do not skip.**
+2. Make static heirarchical components. Don't worry about state at this step.
+3. Now determine what's state. If it changes, it's state.
+4. Data flowing down is passed as props.
+5. Data which needs to flow up is handled like this. A parent needs to own the state (data). Pass data *and a handler* to the child.
