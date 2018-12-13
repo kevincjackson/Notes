@@ -69,8 +69,8 @@ new_color // { id: 1, name: "Blue" }
 
 ## Thinking in React (Procedure)
 TLDR: Make all your data flow from the top down.
-1. Make mock data / model. **Do not skip.**
+1. Make example data for your model. **Do not skip.**
 2. Make static heirarchical components. Don't worry about state at this step.
-3. Now determine what's state. If it changes, it's state.
-4. Data flowing down is passed as props.
+3. Now determine what changes. That's state.
+4. If it doesn't change (from the perspective of the component) it's passed down as a prop.
 5. Data which needs to flow up is handled like this. A parent needs to own the state (data). Pass data *and a handler* to the child.
