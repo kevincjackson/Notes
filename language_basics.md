@@ -1,0 +1,17 @@
+# Language Basics
+- Comments
+- White Space
+- Brackets
+- Booleans
+- Numbers
+- Strings
+- Operators (Comparison, Logic, Math)
+- Truthy & Falsey
+- Conditions
+- Loop Forever
+- Loop n Times
+- Functions & Scope
+- Arrays
+- Associative Arrays
+- Hello World
+- Fizz Buzz
