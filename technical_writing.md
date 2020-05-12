@@ -27,11 +27,6 @@ make simple direct statements.
 
 - Simplicity test: "If you can't explain it simply, you don't understand it well enough" Albert Einstein
 
-## References
-
-[What is Technical Writing? Azusa Pacific Writing Center](https://youtu.be/9SB4tfD0hxM
-
-
 ## Rules
 
 - Target your audience.
@@ -46,3 +41,7 @@ make simple direct statements.
 - Use figurative language to increase comprehension.
 - Use passive voice to emphasize the object over the subject.
 - Use parallel structure.
+
+## References
+
+[What is Technical Writing? Azusa Pacific Writing Center](https://youtu.be/9SB4tfD0hxM)
