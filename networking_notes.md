@@ -86,6 +86,13 @@
 ## Subnetting Networks
 
 - Definition: breaking networks into smaller networks
+- The "/" Notation is called CIDR (Classless Interdomain Routing) Notation.
+- The purpose is to identify a sub-network or submet.
+- Example) The IP address had 256*4 possibities (255.255.255.255 would be the last possility)
+- Example) 10.0.0.0/24 Says 10.0.0 is the SUBNET.
+    - 0 is reserved for the name for the network.
+    - 255 is reserved for broadcast messaging.
+    - 1-254 or 10.0.0.1 - 10.0.0.254 are the possible hosts.
 - variable length submet masking (VLSM): normally networks are deployed by 
     breaking into smaller networks. By moving the mask you change the size of
     the network. 10.0.0.0/8 provides ~16 million hosts, but 10.0.0.0/24 provides ~256
