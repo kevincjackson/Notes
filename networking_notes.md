@@ -199,3 +199,40 @@
 - Reverse DNS Lookup: ip -> url, must be configured, and may be explicity denied.
 - Internal DNS Servers: url -> ip, set up as primary DNS, then unknown hosts forwarded to exteral DNS
 
+## Networking Scanning
+- A technique for identifying **devices**
+- Devices have a IPs and MAC addersses
+- IP's have TCP and UDP ports: 1-65,535
+- Ports can be open, close, filtered, or unfiltered
+- Ports run OS & Services
+
+
+##  Common Ports
+- 21 FTP
+- 22 SSH
+- 23 Telnet
+- 25 SMTP
+- 53 DNS
+- 80 HTTP
+- 88 Kerberos
+- 110 POP3
+- 111 NIX
+- 135 RPC
+- 139 SMB (old)
+- 143 IMAP4
+- 161 SNMP
+- 162 SNMP traps
+- 389 LDAP
+- 443 HTTPS
+- 445 SMB
+- 3389 RDP
+
+## NNMAP
+- Scans IP's, Hosts, Ports
+- Service discovery
+- OS, Version Detection
+- Info on target, reverse DNS names, device types, and MAC addresses
+- `nnap [Type] [Options] <target>`
+- `nmap -sS -p 22 192.168.1.0` silent SYN scan port 22 of IP 192.168.1.0
+- Target can Single IP, Host example.com, subnet example.com/24, range 192.168.1.1-50
+- Type: -sP Hosts up, -sS SYN or 1/2 Scan of Ports, -sT Full Connect Scan of Ports, -A Everything: OS, Service, Script, & Traceroute
