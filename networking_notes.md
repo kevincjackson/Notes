@@ -227,6 +227,10 @@
 - 445 SMB
 - 3389 RDP
 
+## Commands
+- `ip -color -4 addr` Show host internet devices.
+-  `traceroute google.com` The first few hops will show you the router.
+-  
 ## NNMAP
 - Scans IP's, Hosts, Ports
 - Service discovery
@@ -236,3 +240,7 @@
 - `nmap -sS -p 22 192.168.1.0` silent SYN scan port 22 of IP 192.168.1.0
 - Target can Single IP, Host example.com, subnet example.com/24, range 192.168.1.1-50
 - Type: -sP Hosts up, -sS SYN or 1/2 Scan of Ports, -sT Full Connect Scan of Ports, -A Everything: OS, Service, Script, & Traceroute
+- `nmap -A 1.1.1.1`  Show everything
+- `nmap -sP 10.0.1.1-10` Ping a range
+- `nmap -O <target IP>` SHow OS info (creepy!)
+- `nmap --top-ports 20  example` Scan 20 popular points.
