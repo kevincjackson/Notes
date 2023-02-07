@@ -1,7 +1,7 @@
 # PowerShell
 
 ## Visual Studio Code
-- `ctrl-`` Open / close console
+- `ctrl-<backtick>` Open / close console
 - `ctrl-'` Maximize panel
 - `ctrl-,` Open settings
 - `ctrl-p` Open file
