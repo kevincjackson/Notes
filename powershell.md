@@ -27,7 +27,7 @@ Find commands
 - `help about*array*` # Learn about arrays
 - `help about_commonparameters` # A good one to start with
 - `Get-Alias` Show all aliases
-- `Get-Command -noun csv`
+- `Get-Command -noun csv` # Use Get-Command for specific filtering.
 - `Get-Command -verb invoke`
 
 Get command help
