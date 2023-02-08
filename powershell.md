@@ -15,13 +15,16 @@
 - `$PSVersionTable` Show version
 
 ## Glossary
+
 - Command, the broadest category of functionality, includes Cmdlet, Function
 
 ## Help
+
 Find commands
 - `Get-Help csv`
 - `help csv` # Alias for above
 - `help about` # Foundational topics
+- `help about*array*` # Learn about arrays
 - `help about_commonparameters` # A good one to start with
 
 Get command help
