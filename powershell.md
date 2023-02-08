@@ -15,6 +15,23 @@
 - `$PSVersionTable` Show version
 
 ## Glossary
+- Command, the broadest category of functionality, includes Cmdlet, Function
+
+## Help
+Find commands
+- `Get-Help csv`
+- `help csv` # Alias for above
+- `help about` # Foundational topics
+- `help about_commonparameters` # A good one to start with
+
+Get command help
+- `Get-Help Import-Csv` # Man page
+- `Get-Help Import-Csv -Examples`  # Examples
+- `Get-Help Import-Csv -Online`  # Opens a browser
+
+
+
+
 
 ## Comments
 ```pwsh
