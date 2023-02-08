@@ -26,15 +26,15 @@ Find commands
 - `help about` # Foundational topics
 - `help about*array*` # Learn about arrays
 - `help about_commonparameters` # A good one to start with
+- `Get-Alias` Show all aliases
+- `Get-Command -noun csv`
+- `Get-Command -verb invoke`
 
 Get command help
 - `Get-Help Import-Csv` # Man page
 - `Get-Help Import-Csv -Examples`  # Examples
 - `Get-Help Import-Csv -Online`  # Opens a browser
-
-
-
-
+- `Get-Help Get-Item -Parameter path` # Parameter help
 
 ## Comments
 ```pwsh
