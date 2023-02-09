@@ -1,5 +1,9 @@
 # PowerShell
 
+## Description
+
+PowerShell is fundamentally a SHELL language, for interacting with OS, thought it has the power of a programming language.
+
 ## Visual Studio Code
 
 - `ctrl-<backtick>` Open / close console
@@ -16,7 +20,10 @@
 
 ## Glossary
 
-- Command, the broadest category of functionality, includes Cmdlet, Function
+- Command - a generic term for the below
+   - cmdlet - a PowerShell command written in .NET, a term unique to MicroSoft
+   - function - a command written in PowerShell
+   - 3rd party app (ie. bash, awk, wc, etc)
 
 ## Help
 
@@ -35,8 +42,18 @@ Get command help
 - `Get-Help Import-Csv -Examples`  # Examples
 - `Get-Help Import-Csv -Online`  # Opens a browser
 - `Get-Help Get-Item -Parameter path` # Parameter help
+- `Get-Alias -Definition Get-Item` # Show alias
+
+
+## Running Commands
+
+- Commands are always VERB-NOUN # There's a few oddballs like New
+- `Get-Verb` # Try to use standard verbs like New, Remove, Get, & Set
+- Get-Process -Name p* #
+- `Get-Alias [[-Name] <System.String[]>]`# Double [[]] in the signature indicates a required positional command
 
 ## Comments
+
 ```pwsh
 # My Comment
 
