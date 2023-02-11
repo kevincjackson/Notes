@@ -81,3 +81,15 @@ $count = @{ a = 3; e = 2; i = 4; o = 4; u = 2 }
 $count.a 
 $count["a"] 
 ```
+
+## PSProvider
+
+An adapter which makes different data stores look like a disk drive.
+
+- `Get-PSProvider` # Shows a list of data stores
+
+## PSDrive
+
+A temporary and persistent mapped network drive (over a PSProvider).
+
+- `Get-PSDrive` # Shows a list of mapped "drives".
