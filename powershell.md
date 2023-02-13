@@ -93,3 +93,4 @@ An adapter which makes different data stores look like a disk drive.
 A temporary and persistent mapped network drive (over a PSProvider).
 
 - `Get-PSDrive` # Shows a list of mapped "drives".
+- `New-PSDrive -Name "MyApp" -PSProvider "FileSystem" -Root "C:\Users\kjackson\MyApp\"`
