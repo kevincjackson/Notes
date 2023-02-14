@@ -106,5 +106,6 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `dir | Out-GridView` # Creates a neat little Excel like view.
 - `Dir | ConvertTo-Csv` # Convert is for a temporary stream
 - `Dir | Export-Csv temp.csv` # Export is for files
-
+- `Remove-Item -WhatIf *temp*` # Use WhatIf flag to preview changes.
+- `Remove-Item -Confirm *temp*` # Use Confirm flag to interactively approve updates.
 
