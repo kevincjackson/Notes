@@ -109,3 +109,11 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `Remove-Item -WhatIf *temp*` # Use WhatIf flag to preview changes.
 - `Remove-Item -Confirm *temp*` # Use Confirm flag to interactively approve updates.
 
+## Modules
+
+- Modules: modern system for sharing code, path based
+   - <https://www.powershellgallery.com/> # Microsoft hosted PowerShell code sharing site.
+   - `Install-Module -Name PSCalendar` 
+   - `Get-Command -Module PSCalendar`
+- Snapins: PSSnappin, deprecated system
+
