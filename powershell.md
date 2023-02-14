@@ -94,3 +94,17 @@ A temporary and persistent mapped network drive (over a PSProvider).
 
 - `Get-PSDrive` # Shows a list of mapped "drives".
 - `New-PSDrive -Name "MyApp" -PSProvider "FileSystem" -Root "C:\Users\kjackson\MyApp\"`
+
+## Common Shell Commands
+- `Get-Process`
+- `Get-Service`
+- `Stop-Process -Name Excel`
+- `Get-Content myfile.txt` # Same as cat
+- `@{ "a" = "apple" } | ConvertTo-Html` # HTML converter for table like objects
+- `Compare-Object  -ReferenceObject (Get-Content .\atemp.txt) -DifferenceObject (Get-Content .\btemp.txt)` # Diff, weak with text files, can't recognize edits
+- `Get-ChildItem | Out-File results.txt` # Same as `ls > results.txt`, note `>` also works!
+- `dir | Out-GridView` # Creates a neat little Excel like view.
+- `Dir | ConvertTo-Csv` # Convert is for a temporary stream
+- `Dir | Export-Csv temp.csv` # Export is for files
+
+
