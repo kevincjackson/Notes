@@ -112,8 +112,11 @@ A temporary and persistent mapped network drive (over a PSProvider).
 ## Modules
 
 - Modules: modern system for sharing code, path based
+   - PowerShellGet is a package (module) manager.
    - <https://www.powershellgallery.com/> # Microsoft hosted PowerShell code sharing site.
+   - `PSModulePath` environment variable like is like a Unix path
+   - `(Get-Content Env:/PSModulePath) -split ':'` See paths
    - `Install-Module -Name PSCalendar` 
    - `Get-Command -Module PSCalendar`
-- Snapins: PSSnappin, deprecated system
+- Snapins: PSSnappin, deprecated system as of version 6.
 
