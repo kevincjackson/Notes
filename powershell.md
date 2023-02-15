@@ -43,7 +43,7 @@ Get command help
 - `Get-Help Import-Csv -Online`  # Opens a browser
 - `Get-Help Get-Item -Parameter path` # Parameter help
 - `Get-Alias -Definition Get-Item` # Show alias
-
+- `Get-Process | Get-Member -Type Properties` Shows type and information often used at the end of a pipe to show properties and methods.
 
 ## Running Commands
 
