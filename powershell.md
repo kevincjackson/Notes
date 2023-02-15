@@ -63,7 +63,7 @@ Get command help
 #>
 ```
 
-## Array
+## Array / Collection
 
 ```pwsh
 $xs = 0..2
@@ -74,13 +74,25 @@ $xs.Count
 
 ```
 
-## Hash
+## Hash / Object
 
 ```pwsh
 $count = @{ a = 3; e = 2; i = 4; o = 4; u = 2 }
 $count.a 
 $count["a"] 
 ```
+
+## Functional Translation
+
+- Basics
+   - Select-Object = MAP
+       - `1, 2, 3 | Select-Object { $_ % 2 -eq 0 }` # False, True, False
+   - Where-Object = FILTER
+       - `1, 2, 3 | Where-Object { $_ % 2 -eq 0 }` # 2
+   - NO NATIVE REDUCE
+   - Sort-Object = SORT
+       - `22, 33, 11 | Sort-Object -Descending` # 33, 22, 11
+
 
 ## PSProvider
 
