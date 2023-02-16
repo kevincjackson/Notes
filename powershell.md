@@ -130,5 +130,6 @@ A temporary and persistent mapped network drive (over a PSProvider).
    - `(Get-Content Env:/PSModulePath) -split ':'` See paths
    - `Install-Module -Name PSCalendar` 
    - `Get-Command -Module PSCalendar`
+   - `Find-Module *yaml*` # Very important. This searches the ONLINE GALLERY at <https://www.powershellgallery.com/>
 - Snapins: PSSnappin, deprecated system as of version 6.
 
