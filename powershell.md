@@ -93,6 +93,15 @@ $count["a"]
    - Sort-Object = SORT
        - `22, 33, 11 | Sort-Object -Descending` # 33, 22, 11
 
+## Pipeline
+
+- Parameter Binding
+   1. ByValue - TYPE of 1st command -> TYPE of 2nd command
+       - receiving command will match multiples, so typically signatures are designed with only one of each type
+   3. ByName - PARAMETER NAME, WILL MATCH ALL NAMES
+
+
+
 
 ## PSProvider
 
