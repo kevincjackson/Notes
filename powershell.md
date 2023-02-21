@@ -93,6 +93,15 @@ $count["a"]
    - Sort-Object = SORT
        - `22, 33, 11 | Sort-Object -Descending` # 33, 22, 11
 
+- Adding a key
+```pwsh
+# Long version - use the hash keys "name" and "expression" to add to an object.
+ @{ id = 123; name = "Bob" } | Select-Object -Property *, @{ name = "dept"; expression = { "IT" } }
+ 
+ # Short version - use hash keys "n" and "e"
+  @{ id = 123; name = "Bob" } | Select-Object -Property *, @{ n = "dept"; e = { "IT" } }
+```
+
 ## Pipeline
 
 - Parameter Binding
