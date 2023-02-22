@@ -151,3 +151,15 @@ A temporary and persistent mapped network drive (over a PSProvider).
    - `Find-Module *yaml*` # Very important. This searches the ONLINE GALLERY at <https://www.powershellgallery.com/>
 - Snapins: PSSnappin, deprecated system as of version 6.
 
+## Casting
+
+```pwsh
+[int] 7 / 3 # 2
+[uri] "https://example.com" # -> System.Uri
+```
+## UI
+
+- `Get-Process | Format-Table -Property ID, Name, Responding` # Select properties to view
+- `Get-Process | ft  ID, Name, Responding` # Select properties to view # Same as above - short version
+
+
