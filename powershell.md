@@ -163,5 +163,7 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `Get-Process | ft  ID, Name, Responding` # Select properties to view # Same as above - short version
 - `@{ a = 11; b = 22; c = 33 } | Format-List` # Show all properties on a new line
 - `@{ a = 11; b = 22; c = 33 } | fl` # Same as above - short version
+- `Get-Process | Format-Wide -Property Name -Column 8` # Table-ize a single field (with columns)
+- `Get-Process | fw -col 8` # Same as above - short version
 
 
