@@ -194,3 +194,10 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `gps | fw -col 8` # Same as above - short version
 - `Get-Process | Out-Gridview` # Windows GUI
 - `gps | ogv` # Same as above, short version
+
+## Remoting
+
+- `Enter-PSSession -ComputerName server1` # Enter a live session using Windows protocols
+- `Enter-PSSession -HostName server1` # Enter a live session using SSH (multiplatform)
+- `Exit-PSSession` # Exit live session
+- `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process } # Open AND CLOSE a remote session.
