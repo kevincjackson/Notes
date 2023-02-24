@@ -65,12 +65,19 @@ Get command help
 
 ## Comparisons
 
+### Basics
+
 - Uses Bash style comparitors: `-eq -ne -lt -le -gt -ge` 
 - Logical operators: `-not -and -or` # Don't use the normal ones...
 - There's also CASE SENSITIVE versions for strings `-ceq -cne -clt -cle -cgt -cge`. The regular versions are case insensitve.
+- Wildcard comparitors: `-like -notlike` 
+- Regex comparitors: `-match -notmatch`
+
+### Basic Examples
 
 - `$True` # True
 - `$False` # False
+- `(3 -gt 2) -and (2 -gt 1)` Use brackets for logical clarity.
 - `"Hello1" -like "H[aeiou]llo?"` # `-like` takes the wildcards `*?[]`
 - `"Hello" -match "^H.*o$"` # Match is feature rich regex engine.
 
@@ -78,6 +85,10 @@ Get command help
 
 - `gci | where { $_.LastWriteTime -gt (Get-Date).AddDays(-7) }` # Files written in the last week.
 - `gci | where { $_.Length -gt 1MB }`  # Get files larger than 1MB
+- `Get-Process -Name p*,*s*` # You could use `Where-Object` but you should FILTER AS FAR LEFT as possible.
+- `Get-Process | Where-Object -FilterScript {$_.WorkingSet -gt 100MB}` # Long version
+- `gps | where {$_.WorkingSet -gt 100MB}` # Shorthand version
+- `gps | where WorkingSet -gt 100MB` # Super short braceless version (weird, but you may see it)
 
 
 ## Array / Collection
