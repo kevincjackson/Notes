@@ -63,6 +63,23 @@ Get command help
 #>
 ```
 
+## Comparisons
+
+- Uses Bash style comparitors: `-eq -ne -lt -le -gt -ge` 
+- Logical operators: `-not -and -or` # Don't use the normal ones...
+- There's also CASE SENSITIVE versions for strings `-ceq -cne -clt -cle -cgt -cge`. The regular versions are case insensitve.
+
+- `$True` # True
+- `$False` # False
+- `"Hello1" -like "H[aeiou]llo?"` # `-like` takes the wildcards `*?[]`
+- `"Hello" -match "^H.*o$"` # Match is feature rich regex engine.
+
+### Practical Examples
+
+- `gci | where { $_.LastWriteTime -gt (Get-Date).AddDays(-7) }` # Files written in the last week.
+- `gci | where { $_.Length -gt 1MB }`  # Get files larger than 1MB
+
+
 ## Array / Collection
 
 ```pwsh
