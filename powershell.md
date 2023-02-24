@@ -90,7 +90,6 @@ Get command help
 - `gps | where {$_.WorkingSet -gt 100MB}` # Shorthand version
 - `gps | where WorkingSet -gt 100MB` # Super short braceless version (weird, but you may see it)
 
-
 ## Array / Collection
 
 ```pwsh
@@ -99,7 +98,6 @@ $xs = 0, 1, 2
 $xs = @(0, 1, 2)
 $xs[0]
 $xs.Count
-
 ```
 
 ## Hash / Object
@@ -118,6 +116,8 @@ $count["a"]
    - Where-Object = FILTER
        - `1, 2, 3 | Where-Object { $_ % 2 -eq 0 }` # 2
    - NO NATIVE REDUCE
+      - `gci | Measure-Object -Property length -Minimum -Maximum -Sum -Average -StandardDeviation`
+      - `gci | Measure-Object -Property length -AllStats` # Same as above
    - Sort-Object = SORT
        - `22, 33, 11 | Sort-Object -Descending` # 33, 22, 11
 
@@ -137,9 +137,6 @@ $count["a"]
        - receiving command will match multiples, so typically signatures are designed with only one of each type
    3. ByName - PARAMETER NAME, WILL MATCH ALL NAMES
 
-
-
-
 ## PSProvider
 
 An adapter which makes different data stores look like a disk drive.
@@ -154,6 +151,7 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `New-PSDrive -Name "MyApp" -PSProvider "FileSystem" -Root "C:\Users\kjackson\MyApp\"`
 
 ## Common Shell Commands
+
 - `Get-Process`
 - `Get-Service`
 - `Stop-Process -Name Excel`
@@ -185,6 +183,7 @@ A temporary and persistent mapped network drive (over a PSProvider).
 [int] 7 / 3 # 2
 [uri] "https://example.com" # -> System.Uri
 ```
+
 ## UI
 
 - `Get-Process | Format-Table -Property ID, Name, Responding` # Select properties to view
@@ -195,5 +194,3 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `gps | fw -col 8` # Same as above - short version
 - `Get-Process | Out-Gridview` # Windows GUI
 - `gps | ogv` # Same as above, short version
-
-
