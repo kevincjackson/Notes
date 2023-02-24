@@ -200,4 +200,4 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `Enter-PSSession -ComputerName server1` # Enter a live session using Windows protocols
 - `Enter-PSSession -HostName server1` # Enter a live session using SSH (multiplatform)
 - `Exit-PSSession` # Exit live session
-- `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process } # Open AND CLOSE a remote session.
+- `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process }` # Open AND CLOSE a remote session.
