@@ -201,3 +201,18 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `Enter-PSSession -HostName server1` # Enter a live session using SSH (multiplatform)
 - `Exit-PSSession` # Exit live session
 - `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process }` # Open AND CLOSE a remote session.
+
+## Jobs
+
+- Basics 
+   - Job = Process
+   - Thread-Job =  Process
+   - `-AsJob` is used with `Invoke-Command`
+- `Start-Job -ScriptBlock { gps }` # Start job
+- `Start-Job -Command { gps }` # Same as above
+- `Receive-Job -Id 12` # Get results, results not cached
+- `Receive-Job -Id 12 -Keep` # Get results, results cached
+- `Start-ThreadJob -ScriptBlock { gci }` # Run job as a thread
+- `Get-Job | Where-Object { -not $_.HasMoreData } | Remove-Job` # Remove old jobs
+-  `Invoke-Command -HostName server1 -ScriptBlock { gps } -AsJob` # AS JOB - Save results to a job.
+
