@@ -128,6 +128,7 @@ Parallel
 - `Measure-Command { 1..5 | ForEach-Object -Parallel { Write-Host $_; Start-Sleep 2 } }` # 2 seconds
 - `Measure-Command { 1..10 | ForEach-Object -Parallel { Write-Host $_; Start-Sleep 2 } }`# 4 Seconds, there's a default throttle limit of 5; see next command
 - `Measure-Command { 1..10 | ForEach-Object -ThrottleLimit 10 -Parallel { Write-Host $_; Start-Sleep 2 } 2 seconds
+- Note - memory and namespace NOT SHARED in parallel.
 
 For
 ```pwsh
@@ -142,6 +143,11 @@ $i = 0
 while ($i -lt 3) {
     Write-Host $i
     $i++
+}
+
+# Practical Example
+while ((Get-Process).Name -contains "notepad") { 
+   Write-Host "Notepad is open..."; Start-Sleep 2 
 }
 ```
 
