@@ -129,6 +129,30 @@ Parallel
 - `Measure-Command { 1..10 | ForEach-Object -Parallel { Write-Host $_; Start-Sleep 2 } }`# 4 Seconds, there's a default throttle limit of 5; see next command
 - `Measure-Command { 1..10 | ForEach-Object -ThrottleLimit 10 -Parallel { Write-Host $_; Start-Sleep 2 } 2 seconds
 
+For
+```pwsh
+for ($i = 0; $i -lt 3; $i++) {
+    Write-Host $i
+}
+```
+
+While
+```pwsh
+$i = 0
+while ($i -lt 3) {
+    Write-Host $i
+    $i++
+}
+```
+
+Do
+```pwsh
+do {
+    Write-Host "Looping..."
+    $input = Read-Host "Finished? (Y to quit)"
+} while ($input -ne "Y")
+```
+
 ## Functional Translation
 
 - Basics
