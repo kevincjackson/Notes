@@ -162,6 +162,8 @@ do {
 Tips
 - Many commands take collections, so unnecessarily use `Foreach-Object`
    - Ex) Good: `gps word* | stop-process`, Bad: `gps word* | Foreach-Object { Stop-Process $_ }`
+- For common tasks, look for helpful METHODS.
+   - Ex) `gps word* | stop-process` can be further shorted with  `gps word* -kill`
 
 
 ## Functional Translation
