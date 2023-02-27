@@ -159,6 +159,11 @@ do {
 } while ($input -ne "Y")
 ```
 
+Tips
+- Many commands take collections, so unnecessarily use `Foreach-Object`
+   - Ex) Good: `gps word* | stop-process`, Bad: `gps word* | Foreach-Object { Stop-Process $_ }`
+
+
 ## Functional Translation
 
 - Basics
