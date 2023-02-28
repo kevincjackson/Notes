@@ -4,6 +4,10 @@
 
 PowerShell is fundamentally a SHELL language, for interacting with OS, thought it has the power of a programming language.
 
+## Paradigm
+
+Everything is an object.
+
 ## Visual Studio Code
 
 - `ctrl-<backtick>` Open / close console
@@ -89,6 +93,15 @@ Get command help
 - `Get-Process | Where-Object -FilterScript {$_.WorkingSet -gt 100MB}` # Long version
 - `gps | where {$_.WorkingSet -gt 100MB}` # Shorthand version
 - `gps | where WorkingSet -gt 100MB` # Super short braceless version (weird, but you may see it)
+
+
+## Variables
+
+- `$user_email = john@example.com` # Variables indicated by $. Long descriptive variables encouraged
+- `$StrUsrEml = john@example.com` # BAD STYLE. Short cryptic variable names, and indicating types allowed, but DISCOURAGED
+-  `${user email}` # BAD STYLE. Spaces are allowed with braces, but DISCOURAGED
+-  $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms." # ESCAPE CHARACTER IS BACKTICK ````, NOT `\`
+
 
 ## Array / Collection
 
