@@ -106,6 +106,12 @@ Escape character is BACKTICK, NOT `\`
 $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms."
 ```
 
+## Strings
+
+- "hello" | Get-Member # Show string methods and properties.
+- `$letter = "a"; $letter.ToUpper(); $letter` # => `a`  Methods produce new strings; they don't replace the current content.
+
+
 ## Array / Collection
 
 ```pwsh
