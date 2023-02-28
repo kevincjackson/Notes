@@ -121,6 +121,8 @@ $xs = 0, 1, 2
 $xs = @(0, 1, 2)
 $xs[0]
 $xs.Count
+(gps).Name # PowerShell will try to UNROLL collection PROPERTY collections and METHODS for you.
+(gps *word*).kill()  # PowerShell will try to UNROLL collection PROPERTY collections and METHODS for you.
 ```
 
 ## Hash / Object
