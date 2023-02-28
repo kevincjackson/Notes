@@ -97,7 +97,9 @@ Get command help
 
 ## Variables
 
-- `$user_email = john@example.com` # Variables indicated by $. Long descriptive variables encouraged
+- `$useremail = john@example.com` # Variables indicated by $. Use meaningful succinct names. (Not too short, not too long.)
+   - Legal starting characters are letters, numbers, and underscore `[A-Za-z_]`
+   - `$` and `${}` are accessors.
 - `$StrUsrEml = john@example.com` # BAD STYLE. Short cryptic variable names, and indicating types allowed, but DISCOURAGED
 - `${user email}` # BAD STYLE. Spaces are allowed with braces, but DISCOURAGED
 - `[double] $d = 42.0` # Declare types inside brackets.
@@ -287,6 +289,7 @@ A temporary and persistent mapped network drive (over a PSProvider).
 - `Enter-PSSession -HostName server1` # Enter a live session using SSH (multiplatform)
 - `Exit-PSSession` # Exit live session
 - `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process }` # Open AND CLOSE a remote session.
+- `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process } -AsJob` # Use `-AsJob` to save results for later.
 
 ## Jobs
 
