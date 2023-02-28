@@ -99,7 +99,9 @@ Get command help
 
 - `$user_email = john@example.com` # Variables indicated by $. Long descriptive variables encouraged
 - `$StrUsrEml = john@example.com` # BAD STYLE. Short cryptic variable names, and indicating types allowed, but DISCOURAGED
--  `${user email}` # BAD STYLE. Spaces are allowed with braces, but DISCOURAGED
+- `${user email}` # BAD STYLE. Spaces are allowed with braces, but DISCOURAGED
+- `[double] $d = 42.0` # Declare types inside brackets.
+- `[int] $x = Read-Host "Enter a number"` # Common types are `[int] [single] [double] [string]`
 
 Escape character is BACKTICK, NOT `\`
 ```pwsh
