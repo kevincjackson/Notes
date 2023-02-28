@@ -110,6 +110,7 @@ $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms."
 
 - "hello" | Get-Member # Show string methods and properties.
 - `$letter = "a"; $letter.ToUpper(); $letter` # => `a`  Methods produce new strings; they don't replace the current content.
+- `$letter = "a"; $letter = $letter.ToUpper()` # To replace, use assignment to the same variable.
 
 
 ## Array / Collection
