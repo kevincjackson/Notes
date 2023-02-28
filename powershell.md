@@ -272,6 +272,25 @@ A temporary and persistent mapped network drive (over a PSProvider).
 [uri] "https://example.com" # -> System.Uri
 ```
 
+## IO
+
+Read
+```pwsh
+$name = Read-Host "Name" # Input a string
+$i = [int] (Read-Host "i") # Input an integer
+```
+
+Write
+```pwsh
+Write-Host "Hi" # Side effect message. Nothing sent to pipeline.
+Write-Output "Hi" # Send to the pipeline
+Write-Warning "Warning..." # Warning messages, continue by default. Change behavior with $WarningPreference
+Write-Information "Info..." # Info messages. Change behavior with $InformationPreference
+Write-Error "Error..." # Errors, continue by default. Change behavior with $ErrorActionPreference
+Write-Debug "Debug..." # Debug messages. $DebugPreference
+```
+
+```
 ## UI
 
 - `Get-Process | Format-Table -Property ID, Name, Responding` # Select properties to view
