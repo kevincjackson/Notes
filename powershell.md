@@ -283,6 +283,7 @@ $i = [int] (Read-Host "i") # Input an integer
 Write
 ```pwsh
 Write-Host "Hi" # Side effect message. Nothing sent to pipeline.
+Write-Host "Hello" -ForegroundColor Green # Change text color.
 Write-Output "Hi" # Send to the pipeline
 Write-Warning "Warning..." # Warning messages, continue by default. Change behavior with $WarningPreference
 Write-Information "Info..." # Info messages. Change behavior with $InformationPreference
