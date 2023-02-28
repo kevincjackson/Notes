@@ -100,8 +100,11 @@ Get command help
 - `$user_email = john@example.com` # Variables indicated by $. Long descriptive variables encouraged
 - `$StrUsrEml = john@example.com` # BAD STYLE. Short cryptic variable names, and indicating types allowed, but DISCOURAGED
 -  `${user email}` # BAD STYLE. Spaces are allowed with braces, but DISCOURAGED
--  $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms." # ESCAPE CHARACTER IS BACKTICK ```, NOT `\`
 
+Escape character is BACKTICK, NOT `\`
+```pwsh
+$haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms."
+```
 
 ## Array / Collection
 
