@@ -326,4 +326,6 @@ Write-Debug "Debug..." # Debug messages. $DebugPreference
 -  `Invoke-Command -HostName server1 -ScriptBlock { gps } -AsJob` # AS JOB - Save results to a job.
 
 ## Tips
+
 - To run a `ps1` script, you can hit F5, or click the play button in the upper right.
+- You can linebreak with `<BACKTICK><RETURN>` or naturally with `|` if appropriate for improved formatting.
