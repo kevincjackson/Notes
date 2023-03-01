@@ -218,6 +218,14 @@ Tips
   @{ id = 123; name = "Bob" } | Select-Object -Property *, @{ n = "dept"; e = { "IT" } }
 ```
 
+## Scope
+
+1. Global - Script has access to all globals, but you should not rely on these. Best practice is that they should be explicity passed in.
+2. Script
+3. Function
+
+Each level of scope will shadow any variables defined in higher scopes. Example if $x is defined in Global, Script, and Function scope, a function will use Function scope.
+
 ## Pipeline
 
 - Parameter Binding
