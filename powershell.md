@@ -325,3 +325,5 @@ Write-Debug "Debug..." # Debug messages. $DebugPreference
 - `Get-Job | Where-Object { -not $_.HasMoreData } | Remove-Job` # Remove old jobs
 -  `Invoke-Command -HostName server1 -ScriptBlock { gps } -AsJob` # AS JOB - Save results to a job.
 
+## Tips
+- To run a `ps1` script, you can hit F5, or click the play button in the upper right.
