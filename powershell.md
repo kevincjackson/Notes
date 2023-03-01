@@ -341,6 +341,8 @@ Here's documentation for the help command.
 ```pwsh
 .SYNOPSIS
    Displays information about PowerShell commands and concepts.
+.PARAMETER ComputerName
+   Default is localhost
 .DESCRIPTION
    The `Get-Help` cmdlet displays information about PowerShell concepts and commands, including cmdlets, functions,
     Common Information Model (CIM) commands, workflows, providers, aliases, and scripts...
