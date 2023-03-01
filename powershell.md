@@ -325,6 +325,20 @@ Write-Debug "Debug..." # Debug messages. $DebugPreference
 - `Get-Job | Where-Object { -not $_.HasMoreData } | Remove-Job` # Remove old jobs
 -  `Invoke-Command -HostName server1 -ScriptBlock { gps } -AsJob` # AS JOB - Save results to a job.
 
+## Documentation
+
+Adding a multiline comment with the keywords `.SYNOPSIS` and `.DESCRIPTION` will add documentation to your script. `help myscript.ps1` will show help.
+
+Here's documentation for the help command.
+```pwsh
+.SYNOPSIS
+   Displays information about PowerShell commands and concepts.
+.DESCRIPTION
+   The `Get-Help` cmdlet displays information about PowerShell concepts and commands, including cmdlets, functions,
+    Common Information Model (CIM) commands, workflows, providers, aliases, and scripts...
+#>
+```
+
 ## Tips
 
 - To run a `ps1` script, you can hit F5, or click the play button in the upper right.
