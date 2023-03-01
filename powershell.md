@@ -349,6 +349,36 @@ Here's documentation for the help command.
 #>
 ```
 
+## Sample Script
+
+```pwsh
+<#                                          # Documentation first
+.SYNOPSIS
+Show network info.
+.PARAMETER ComputerName
+.DESCRIPTION
+Show MAC, Adapter, Name and Speed of Network Adapters.
+.EXAMPLE
+myscript.ps1 -HostName localhost
+#>
+[CmdletBinding()]                           # Enable advanced functions, must be first line after comments
+param(                                      # Provide a comma separated list of parameters 
+    [Parameter(Mandatory=$True)]            # Required
+    [Alias('Hostname')]                     # Parameter alias
+    [string] $ComputerName = 'localhost',   # Set default (not required)
+                                            # Don't forget the comma above!
+    [ValidateSet(1,2,3)]                    # Validate an enum
+    [int] $Level = 1                        # Set a default
+)
+
+Write-Verbose "Starting..."
+Get-CimInstance win32_networkadapter `
+    -ComputerName $ComputerName
+Where-Object { $_.PhysicalAdapter } |
+Select-Object MACAddress, AdapterType, DeviceID, Name, Speed
+Write-Verbose "Done"
+```
+
 ## Tips
 
 - To run a `ps1` script, you can hit F5, or click the play button in the upper right.
