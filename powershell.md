@@ -324,12 +324,24 @@ Write-Debug "Debug..." # Debug messages. $DebugPreference
 
 ## Remoting
 
-- `Enter-PSSession -ComputerName server1` # Enter a live session using Windows protocols
-- `Enter-PSSession -HostName server1` # Enter a live session using SSH (multiplatform)
-- `Exit-PSSession` # Exit live session
-- `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process }` # Open AND CLOSE a remote session.
-- `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process } -AsJob` # Use `-AsJob` to save results for later (see Jobs section).
-
+- Basics for PSSession
+   - Invoke: IMMEDIATELY enter and exit a remote session
+   - Enter, Exit: INTERACTIVE session.
+   - New, Get, Remove: create, show, and remove SESSION VARIABLES, that maintain a PERSISTENT CONNECTION
+   - Connect, Disconnect, Receive: open or close a SESSION CONNECTION. Receive will get results from a disconnected session.
+   - Import & Export: import module COMMANDS (advanced, awesome feature unique to PowerShell)
+- Example Commands
+   - `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process }` # Open AND CLOSE a remote session.
+   - `Invoke-Command -ComputerName server1 -ScriptBlock { Get-Process } -AsJob` # Use `-AsJob` to save results for later (see Jobs section).
+   - `Enter-PSSession -ComputerName server1` # Enter an INTERACTIVE session using Windows protocols
+   - `Enter-PSSession -HostName server1` # Enter an INTERACTIVE session using SSH (multiplatform)
+   - `Exit-PSSession` # Exit live session
+   - `Get-PSSession` # Show sessions
+   - `$mysession = New-PSSession -ComputerName SERV1 -Credential (Get-Credential)` # Make a new session variable.
+   - `Remove-PSSession -Session $mysession` Remove $mysession
+   - `Get-PSSession | Remove-PSSession` # Remove all sessions
+   - `Import-PSSession -Session $session -Prefix rem -Module ServerManager` # Import commands from $session with the prefix "rem"
+   
 ## Jobs
 
 - Basics 
