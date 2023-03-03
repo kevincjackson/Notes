@@ -278,6 +278,17 @@ A temporary and persistent mapped network drive (over a PSProvider).
 ```pwsh
 [int] 7 / 3 # 2
 [uri] "https://example.com" # -> System.Uri
+
+# Hash -> PSCustomObject
+$h1 = @{ a = "aaa"; b = "bbb" }  # Hashtable
+$o1 = New-Object -TypeName psobject -Property $h1 # Hashtable -> PSCustomObject
+
+# PSCustomObject -> Hash
+$h2 = @{}
+$o1.psobject.Properties | ForEach-Object { $h2[$_.Name] = $_.Value }
+
+# Values -> Array
+(gps).Name # PowerShell does it for you.
 ```
 
 ## IO
