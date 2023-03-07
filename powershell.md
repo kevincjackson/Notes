@@ -115,7 +115,9 @@ $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms."
 - "hello" | Get-Member # Show string methods and properties.
 - `$letter = "a"; $letter.ToUpper(); $letter` # => `a`  Methods produce new strings; they don't replace the current content.
 - `$letter = "a"; $letter = $letter.ToUpper()` # To replace, use assignment to the same variable.
-- "The first process is $( (gps).name[0] )"`  # Use the sub-expression operator `$()` to run shell commands INSIDE THE DOUBLE QUOTES.
+- `"The first process is $( (gps).name[0] )"`  # Use the sub-expression operator `$()` to run shell commands INSIDE THE DOUBLE QUOTES.
+- `Get-ChildItem . | Where-Object { $_.Name -match "^\." }` # Show all files in the current directory start with a . (hidden files).
+- `Get-ChildItem -Recurse . | Select-String -Pattern "400"` # Select-String is GREP. Highlight all the lines INSIDE THE FILES that regex match 400.
 
 
 ## Array / Collection
