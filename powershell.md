@@ -407,13 +407,41 @@ Write-Verbose "Done"
 ```
 
 ## Error Handling
-- Design - DON'T DO GLOBAL ERRORS, DO PER COMMAND
-- `$Error` ARRAY VARIABLE
-- `$Error[0]` Latest error
-- try catch is for stopping programs - TODO EXAMPLES
-- help about_Automatic_Variables
-- `-ErrorAction` TODO GO THRU OPTIONS
-- `-ErrorVariable myerrors` Save errors to $myerrors
+- Basics
+   - PowerShell are designed to KEEP GOING. They show the error, log the error, and `Continue`.
+   - If you need to handle an error, set errors to `Stop` (Error-> Exceptions) and use a `try catch`.
+   - DON'T DO GLOBAL ERRORS, DO PER COMMAND - YOU WANT TO ANTICIPATE ERRORS!
+- Code
+   - `help about_Automatic_Variables` # Read more
+   - `$Error` ARRAY OF ERRORS, last on top
+   - `$Error[0]` Latest error
+   - `-ErrorVariable myerrors` Save errors to $myerrors
+   - `$ErrorActionPreference` # Global setting, don't use; do set per command.
+- Examples
+   - `Remove-Item temp* -ErrorAction SilentlyContinue` # Clear some files that may or may not exist
+   - `New-PSSession -ComputerName $Computer -ErrorAction Stop` Interactive -  see the error
+   - `try { New-PSSession -ComputerName $Computer -ErrorAction Stop } catch { Write-Warning "oops - connection error" }` # Turn an error into a warning
+   - `New-PSSession -ComputerName $Computer -ErrorVariable myerror` Interactive - apture the error to a variable
+   
+Catch errors from commands that don't have `-ErrorAction` by WRAPPING THEM IN A TRY CATCH
+```
+try {
+$ErrorActionPreference = 'Stop'
+# ...
+$ErrorActionPreference = 'Continue'
+catch { $_ >> mylog.txt }
+```
+
+Log all errrors for diagnostic purposes. Good if the script is out of view.
+```pwsh
+$ErrorActionPreference = 'Stop'
+try {
+   badcommand
+}
+catch {
+        $_ >> errors.txt
+}
+```
 
 ## Tips
 
