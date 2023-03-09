@@ -406,6 +406,15 @@ Select-Object MACAddress, AdapterType, DeviceID, Name, Speed
 Write-Verbose "Done"
 ```
 
+## Error Handling
+- Design - DON'T DO GLOBAL ERRORS, DO PER COMMAND
+- `$Error` ARRAY VARIABLE
+- `$Error[0]` Latest error
+- try catch is for stopping programs - TODO EXAMPLES
+- help about_Automatic_Variables
+- `-ErrorAction` TODO GO THRU OPTIONS
+- `-ErrorVariable myerrors` Save errors to $myerrors
+
 ## Tips
 
 - To run a `ps1` script, you can hit F5, or click the play button in the upper right.
