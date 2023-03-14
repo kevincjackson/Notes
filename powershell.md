@@ -2,7 +2,7 @@
 
 ## Description
 
-PowerShell is fundamentally a SHELL language, for interacting with OS, thought it has the power of a programming language.
+PowerShell is fundamentally a SHELL language, for interacting with OS, though it has the power of a programming language.
 
 ## Paradigm
 
@@ -442,6 +442,12 @@ catch {
         $_ >> errors.txt
 }
 ```
+
+## Debugging
+
+1. Print Debugging `Write-Host|Verbose|Debug $myvar`
+2. F8 / RUN SELECTION Debugging, requires VS CODE
+3. F5 / BREAKPOINT Debugging, requires VS Code
 
 ## Tips
 
