@@ -142,6 +142,24 @@ $count.a
 $count["a"] 
 ```
 
+## Top Level Operators
+
+- These are mainly syntatic sugar, also available as methods.
+
+```pwsh
+10 / 3 -as [int] # 3 Cast
+10 / 3 -is [int] # False - Test Type
+9 / 3 -is [int] # True - Test Type
+
+"2-12-2000" -replace "^2", "02" # REGEX replace
+
+"11,22,33" -split "," # String -> Array
+@(11,22,33) -join "," # Array -> String
+
+11, 22, 33 -contains 11 # Collection membership: Array, Element -> Bool
+11 -in 11, 22, 33 # Collection membership: Element, Array -> Bool
+```
+
 ## Loops
 
 Imperative Style
@@ -200,6 +218,7 @@ Tips
    - Ex) `gps word* | stop-process` can be further shorted with  `gps word* -kill`
 
 ## Functions 
+
 TODO
 
 ## Scriptblocks / Lambdas
@@ -468,3 +487,17 @@ catch {
 
 - To run a `ps1` script, you can hit F5, or click the play button in the upper right.
 - You can linebreak with `<BACKTICK><RETURN>` or naturally with `|` if appropriate for improved formatting.
+
+## Customization
+
+- `$Profile | Format-List -force` Show the file you need to edit
+- `code $profile` # Update your profile
+
+Custom Prompt Example - Update the prompt function inside your profile
+```pwsh
+function prompt {
+   $time = (Get-Date).ToShortTimeString()
+   "$time [$env:COMPUTERNAME]:> "
+}
+```
+
