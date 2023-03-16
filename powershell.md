@@ -487,6 +487,7 @@ catch {
 
 - To run a `ps1` script, you can hit F5, or click the play button in the upper right.
 - You can linebreak with `<BACKTICK><RETURN>` or naturally with `|` if appropriate for improved formatting.
+- Checkout <https://jdhitsolutions.com/blog/powershell-tips-tricks-and-advice/>
 
 ## Customization
 
@@ -501,3 +502,7 @@ function prompt {
 }
 ```
 
+## Resources
+- Good intro book: <https://livebook.manning.com/book/learn-powershell-in-a-month-of-lunches/>
+- Book written by PowerShell's language designer: <https://www.manning.com/books/windows-powershell-in-action-third-edition>
+- Interesting PowerShell blog: <https://jdhitsolutions.com/blog/>
