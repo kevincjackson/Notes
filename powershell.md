@@ -199,6 +199,21 @@ Tips
 - For common tasks, look for helpful METHODS.
    - Ex) `gps word* | stop-process` can be further shorted with  `gps word* -kill`
 
+## Functions 
+TODO
+
+## Scriptblocks / Lambdas
+
+- First class: can be arguments, and send & receive arguments
+- Note: functions are NOT first class!
+- Are anonymous functions
+- Help: `help about_Script_Blocks`
+-
+```pwsh
+$double = { $args[0] * 2 } # Create
+& double 10 #  & is the shorthand call
+Invoke-Command -ScriptBlock $double -Args 10 # Longhand call, most common form
+```
 
 ## Functional Translation
 
