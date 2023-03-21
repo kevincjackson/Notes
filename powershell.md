@@ -508,12 +508,14 @@ My prompt
 ```pwsh
 function prompt () {
   $commandstatus = $?
-  $time = (Get-Date).ToShortTimeString().Replace(' ', '').ToLower()
+  $colorinfo = "$([char]27)[90m" 
+  $colorwhite = "$([char]27)[37m" 
+  $time =  (Get-Date).ToShortTimeString().Replace(' ', '').ToLower()
   $machine = $env:COMPUTERNAME
   $location = Get-Location
   $prompt = ($commandstatus ? "$([char]27)[32m" : "$([char]27)[31m") +
              "> " + "$([char]27)[37m"
-  "$time $machine $location$prompt"
+  "$colorinfo$time $machine $colorwhite$location $prompt"
 }
 ```
 
