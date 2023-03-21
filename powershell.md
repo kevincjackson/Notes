@@ -493,14 +493,30 @@ catch {
 
 - `$Profile | Format-List -force` Show the file you need to edit
 - `code $profile` # Update your profile
+- For color codes: <https://en.wikipedia.org/wiki/ANSI_escape_code>
+- Most popular prompt customization tool: <https://ohmyposh.dev/>
 
-Custom Prompt Example - Update the prompt function inside your profile
+A simple custom prompt
 ```pwsh
 function prompt {
    $time = (Get-Date).ToShortTimeString()
    "$time [$env:COMPUTERNAME]:> "
 }
 ```
+
+My prompt
+```pwsh
+function prompt () {
+  $commandstatus = $?
+  $time = (Get-Date).ToShortTimeString().Replace(' ', '').ToLower()
+  $machine = $env:COMPUTERNAME
+  $location = Get-Location
+  $prompt = ($commandstatus ? "$([char]27)[32m" : "$([char]27)[31m") +
+             "> " + "$([char]27)[37m"
+  "$time $machine $location$prompt"
+}
+```
+
 
 ## Resources
 - Good intro book: <https://livebook.manning.com/book/learn-powershell-in-a-month-of-lunches/>
