@@ -48,6 +48,7 @@ Get command help
 - `Get-Help Get-Item -Parameter path` # Parameter help
 - `Get-Alias -Definition Get-Item` # Show alias
 - `Get-Process | Get-Member -Type Properties` Shows type and information often used at the end of a pipe to show properties and methods.
+- `Get-Member -InputObject @() # Get collection methods` By default PowerShell gets the collection member's members.
 
 ## Running Commands
 
@@ -125,6 +126,7 @@ $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms."
 ## Array / Collection
 
 ```pwsh
+Get-Member -InputObject @() # Get Array methods
 $xs = 0..2
 $xs = 0, 1, 2
 $xs = @(0, 1, 2)
