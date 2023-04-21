@@ -1,0 +1,80 @@
+<html>
+<head>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <h1>Alpine Examples</h1>
+    <div  x-data="{ count: 42 }">
+        <h2>Count</h2>
+        <button x-on:click="count--">-</button>
+        <span x-text="count"></span>
+        <button @click="count++">+</button>
+    </div>
+    <div>
+        <h2>Show / Hide</h2>
+        <div x-data="{ show: false }">
+            <button @click=" show = true" >Show</button>
+            <div x-show="show" @click.outside="show = false">Stuff here</div>
+        </div>
+    </div>
+    <div x-data="{ fruits: ['apples', 'bananas', 'cantaloupe'] }">
+        <h2>Looping with For</h2>
+        <template x-for="fruit in fruits" :key="fruit">
+            <div x-text="fruit"></div>
+        </template>
+    </div>
+    <div x-data="{ name: 'Hello!' }">
+        <h2>Model</h2>
+        <p>Two Way Binding</p>
+        <input x-model="name" type="text" />
+        <div x-text="name[0]"></div>
+        <div x-text="name.toUpperCase()"></div>
+    </div>
+    <div x-data="{
+            search: '',
+            items: ['foo', 'bar', 'baz'],
+            get filteredItems() { return this.items.filter(i => i.startsWith(this.search)) }
+        }" >
+        <h2>Search Example</h2>
+        <input x-model="search" placeholder="Search...">
+        <ul>
+            <template x-for="item in filteredItems" :key="item">
+                <li x-text="item"></li>
+            </template>
+        </ul>
+    </div>    
+    <div>
+        <h2>X-Data Required!</h2>
+        <button x-data @click="alert('I\'ve been clicked!')">Click Me</button><br />
+        Missing x-data element<button @click="alert('I\'ve been clicked!')">Click Me</button>
+    </div>
+    <div x-data="{ show: true }">
+        <h2>Hide Show 2</h2>
+        <button @click="show = !show" x-text="show ? 'Hide' : 'Show'"></button>
+        <div x-show="show"><p>Contents</p><p>Contents</p><p>Contents</p></div>
+    </div>
+    <template>
+        Interesting... This won't render!
+    </template>
+    <div x-data="{ show: false }">
+        <h2>X-if</h2>
+        <button @click="show = true">Show</button>
+        <template x-if="show">
+            <div>BOOM!</div>
+        </template>
+    </div>
+<div x-data="{ open: false }">
+    <button @click="open = !open">Expand</button>
+ 
+    <template x-if="open">
+        <div>
+            Content...
+        </div>
+    </template>
+</div>
+<div>
+    <h2>X-html</h2>
+    <div x-data x-html="'<h3>Boom! Inner HTML here.</h3>'"></div>
+</div>
+</body>
+</html>
