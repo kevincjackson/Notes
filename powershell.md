@@ -10,11 +10,16 @@ Everything is an object.
 
 ## Visual Studio Code
 
-- `ctrl-<backtick>` Open / close console
-- `ctrl-'` Maximize panel
-- `ctrl-,` Open settings
 - `ctrl-p` Open file
 - `ctrl-shift-p` Command palette
+- `ctrl-backtack`: Show / hide terminal, focus on terminal
+- `ctrl-1`: Focus on code
+- `F8` Run selection or current line
+- `F5` Run script, includes debugging
+- `ctrl-space`: Show snippets, suggestions
+- `ctrl-,` Open settings
+- `ctrl-'` Maximize panel
+- `ctrl-/` Comment code
 
 ## Versions
 
@@ -478,21 +483,18 @@ catch {
 }
 ```
 
-## Visual Studio Code / VSCode Integration 
-
-- `ctrl-backtack`: Show / hide terminal, focus on terminal
-- `ctrl-1`: Focus on code
-- `F8` Run selection or current line
-- `F5` Run script, includes
-- `ctrl-space`: Show snippets, suggestions
-
 ## Debugging
+
+Print Debugging
 
 ```pwsh
 Write-Host $myvar
 Write-Verbose $myvar
 Write-Debug $myvar
 ```
+
+VSCode Debugger
+- `F5` Run script, includes debugging
 
 ## Tips
 
