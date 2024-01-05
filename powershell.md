@@ -479,11 +479,21 @@ catch {
 }
 ```
 
+## Visual Studio Code / VSCode Integration 
+
+- `ctrl-backtack`: Show / hide terminal
+- `ctrl-space`: Show snippets, suggestions
+- `F8` Run selection or current line
+- `F5` Run script, includes
+- 
+
 ## Debugging
 
-1. Print Debugging `Write-Host|Verbose|Debug $myvar`
-2. F8 / RUN SELECTION Debugging, requires VS CODE
-3. F5 / BREAKPOINT Debugging, requires VS Code
+```pwsh
+Write-Host $myvar
+Write-Verbose $myvar
+Write-Debug $myvar
+```
 
 ## Tips
 
