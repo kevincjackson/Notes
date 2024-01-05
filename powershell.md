@@ -350,7 +350,6 @@ Write-Error "Error..." # Errors, continue by default. Change behavior with $Erro
 Write-Debug "Debug..." # Debug messages. $DebugPreference
 ```
 
-```
 ## UI
 
 - `Get-Process | Format-Table -Property ID, Name, Responding` # Select properties to view
