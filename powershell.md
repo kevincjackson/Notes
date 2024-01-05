@@ -10,15 +10,15 @@ Everything is an object.
 
 ## Visual Studio Code
 
-- `ctrl-p` Open file
+- `ctrl-p` Fuzzy open a file (doesn't work when using Vim and on code screen)
+- `ctrl-o` Open a file
 - `ctrl-shift-p` Command palette
 - `ctrl-backtack`: Show / hide terminal, focus on terminal
 - `ctrl-1`: Focus on code
-- `F8` Run selection or current line
-- `F5` Run script, includes debugging
+- `F8` Run selection or current line (Mnemonic F8 means a taste is great)
+- `F5` Run script, includes debugging (Mnemonic F5 means the whole script is alive)
 - `ctrl-space`: Show snippets, suggestions
 - `ctrl-,` Open settings
-- `ctrl-'` Maximize panel
 - `ctrl-/` Comment code
 
 ## Versions
