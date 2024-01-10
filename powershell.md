@@ -226,7 +226,17 @@ Tips
 
 ## Functions 
 
-TODO
+Here's simple function to sum an array of numbers.
+```pwsh
+function Get-Sum {
+   param ($Numbers)
+   $sum = 0
+   foreach ($num in $Numbers) {
+      $sum += $num
+   }
+   $sum
+}
+```
 
 ## Scriptblocks / Lambdas
 
