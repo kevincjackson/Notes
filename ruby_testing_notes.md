@@ -33,6 +33,7 @@ end
 require 'minitest/autorun'   # automagically run tests
 
 class TestCooking < Minitest::Test  # must inherit from the minitest library
+  # !!! Testing methods MUST begin with "test_" or they won't run.
   def test_boil_water               # must have the prefix 'test_'
     assert_equal( "not done", Cooking.boil_water( 3 ) )
     assert_equal( "done", Cooking.boil_water( 5 ) )
