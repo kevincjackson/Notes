@@ -169,7 +169,7 @@ $count["a"]
 
 ## Loops
 
-Imperative Style
+Imperative - foreach-in
 ```pwsh
 $nums = 1..3
 foreach ($n in $nums) {
@@ -177,7 +177,14 @@ foreach ($n in $nums) {
 }
 ```
 
-Pipe Style
+Imperative for
+```pwsh
+for ($i = 0; $i -lt 3; $i++) {
+    Write-Host $i
+}
+```
+
+Functional - ForEach-Object / %
 ```pwsh
 1..3 | ForEach-Object { Write-Host $_ } # Long Form
 1..3 | % { Write-Host $_ } # Short Form
@@ -188,13 +195,6 @@ Parallel
 - `Measure-Command { 1..10 | ForEach-Object -Parallel { Write-Host $_; Start-Sleep 2 } }`# 4 Seconds, there's a default throttle limit of 5; see next command
 - `Measure-Command { 1..10 | ForEach-Object -ThrottleLimit 10 -Parallel { Write-Host $_; Start-Sleep 2 } 2 seconds
 - Note - memory and namespace NOT SHARED in parallel.
-
-For
-```pwsh
-for ($i = 0; $i -lt 3; $i++) {
-    Write-Host $i
-}
-```
 
 While
 ```pwsh
