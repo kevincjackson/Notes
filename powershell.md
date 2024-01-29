@@ -244,11 +244,19 @@ function Get-Sum {
 - Note: functions are NOT first class!
 - Are anonymous functions
 - Help: `help about_Script_Blocks`
--
+
+Creating
 ```pwsh
-$double = { $args[0] * 2 } # Create
-& double 10 #  & is the shorthand call
-Invoke-Command -ScriptBlock $double -Args 10 # Longhand call, most common form
+$add = { $args[0] + $args[1] }  # Create a scriptblock with unnamed params
+$add = { param($X, $Y); $X + $Y } # Create a scriptblock with named params
+```
+
+Calling
+```pwsh
+&{1 + 1} # Call a scriptblock using an operator
+&$sum 1 2 # Call a scriptblock using positional arguments, notice there's NO COMMA!
+&$sum -X 1 -Y 2 # Call a scriptblock using the commandlet
+Invoke-Command -ScriptBlock $sum -ArgumentList 1, 2
 ```
 
 ## Functional Translation
