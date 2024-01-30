@@ -272,7 +272,7 @@ Invoke-Command -ScriptBlock $sum -ArgumentList 1, 2
    - Sort-Object = SORT
        - `22, 33, 11 | Sort-Object -Descending` # 33, 22, 11
 
-- Adding a key
+## Object - Adding a Key       
 ```pwsh
 # Long version - use the hash keys "name" and "expression" to add to an object.
  @{ id = 123; name = "Bob" } | Select-Object -Property *, @{ name = "dept"; expression = { "IT" } }
