@@ -262,8 +262,8 @@ Invoke-Command -ScriptBlock $sum -ArgumentList 1, 2
 ## Functional Translation
 
 - Basics
-   - Select-Object = MAP
-       - `1, 2, 3 | Select-Object { $_ % 2 -eq 0 }` # False, True, False
+   - ForEach-Object = MAP
+       - `1, 2, 3 | ForEach-Object { $_ % 2 -eq 0 }` # False, True, False
    - Where-Object = FILTER
        - `1, 2, 3 | Where-Object { $_ % 2 -eq 0 }` # 2
    - NO NATIVE REDUCE
@@ -280,6 +280,16 @@ Invoke-Command -ScriptBlock $sum -ArgumentList 1, 2
  # Short version - use hash keys "n" and "e"
   @{ id = 123; name = "Bob" } | Select-Object -Property *, @{ n = "dept"; e = { "IT" } }
 ```
+
+## Object Array - Key to Array
+```pwsh
+$objects = @{ x = 11 }, @{ x = 22 }, @{ x = 33 }
+$objects.x # 11, 22, 33   # Use period accessor
+ @{ x = 11 }, @{ x = 22 }, @{ x = 33 } | % { $_.x } # Use Foreach-Object
+
+(Get-Process).ProcessName # Requires parenthesis
+```
+
 
 ## Scope
 
