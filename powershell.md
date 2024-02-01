@@ -293,11 +293,33 @@ $objects.x # 11, 22, 33   # Use period accessor
 
 ## Scope
 
-1. Global - Script has access to all globals, but you should not rely on these. Best practice is that they should be explicity passed in.
-2. Script
-3. Function
+```pwsh
+Get-Variable -Scope local # Show local variables
+Get-Variable -Scope global # Show global variables
+```
 
-Each level of scope will shadow any variables defined in higher scopes. Example if $x is defined in Global, Script, and Function scope, a function will use Function scope.
+If braces do NOT create scope, they use global scope.
+```pwsh
+if ($true) {
+   $x = 42
+}
+$x # 42
+```
+
+For braces, do NOT create scope - they use global scope.
+```pwsh
+foreach ($i in 1,2,3) {
+   Write-Host $i
+}
+
+$i # 3
+
+### Scope - Concept
+
+1. Global Scope - the same as session scope 
+2. Functions - creates a new scope, have access to global / session / caller scope
+3. Scripts - creates a new scope, have access to global / session / caller scope
+4. Modules - module functions, do NOT have access to global / session / caller scope.
 
 ## Pipeline
 
