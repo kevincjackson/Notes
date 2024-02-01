@@ -290,8 +290,14 @@ $objects.x # 11, 22, 33   # Use period accessor
 (Get-Process).ProcessName # Requires parenthesis
 ```
 
+### Scope - Concept
 
-## Scope
+1. Global Scope - the same as session scope 
+2. Functions - creates a new scope, have access to global / session / caller scope
+3. Scripts - creates a new scope, have access to global / session / caller scope
+4. Modules - module functions, do NOT have access to global / session / caller scope.
+   
+## Scope - Practical
 
 ```pwsh
 Get-Variable -Scope local # Show local variables
@@ -314,13 +320,6 @@ foreach ($i in 1,2,3) {
 
 $i # 3
 ```
-
-### Scope - Concept
-
-1. Global Scope - the same as session scope 
-2. Functions - creates a new scope, have access to global / session / caller scope
-3. Scripts - creates a new scope, have access to global / session / caller scope
-4. Modules - module functions, do NOT have access to global / session / caller scope.
 
 ## Pipeline
 
