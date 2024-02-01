@@ -313,6 +313,7 @@ foreach ($i in 1,2,3) {
 }
 
 $i # 3
+```
 
 ### Scope - Concept
 
