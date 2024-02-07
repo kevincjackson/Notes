@@ -156,6 +156,7 @@ $colors = @{
    yellow = 1
    green = 2
 }
+```
 
 ## Top Level Operators
 
