@@ -377,6 +377,12 @@ A temporary and persistent mapped network drive (over a PSProvider).
    - `Find-Module *yaml*` # Very important. This searches the ONLINE GALLERY at <https://www.powershellgallery.com/>
 - Snapins: PSSnappin, deprecated system as of version 6.
 
+## Modules - Creating Your Own
+
+- Rename your script MyModuleScript.psm1 and put in a folder of the same name: /MyModule/MyModule.psm1
+- Install `Install-Module -Name MyModule`
+- Uninstall `Remove-Module -Name MyModule` (Doesn't delete the code)
+- 
 ## Casting
 
 ```pwsh
@@ -596,3 +602,6 @@ function prompt () {
 - Good intro book: <https://livebook.manning.com/book/learn-powershell-in-a-month-of-lunches/>
 - Book written by PowerShell's language designer: <https://www.manning.com/books/windows-powershell-in-action-third-edition>
 - Interesting PowerShell blog: <https://jdhitsolutions.com/blog/>
+
+## Style Guide
+- <https://github.com/PoshCode/PowerShellPracticeAndStyle>
