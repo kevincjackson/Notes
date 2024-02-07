@@ -149,6 +149,14 @@ $count.a
 $count["a"] 
 ```
 
+No semicolons needed on multiple line definition
+```pwsh
+$colors = @{
+   red = 0
+   yellow = 1
+   green = 2
+}
+
 ## Top Level Operators
 
 - These are mainly syntatic sugar, also available as methods.
