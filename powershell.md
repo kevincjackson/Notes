@@ -369,20 +369,22 @@ A temporary and persistent mapped network drive (over a PSProvider).
 
 - Modules: modern system for sharing code, path based
    - PowerShellGet is a package (module) manager.
-   - <https://www.powershellgallery.com/> # Microsoft hosted PowerShell code sharing site.
-   - `PSModulePath` environment variable like is like a Unix path
-   - `(Get-Content Env:/PSModulePath) -split ':'` See paths
-   - `Install-Module -Name PSCalendar` 
+   - Microsoft hosted PowerShell code sharing site. <https://www.powershellgallery.com/> 
+   - Install a module: `Install-Module -Name PSCalendar`
+   - Unload (doesn't delete): `Remove-Module MyModule`
+   - List currently loaded modules: `Get-Module`
+   - List installed, but not loaded modules `Get-Module -ListAvailable`
    - `Get-Command -Module PSCalendar`
-   - `Find-Module *yaml*` # Very important. This searches the ONLINE GALLERY at <https://www.powershellgallery.com/>
+   - Search ONLINE at powershellgallery.com for a module `Find-Module *yaml*`
 - Snapins: PSSnappin, deprecated system as of version 6.
 
 ## Modules - Creating Your Own
 
-- Rename your script MyModuleScript.psm1 and put in a folder of the same name: /MyModule/MyModule.psm1
-- Install `Install-Module -Name MyModule`
-- Uninstall `Remove-Module -Name MyModule` (Doesn't delete the code)
-- 
+- Rename a script to MyModuleScript.psm1 and put in a folder of the same name: \MyModule\MyModule.psm1
+- Install: `Install-Module -Name MyModule`
+- Uninstall: `Remove-Module -Name MyModule` (Doesn't delete the code)
+- Autoload: put in your Powershell module path: Example: `C:\Users\jsmith\Documents\PowerShell\Modules\MyModule\MyModule.psm1`
+  
 ## Casting
 
 ```pwsh
