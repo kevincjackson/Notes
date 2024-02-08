@@ -299,14 +299,14 @@ $objects.x # 11, 22, 33   # Use period accessor
 (Get-Process).ProcessName # Requires parenthesis
 ```
 
-### Scope - Concept
+## Scope - Concept
 
 1. Global Scope - the same as session scope 
 2. Functions - creates a new scope, have access to global / session / caller scope
 3. Scripts - creates a new scope, have access to global / session / caller scope
 4. Modules - module functions, do NOT have access to global / session / caller scope.
    
-## Scope - Practical
+## Scope - In Practice
 
 ```pwsh
 Get-Variable -Scope local # Show local variables
@@ -606,4 +606,302 @@ function prompt () {
 - Interesting PowerShell blog: <https://jdhitsolutions.com/blog/>
 
 ## Style Guide
-- <https://github.com/PoshCode/PowerShellPracticeAndStyle>
+
+- Source: <<https://github.com/PoshCode/PowerShellPracticeAndStyle>
+- lowercase for language keywords, Ex: `foreach`
+- PascalCase for all public identifiers: module names, function or cmdlet names, class, enum, and attribute names, public fields or properties, global variables and constants.  
+  - Ex: `ColorName`
+  - Ex: `Get-PSColorName` two letter caps for modules are ok
+- UPPERCASE for keywords in comments
+- camelCase for variables within your functions (or modules) to distinguish private variables
+- 
+
+```ps1
+
+function Write-Host {           
+    <#
+    .SYNOPSIS
+        Writes customized output to a host.
+    .DESCRIPTION
+        The Write-Host cmdlet customizes output. You can specify the color of text by using
+        the ForegroundColor parameter, and you can specify the background color by using the
+        BackgroundColor parameter. The Separator parameter lets you specify a string to use to
+        separate displayed objects. The particular result depends on the program that is
+        hosting Windows PowerShell.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, ValueFromPipeline = $true, ValueFromRemainingArguments = $true)]
+        [psobject]$Object,
+
+        [switch]$NoNewline,
+
+        [psobject]$Separator,
+
+        [System.ConsoleColor]$ForegroundColor,
+
+        [System.ConsoleColor]$BackgroundColor
+    )
+    begin {
+```
+
+Start scripts like this to support pipelines
+
+```ps1
+[CmdletBinding()]
+param ()
+begin {
+}
+process {
+}
+end {
+}
+```
+
+Braces
+
+```ps1
+if (10 -gt $ParameterOne) {
+    "Greater"
+} else {
+    "Lesser"
+}
+```
+
+Shared variables should be distinguished by using their scope name. Private variables need no scope
+
+```ps1
+$myCount = 1
+$Script:PSBoundParameters
+```
+
+Four space indentation (not tab), except for lining up with a method call
+
+```ps1
+function Test-Code {
+    foreach ($base in 1,2,4,8,16) {
+        foreach ($exponent in 1..10) {
+            [System.Math]::Pow($base,
+                               $exponent)
+    }
+}
+```
+
+Use space for readability, except for function args
+
+```ps1
+$variable = Get-Content -Path $FilePath -Wait:($ReadCount -gt 0) -TotalCount ($ReadCount * 5)
+```
+
+Line length upto 115 characters is ok. Use splatting instead of backticks for line continuation.
+
+```ps1
+$msg = "This really, really, really, really, really, really, really, really, really, really, long line is OK!"
+```
+
+Example argument splatting to avoid backticks
+
+```ps1
+# Option 1: Hashtable
+$Args = @{
+  Path = "test.txt"
+  Destination = "test2.txt"
+  WhatIf = $true
+}
+Copy-Item @Args
+
+# Option 2: Array
+$ArrayArguments = "test.txt", "test2.txt"
+Copy-Item @ArrayArguments -WhatIf
+```
+
+Don't use semicolons on a hashtable
+
+```ps1
+$Options = @{
+    Margin   = 2
+    Padding  = 2
+    FontSize = 24
+}
+```
+
+Two lines surround function definitions
+
+```ps1
+function Get-Test1 {
+  "Test1"
+}
+
+
+function Get-Test2 {
+  "Test2"
+}
+
+
+function Get-Test3 {
+  "Test3"
+}
+
+```
+
+A group of one liners don't need spaces
+
+```ps1
+function Get-Double { param($X) $X * 2 }
+function Get-Triple { param($X) $X * 3 }
+function Get-Square { param($X) $X * $X }
+```
+
+Space params generously
+
+```ps1
+param (
+    [Parameter(Mandatory = $true,
+                ValueFromPipelineByPropertyName = $true,
+                Position = 0)]
+    [int16]
+    $Age
+)
+```
+
+Example Advanced Function
+
+- Name use Verb-Object
+- Use verbs only from `Get-Verb`
+- Use PascalCase, singular nouns.
+- Do not use `return`; do leave your return object on the last line
+- Leave return objects inside the Process {} block and not in Begin {} or End {} since it defeats the advantage of the pipeline.
+- Always use `[CmdletBinding()]`
+- Specify an OutputType attribute if the advanced function returns an object or collection of objects.
+
+```ps1
+function Get-USCitizenCapability {
+    [CmdletBinding()]
+    [OutputType([psobject])]
+    param (
+        [Parameter(Mandatory = $true,
+                   ValueFromPipelineByPropertyName = $true,
+                   Position = 0)]
+        [int16]
+        $Age
+    )
+    process {
+        $Capabilities = @{
+            MilitaryService = $false
+            DrinkAlcohol = $false
+            Vote = $false
+        }
+
+        if ($Age -ge 18) {
+            $Capabilities['MilitaryService'] = $true
+            $Capabilities['Vote'] = $true
+        }
+
+        New-Object -Property $Capabilities -TypeName psobject
+    }
+}
+```
+
+Comments
+
+- Use complete sentences
+- Do speak in plain language
+- Do not speak in needlessly technical or academic language
+- Be concise, but complete
+- Do have comments that explain reasoning
+- Do not make comments that are totally obvious. Ex: increments variable
+
+```ps1
+function Get-Example {
+    <#
+    .SYNOPSIS
+        A brief description of the function or script.
+
+    .DESCRIPTION
+        A longer description.
+
+    .PARAMETER FirstParameter
+        Description of each of the parameters.
+        Note:
+        To make it easier to keep the comments synchronized with changes to the parameters,
+        the preferred location for parameter documentation comments is not here,
+        but within the param block, directly above each parameter.
+
+    .PARAMETER SecondParameter
+        Description of each of the parameters.
+
+    .INPUTS
+        Description of objects that can be piped to the script.
+
+    .OUTPUTS
+        Description of objects that are output by the script.
+
+    .EXAMPLE
+        Example of how to run the script.
+
+    .LINK
+        Links to further documentation.
+
+    .NOTES
+        Detail on what the script does, if this is needed.
+
+    #>
+```
+
+Use explicit commands and arguments. Don't use aliases
+
+```ps1
+gps explorer # Bad
+
+Get-Process -Name Explorer # Good
+```
+
+Use explicit paths, don't rely on `~` for home
+
+```ps1
+$path = ${Env:UserProfile}
+```
+
+## Best Practices
+
+- Decide whether you are building: reusable tool or a controller (see below)
+  - A tool should primarly be reusable and yield low level, unformatted data.
+  - A controller is a higher level tool which yields formatted data, and does not need to be reusuable
+- Output only one type
+- Use Write-Host for interactive scripts ONLY
+- Do not use Write-Host for non-interactive scripts; do use Write-Debug/Verbose/etc
+- Use Write-Progress for long running script
+
+Prefer Simple for most cases
+
+```ps1
+Get-Content -Path file.txt |
+ForEach-Object -Process {
+    Do-Something -Input $_
+}
+```
+
+For Performance, you can do this
+
+```ps1
+$handle = Open-TextFile -Path file.txt
+
+while (-not (Test-TextFile -Handle $handle)) {
+    Do-Something -Input (Read-TextFile -Handle $handle)
+}
+```
+
+- Credentials - you should always take PSCredentials as a parameter
+- Never call Get-Credential within your function. This allows users to reuse stored credentials
+
+```ps1
+param (
+    [System.Management.Automation.PSCredential]
+    [System.Management.Automation.Credential()]
+    $Credentials
+)
+```
+
+Declare the required version of PowerShell
+
+```ps1
