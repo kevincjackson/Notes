@@ -872,6 +872,24 @@ $path = ${Env:UserProfile}
 - Do not use Write-Host for non-interactive scripts; do use Write-Debug/Verbose/etc
 - Use Write-Progress for long running script
 
+Function Returns
+- Just leave the final expression instead of return
+- In the middle of the script, you can use Write-Output
+- Only use `return` for early return
+
+```ps1
+function add{} {
+    param($x, $y)
+
+    # Bad: return $xy + y
+    # Bad: Write-Output ($x + $y)
+
+    # Good
+    $x + $y
+}
+```
+  
+
 Prefer Simple for most cases
 
 ```ps1
