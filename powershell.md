@@ -864,15 +864,24 @@ $path = ${Env:UserProfile}
 
 ## Best Practices
 
+What Are You Building?
+
 - Decide whether you are building: reusable tool or a controller (see below)
   - A tool should primarly be reusable and yield low level, unformatted data.
   - A controller is a higher level tool which yields formatted data, and does not need to be reusuable
-- Output only one type
+
+Output
+
+- Output only **one** type
+
+Write-Host|Verbose|Something
+
 - Use Write-Host for interactive scripts ONLY
 - Do not use Write-Host for non-interactive scripts; do use Write-Debug/Verbose/etc
 - Use Write-Progress for long running script
 
 Function Returns
+
 - Just leave the final expression instead of return
 - In the middle of the script, you can use Write-Output
 - Only use `return` for early return
@@ -881,7 +890,7 @@ Function Returns
 function add{} {
     param($x, $y)
 
-    # Bad: return $xy + y
+    # Bad: return $x + y
     # Bad: Write-Output ($x + $y)
 
     # Good
@@ -890,7 +899,7 @@ function add{} {
 ```
   
 
-Prefer Simple for most cases
+Prefer simple code
 
 ```ps1
 Get-Content -Path file.txt |
@@ -909,7 +918,9 @@ while (-not (Test-TextFile -Handle $handle)) {
 }
 ```
 
-- Credentials - you should always take PSCredentials as a parameter
+Credentials
+
+- Always take PSCredentials as a parameter
 - Never call Get-Credential within your function. This allows users to reuse stored credentials
 
 ```ps1
@@ -923,3 +934,119 @@ param (
 Declare the required version of PowerShell
 
 ```ps1
+# Inside script
+
+<#PSScriptInfo
+.VERSION 1.0.1
+.GUID 54688e75-298c-4d4b-a2d0-1234567890ab
+.AUTHOR iRon
+.DESCRIPTION Your description
+.COMPANYNAME
+.COPYRIGHT
+.TAGS PowerShell Version
+.LICENSEURI https://github.com/LICENSE
+.PROJECTURI https://github.com/
+.ICONURI https://Icon.png
+.EXTERNALMODULEDEPENDENCIES
+.REQUIREDSCRIPTS
+.EXTERNALSCRIPTDEPENDENCIES
+.RELEASENOTES
+.PRIVATEDATA
+#>
+
+# Outside script
+Get-PSScriptFileInfo myscript.ps1
+```
+
+## Write Award Winning PowerShell Functions and Script Modules by Mike Robbins
+
+Workflow
+
+- Plan your work (or plan to fail)
+- Set a deadline for your code.  Everything after the deadline will be a later version.
+- Prefer to write functions over scripts, because functions are reusable
+
+Function Basics
+
+- Running a script with a function will NOT load into global space `.\Get-Test.ps1`
+- "Dot sourcing" Will: `. .\Get-Test.ps1`
+- You check with this: `gci -path Function:\Get-Test`
+
+Function Naming
+
+- Use a singular noun
+
+Variables
+
+- Don't use static values
+- Do use variables and paramters
+- Don't use Hungarian notation `$strOutFile` -> `$OutFile
+- Don't reuse variables!
+    - Changing $vm from a string to an object is confusing. Have $vm and $vmObject
+
+Parameters
+
+- Order matters! Common parameters first.
+- Model after Built-In Cmdlets; do NOT model after Azure Cmdlets
+  - $ComputerName is most common (not $Computer!)
+  - $Path is most common (not $FilePath!)
+  - Checkout Get-MrParamterCount (Mike Robbins)
+- Use singular names, UNLESS IT ONLY accepts MULTIPLES, `-ComputerName`, NOT `-ComputerNames`
+- Always use `[CmdletBinding()]`
+- Use `[CmdletBinding()](SupportsShouldProcess)` if you're making changes
+- Checkout <http://mikefrobbins.com/2015/04/17/free-ebook-on-powershell-advanced-functions/>
+
+```ps1
+[CmdletBinding()]                         # Adds -Verbose, -Debug, -ErrorAction
+[CmdletBinding()](SupportsShouldProcess)  # Adds -WhatIf, -Confirm
+param(
+...
+)
+```
+
+Parameter Validation
+
+- For mandatory use `[Parameter(Mandatory)]`
+- Default arguments DO NOT WORK with mandatory parameters
+
+- Do allow multiples
+```ps1
+param (
+   [string[]]
+   $ComputerName
+)
+```
+
+Require an argument, but use a default
+
+```ps1
+param(
+   [ValidateNotNullOrEmpty()]
+   [string]
+   $ComputerName = $env:COMPUTERNAME
+)
+```
+- Don't use `[ValidatePattern()]`, because user gets a confusing error.
+- Do use `[[ValidateScript()]`, because  you can set a meaningful user error.
+
+Getting Enums
+
+```ps1
+$mytype = (Get-Date).DayOfWeek
+$myType.GetType().GetEnumValues()
+```
+
+Type Accelerators
+
+- Show all: `[psobject].Assembly.GetType(“System.Management.Automation.TypeAccelerators”)::get`
+- Examples:
+  - `bigint` `ipaddress` `mailaddress` `switch` `xml `uri` 
+- Don't write your own regex for these!
+
+Pipeline Input
+
+Error Handling
+
+Module Manifest
+
+Custom Formatting
