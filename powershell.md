@@ -1071,6 +1071,10 @@ Modules
 
 Module Manifest
 
-TODO
+- Uses Plaster
+- Name and Description required for sharing sites.
 
 Custom Formatting
+
+- <= 4 properties defaults to Table
+- > 4 properties defaults to List
