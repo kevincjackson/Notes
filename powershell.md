@@ -513,6 +513,44 @@ Select-Object MACAddress, AdapterType, DeviceID, Name, Speed
 Write-Verbose "Done"
 ```
 
+## Handling Multiples
+
+- Default to naming your parameter SINGULAR, but handling MULTIPLES.
+- Do this by starting with a `process{}` block which has a `foreach` loop in. See below.
+- `begin{}` and `end{}` blocks are optional, but you can use for setup, teardown, or aggregation (see $IncludeSum below).
+
+```ps1
+function Get-TestIncrement {
+    [CmdletBinding()]
+    param(
+        [int[]]
+        $Number,
+
+        [switch]
+        $IncludeSum
+    )
+    begin {
+        $sum = 0
+    }
+    process {
+        foreach ($num in $Number) {
+            $incremented = $num + 1
+            $sum = $sum + $incremented
+
+            $incremented
+        }
+    }
+    end {
+        if ($IncludeSum) {
+            $sum
+        }
+    }
+}
+
+Get-TestIncrement -Number 0, 10, 100 # 1, 11, 101
+Get-TestIncrement -Number 0, 10, 100 # 1, 11, 101, 113
+```
+
 ## Error Handling
 - Basics
    - PowerShell are designed to KEEP GOING. They show the error, log the error, and `Continue`.
