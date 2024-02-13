@@ -972,6 +972,16 @@ Function Basics
 - "Dot sourcing" Will: `. .\Get-Test.ps1`
 - You check with this: `gci -path Function:\Get-Test`
 
+Return 
+
+- Do NOT use return  unless you want EARLY return.
+- It messes up pipes and multiples!
+
+Comments
+
+- Use Write-Verbose instead of comments.
+- Why comments are not seen, and often go out of date.
+  
 Function Naming
 
 - Use a singular noun
@@ -1045,8 +1055,22 @@ Type Accelerators
 
 Pipeline Input
 
+- By Value vs By Type
+   - ByValue MEANS ByTYPE!!!
+   - ByName MEANS By Property Name
+
 Error Handling
 
+- Set `$errorAction` and use `try-catch` 
+
+Modules
+
+- New-Module is the wrong command! It's for in memory module
+- Make a new module by renaming or `ps1` file as `.psm1`
+- Modules need to live in the path of this `$env:PSModulePath -split ";"`; usually below your Documents folder
+
 Module Manifest
+
+TODO
 
 Custom Formatting
