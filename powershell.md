@@ -483,40 +483,6 @@ Here's documentation for the help command.
 #>
 ```
 
-## Sample Script
-
-```pwsh
-<#                                          # Documentation first
-.SYNOPSIS
-   Show network info.
-
-.PARAMETER ComputerName
-
-.DESCRIPTION
-   Show MAC, Adapter, Name and Speed of Network Adapters.
-
-.EXAMPLE
-   myscript.ps1 -HostName localhost
-#>
-[CmdletBinding()]                          # Enable advanced functions, must be first line after comments
-param(                                     # Provide a comma separated list of parameters 
-   [Parameter(Mandatory=$True)]            # Required
-   [Alias('Hostname')]                     # Parameter alias
-   [string]
-   $ComputerName = 'localhost',            # Set default (not required)
-                                           # Don't forget the comma above!
-   [ValidateSet(1,2,3)]                    # Validate an enum
-   [int]
-   $Level = 1                              # Set a default
-)
-
-Write-Verbose "Starting..."
-Get-CimInstance win32_networkadapter -ComputerName $ComputerName
-Where-Object { $_.PhysicalAdapter } |
-Select-Object MACAddress, AdapterType, DeviceID, Name, Speed
-Write-Verbose "Done"
-```
-
 ## Handling Multiples
 
 - Default to naming your parameter SINGULAR, but handling MULTIPLES.
@@ -527,6 +493,9 @@ Write-Verbose "Done"
 function Get-TestIncrement {
     [CmdletBinding()]
     param(
+        [Parameter(Mandatory = $true, 
+                   ValueFromPipeline = $true,
+                   Position = 0)]
         [int[]]
         $Number,
 
@@ -608,7 +577,8 @@ VSCode Debugger
 ## Tips
 
 - To run a `ps1` script, you can hit F5, or click the play button in the upper right.
-- You can linebreak with `<BACKTICK><RETURN>` or naturally with `|` if appropriate for improved formatting.
+- You can linebreak naturally linebreak on `|` if appropriate for improved formatting.
+- Avoid linebreaking on backticks (too easy to break)
 - Checkout <https://jdhitsolutions.com/blog/powershell-tips-tricks-and-advice/>
 
 ## Customization
@@ -816,7 +786,7 @@ Example Advanced Function
 - Name use Verb-Object
 - Use verbs only from `Get-Verb`
 - Use PascalCase, singular nouns.
-- Do not use `return`; do leave your return object on the last line
+- ONLY use return for early return.  It can unexpectedly interfere with piped input.
 - Leave return objects inside the Process {} block and not in Begin {} or End {} since it defeats the advantage of the pipeline.
 - Always use `[CmdletBinding()]`
 - Specify an OutputType attribute if the advanced function returns an object or collection of objects.
@@ -852,11 +822,9 @@ function Get-USCitizenCapability {
 Comments
 
 - Use complete sentences
-- Do speak in plain language
-- Do not speak in needlessly technical or academic language
+- Do speak in plain language; Do NOT speak in needlessly technical or academic language
 - Be concise, but complete
-- Do have comments that explain reasoning
-- Do not make comments that are totally obvious. Ex: increments variable
+- Do have comments that explain reasoning; Do NOT make comments that are totally obvious. Ex: increments variable
 
 ```ps1
 function Get-Example {
@@ -980,6 +948,8 @@ param (
 
 Declare the required version of PowerShell
 
+TODO Not sure if this still works.  Maybe an earlier version.
+
 ```ps1
 # Inside script
 
@@ -1054,8 +1024,8 @@ Parameters
 - Checkout <http://mikefrobbins.com/2015/04/17/free-ebook-on-powershell-advanced-functions/>
 
 ```ps1
-[CmdletBinding()]                         # Adds -Verbose, -Debug, -ErrorAction
-[CmdletBinding()](SupportsShouldProcess)  # Adds -WhatIf, -Confirm
+[CmdletBinding()]                         # OPTION 1: Adds -Verbose, -Debug, -ErrorAction
+[CmdletBinding()](SupportsShouldProcess)  # OPTION 2: Adds -WhatIf, -Confirm in addition to the above
 param(
 ...
 )
@@ -1103,9 +1073,14 @@ Type Accelerators
 Pipeline Input
 
 - By Value vs By Type
-   - ByValue MEANS ByTYPE!!!
-   - ByName MEANS By Property Name
-
+   - `ByValue`: Means BY TYPE!!! Most common.
+   - `ByPropertyName`: Means an object with a matching property name will automagically transfer the data.
+- Example:
+  - Look at Start-Service for `Get-Help Start-Service -Parameter "inputobject", "name"`
+  - Only two accepts pipeline 
+  - `-InputObject` Accept pipeline input? Is ByValue
+  - `-Name` Is ByPropertyName and ByValue
+       
 Error Handling
 
 - Set `$errorAction` and use `try-catch` 
