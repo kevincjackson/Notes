@@ -313,7 +313,7 @@ Get-Variable -Scope local # Show local variables
 Get-Variable -Scope global # Show global variables
 ```
 
-If braces do NOT create scope, they use global scope.
+`if` braces do NOT create scope, they use global scope.
 ```pwsh
 if ($true) {
    $x = 42
@@ -321,7 +321,7 @@ if ($true) {
 $x # 42
 ```
 
-For braces, do NOT create scope - they use global scope.
+`for` braces, do NOT create scope - they use global scope.
 ```pwsh
 foreach ($i in 1,2,3) {
    Write-Host $i
