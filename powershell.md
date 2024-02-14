@@ -488,26 +488,30 @@ Here's documentation for the help command.
 ```pwsh
 <#                                          # Documentation first
 .SYNOPSIS
-Show network info.
+   Show network info.
+
 .PARAMETER ComputerName
+
 .DESCRIPTION
-Show MAC, Adapter, Name and Speed of Network Adapters.
+   Show MAC, Adapter, Name and Speed of Network Adapters.
+
 .EXAMPLE
-myscript.ps1 -HostName localhost
+   myscript.ps1 -HostName localhost
 #>
-[CmdletBinding()]                           # Enable advanced functions, must be first line after comments
-param(                                      # Provide a comma separated list of parameters 
-    [Parameter(Mandatory=$True)]            # Required
-    [Alias('Hostname')]                     # Parameter alias
-    [string] $ComputerName = 'localhost',   # Set default (not required)
-                                            # Don't forget the comma above!
-    [ValidateSet(1,2,3)]                    # Validate an enum
-    [int] $Level = 1                        # Set a default
+[CmdletBinding()]                          # Enable advanced functions, must be first line after comments
+param(                                     # Provide a comma separated list of parameters 
+   [Parameter(Mandatory=$True)]            # Required
+   [Alias('Hostname')]                     # Parameter alias
+   [string]
+   $ComputerName = 'localhost',            # Set default (not required)
+                                           # Don't forget the comma above!
+   [ValidateSet(1,2,3)]                    # Validate an enum
+   [int]
+   $Level = 1                              # Set a default
 )
 
 Write-Verbose "Starting..."
-Get-CimInstance win32_networkadapter `
-    -ComputerName $ComputerName
+Get-CimInstance win32_networkadapter -ComputerName $ComputerName
 Where-Object { $_.PhysicalAdapter } |
 Select-Object MACAddress, AdapterType, DeviceID, Name, Speed
 Write-Verbose "Done"
@@ -660,6 +664,7 @@ function Write-Host {
     <#
     .SYNOPSIS
         Writes customized output to a host.
+
     .DESCRIPTION
         The Write-Host cmdlet customizes output. You can specify the color of text by using
         the ForegroundColor parameter, and you can specify the background color by using the
@@ -670,17 +675,21 @@ function Write-Host {
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, ValueFromPipeline = $true, ValueFromRemainingArguments = $true)]
-        [psobject]$Object,
+        [psobject]
+        $Object,
 
-        [switch]$NoNewline,
+        [switch]
+        $NoNewline,
 
-        [psobject]$Separator,
+        [psobject]
+        $Separator,
 
-        [System.ConsoleColor]$ForegroundColor,
+        [System.ConsoleColor]
+        $ForegroundColor,
 
-        [System.ConsoleColor]$BackgroundColor
-    )
-    begin {
+        [System.ConsoleColor]
+        $BackgroundColor
+   )
 ```
 
 Start scripts like this to support pipelines
