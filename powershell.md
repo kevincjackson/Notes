@@ -491,7 +491,9 @@ The parameter `-InputObject` is a common parameter that exists to preserve data 
 # The SINGLE ARRAY is compared to nothing else, and simply returned.
 Sort-Object -InputObject @(100, 1, 50) # 100, 1, 50
 ```
- 
+
+ An example use case would be to get array commands: `Get-Member -InputObject @()`
+
       
 ## Pipelines - Writing functions for Pipelines
 
