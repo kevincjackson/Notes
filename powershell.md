@@ -329,14 +329,6 @@ foreach ($i in 1,2,3) {
 
 $i # 3
 ```
-
-## Pipeline
-
-- Parameter Binding
-   1. ByValue - TYPE of 1st command -> TYPE of 2nd command
-       - receiving command will match multiples, so typically signatures are designed with only one of each type
-   3. ByName - PARAMETER NAME, WILL MATCH ALL NAMES
-
 ## PSProvider
 
 An adapter which makes different data stores look like a disk drive.
@@ -482,8 +474,26 @@ Here's documentation for the help command.
     Common Information Model (CIM) commands, workflows, providers, aliases, and scripts...
 #>
 ```
+## Pipelines
 
-## Handling Multiples
+- Parameter Binding
+   1. `ValueFromPipeline` - TYPE of 1st command -> TYPE of 2nd command
+       - receiving command will match multiples, so typically signatures are designed with only one of each type
+   3. `ValueFromPipelineByPropertyName` - PARAMETER NAME, WILL MATCH ALL NAMES
+
+The parameter `-InputObject` is a common parameter that exists to preserve data structures; do NOT use it to be formal!
+
+```ps1
+# Expected result
+100, 1, 50 | Sort-Object # 1, 50, 100
+
+# Probably a surprise!
+# The SINGLE ARRAY is compared to nothing else, and simply returned.
+Sort-Object -InputObject @(100, 1, 50) # 100, 1, 50
+```
+ 
+      
+## Pipelines - Writing functions for Pipelines
 
 - Default to naming your parameter SINGULAR, but handling MULTIPLES.
 - Do this by starting with a `process{}` block which has a `foreach` loop in. See below.
