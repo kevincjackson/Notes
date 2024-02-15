@@ -176,6 +176,25 @@ $colors = @{
 11 -in 11, 22, 33 # Collection membership: Element, Array -> Bool
 ```
 
+## Booleans & $null
+
+Because self enumeration, comparitors have some surprising behavior. Comparitors turn into a where clause!
+
+```ps1
+@(10, 20, 30) -gt 10 # => Returns @(20, 30)!
+@(10, $null, 30) -ne $null # => Returns @(10, 30)!
+```
+
+Because of this, comparisons with `$null` are reversed. `$null` goes on the left side.
+
+```ps1
+# Good
+$null -eq @() # False
+
+# Bad
+@() -eq $null # Returns $null!
+```
+
 ## Loops
 
 Imperative - foreach-in
