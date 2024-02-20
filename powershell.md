@@ -319,6 +319,19 @@ $objects.x # 11, 22, 33   # Use period accessor
 (Get-Process).ProcessName # Requires parenthesis
 ```
 
+## Bitwise Operators
+`-band -bnot -bor -bxor -shr -shl`
+
+```pwsh
+0b000100 # 4
+0b11111 -band 0b000100 # 4
+0b000000 -bor 0b000100 # 4
+0b000100 -shr 1 # 2 Shift Right
+0b000100 -shl 1 # 8 Shift Left
+0b1 -bxor 0b1 # 0
+-bnot 0b1 # -2
+```
+
 ## Scope - Concept
 
 1. Global Scope - the same as session scope 
