@@ -760,6 +760,9 @@ Line length upto 115 characters is ok. Use splatting instead of backticks for li
 ```ps1
 $msg = "This really, really, really, really, really, really, really, really, really, really, long line is OK!"
 ```
+### Splatting Args
+
+You can define a hash or an array using a traditional variable such as `$myargs`, and then switch the `$` to `@` to pass it to a function.
 
 Example argument splatting to avoid backticks
 
@@ -771,7 +774,9 @@ $Args = @{
   WhatIf = $true
 }
 Copy-Item @Args
+```
 
+```ps1
 # Option 2: Array
 $ArrayArguments = "test.txt", "test2.txt"
 Copy-Item @ArrayArguments -WhatIf
