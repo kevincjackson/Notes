@@ -116,6 +116,21 @@ Escape character is BACKTICK, NOT `\`
 $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms."
 ```
 
+## Numbers
+
+```pwsh
+1 # Int32
+1.0 # Double
+[Math]::Pow(2, 8) # Powers, Gotcha 2**8 Errors!
+3 /2 # 1.5
+[int](1.4) # 1 Rounding is the default behavior!
+[int](1.6) # 2
+[int](3 / 2) # 2 
+[int][Math]::Ceiling(3 / 2) # 2 Explicitly call class functions for floor and ceiling
+[int][Math]::Floor(3 / 2) # 1
+1e3 # 1000 Shorthand for lots of zeroes
+```
+
 ## Strings
 
 - "hello" | Get-Member # Show string methods and properties.
