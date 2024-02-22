@@ -612,6 +612,9 @@ catch { $_ >> mylog.txt }
 
 Log all errrors for diagnostic purposes. Good if the script is out of view.
 ```pwsh
+
+# WARNING: if the preference is 'Continue', the program will NEVER reach the catch block!
+
 $ErrorActionPreference = 'Stop'
 try {
    badcommand
