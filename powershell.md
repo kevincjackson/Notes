@@ -967,7 +967,7 @@ Function Returns
 
 - Just leave the final expression instead of return
 - In the middle of the script, you can use Write-Output
-- Only use `return` for early return
+- Use `return` ONLY for early return.  This is to prevent unexpected behavior in pipes.
 
 ```ps1
 function add{} {
