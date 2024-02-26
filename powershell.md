@@ -152,10 +152,16 @@ $xs = 0, 1, 2
 $xs = @(0, 1, 2)
 $xs[0]
 $xs.Count
+$xs.Count -eq 0 # Check for empty list
 [array]::Reverse($xs) # Reverse an array (no native command, have to use class method)
 (gps).Name # PowerShell will try to UNROLL collection PROPERTY collections and METHODS for you.
 (gps *word*).kill()  # PowerShell will try to UNROLL collection PROPERTY collections and METHODS for you.
 ```
+
+Count vs Length
+
+- Count is more commonly used.
+- Count is an alias for length.
 
 ## Hash / Object
 
