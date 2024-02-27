@@ -281,6 +281,49 @@ Tips
 - For common tasks, look for helpful METHODS.
    - Ex) `gps word* | stop-process` can be further shorted with  `gps word* -kill`
 
+## Switches
+
+- A modern, fully featured tool (not just a simple C implementation)
+- Switches fall through; matches don't break!
+- Automatic variable: `$_`
+
+
+```pwsh
+$color = 1
+
+switch ($color) {
+   1 { "green" }
+   2 { "yellow" }
+   3 { "red" }
+   default { "unknown code" }
+} 
+```
+
+Arrays get automatically enumerated
+
+```
+$colors += switch (1, 1, 2) {
+   1 { "green" }
+   2 { "yellow" }
+   3 { "red" }
+   default { "unknown code" }
+}
+
+$colors # "green", "green", "yellow"
+```
+
+Can take script blocks for matches. Notice the fall through.
+
+```pwsh
+switch (12) {
+   { $_ % 3 -eq 0 } { 3 }
+   { $_ % 4 -eq 0 } { 4 }
+   { $_ % 5 -eq 0 } { 5 }
+}
+
+# 3, 4
+```
+
 ## Functions 
 
 Here's simple function to sum an array of numbers.
