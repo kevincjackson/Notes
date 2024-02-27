@@ -180,19 +180,23 @@ $colors = @{
 }
 ```
 
-Gotcha: `char`s can't access HashTables! They need to be cast to strings.
+Gotcha: `char`s can't access HashTables! They have to be cast to strings.
 ```pwsh
- $point = @{ x = 1; y = 2 }
+ $point = @{
+   x = 11
+   y = 22
+}
 
 foreach ($key in "xy".ToCharArray()) {
-    $point[$_]
+    $point[$key]
 }
 # Nothing displayed, actual value is  @($null, $null)
 
+
 foreach ($key in "xy".ToCharArray()) {
-    $point[$_.ToString()]
+    $point[$key.ToString()]
 }
-# 1, 2
+# 11, 22
 ```
 
 ## Top Level Operators
