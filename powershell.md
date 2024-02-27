@@ -182,9 +182,17 @@ $colors = @{
 
 Gotcha: `char`s can't access HashTables! They need to be cast to strings.
 ```pwsh
- $pt = @{ x = 1; y = 2 }
-"xy".ToCharArray() | ForEach-Object { $pt[$_] } # @($null, $null)  Note this displays as an empty line
-"xy".ToCharArray() | ForEach-Object { $pt[$_.ToString()] } # @(1, 2)
+ $point = @{ x = 1; y = 2 }
+
+foreach ($key in "xy".ToCharArray()) {
+    $point[$_]
+}
+# Nothing displayed, actual value is  @($null, $null)
+
+foreach ($key in "xy".ToCharArray()) {
+    $point[$_.ToString()]
+}
+# 1, 2
 ```
 
 ## Top Level Operators
