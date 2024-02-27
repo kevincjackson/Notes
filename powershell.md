@@ -180,6 +180,13 @@ $colors = @{
 }
 ```
 
+Gotcha: `char`s can't access HashTables! They need to be cast to strings.
+```pwsh
+ $pt = @{ x = 1; y = 2 }
+"xy".ToCharArray() | ForEach-Object { $pt[$_] } # @($null, $null)  Note this displays as an empty line
+"xy".ToCharArray() | ForEach-Object { $pt[$_.ToString()] } # @(1, 2)
+```
+
 ## Top Level Operators
 
 - These are mainly syntatic sugar, also available as methods.
