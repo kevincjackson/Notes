@@ -163,6 +163,24 @@ Count vs Length
 - Count is more commonly used.
 - Count is an alias for length.
 
+## ArrayList (unusual)
+
+```pwsh
+# Create
+$al = [System.Collections.ArrayList] @(11, 22, 33)         # Cast
+$al = [System.Collections.ArrayList]::new(@(11, 22, 33))   # Class method
+
+# Add / remove one item
+$al.Add(11) # 3 Returns index. 11, 22, 33, 11
+$al.Remove(11) # Quiet return. 22, 33, 11
+
+# Add / remove multiple
+$al.AddRange(@(44,55)) # 22, 33, 11, 44, 55
+$a1.RemoveRange(0, 2) # Removes by index, this remove two items # 11, 44, 55
+
+$a1.Clear() #  @()
+```
+
 ## Hash / Object
 
 ```pwsh
