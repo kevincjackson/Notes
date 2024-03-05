@@ -142,7 +142,6 @@ $haiku = "I write, erase, rewrite`nErase again, and then`nA poppy blooms."
 - `Get-ChildItem . | Where-Object { $_.Name -match "^\." }` # Show all files in the current directory start with a . (hidden files).
 - `Get-ChildItem -Recurse . | Select-String -Pattern "400"` # Select-String is GREP. Highlight all the lines INSIDE THE FILES that regex match 400.
 
-
 ## Array / Collection
 
 ```pwsh
@@ -233,6 +232,23 @@ foreach ($key in "xy".ToCharArray()) {
 
 11, 22, 33 -contains 11 # Collection membership: Array, Element -> Bool
 11 -in 11, 22, 33 # Collection membership: Element, Array -> Bool
+```
+
+String Formating
+```pwsh
+# Templating
+"On the {0} day of Christmas..." -f "first" # "On the first day of Christmas..."
+
+# Zero padding
+"{0:000000000}" -f 123 # "000000123"
+
+# Space Padding
+"{0,3}{1,-3}" -f "a", "b" # "  ab  "
+
+# Number formatting
+"{0:N}" -f 1 # "1.00"
+
+See [this](https://learn.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting#format-item-syntax) for formatting
 ```
 
 ## Booleans & $null
