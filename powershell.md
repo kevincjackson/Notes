@@ -247,9 +247,9 @@ String Formating
 
 # Number formatting
 "{0:N}" -f 1 # "1.00"
+```
 
 See [this](https://learn.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting#format-item-syntax) for formatting
-```
 
 ## Booleans & $null
 
