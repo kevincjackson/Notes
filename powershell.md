@@ -216,6 +216,22 @@ foreach ($key in "xy".ToCharArray()) {
 # 11, 22
 ```
 
+Use `[ordered]` to preserve key order.
+
+- !!! To access by array order use `[]` access.
+- !!! To access by hash key use `.` access.
+  
+```pwsh
+$units = [ordered]@{
+  100 = "hundred"
+   10 = "decade"
+    1 = "single"
+}
+
+$units[1] # "hundred"
+$units.1 # "single"
+```
+
 ## Top Level Operators
 
 - These are mainly syntatic sugar, also available as methods.
