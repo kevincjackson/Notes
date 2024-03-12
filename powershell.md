@@ -1242,6 +1242,30 @@ param(
 - Don't use `[ValidatePattern()]`, because user gets a confusing error.
 - Do use `[[ValidateScript()]`, because  you can set a meaningful user error.
 
+Validate Script
+
+```pwsh
+$codes = 42, 142 1042
+function Get-Code {
+    [CmdletBinding()]
+    param(
+        [ValidateScript({$_ -in $codes}, ErrorMessage = "Unknown code)]
+        [int]
+        $Number
+    )
+
+   $true
+```
+
+Validate Set
+- Note: you **must** provide an array to `ValidateSet`; it does **not** accept logic!
+
+```ps1
+[ValidateSet("Mars", "Earth", "Venus", ErrorMessage = "Invalid planet")]
+[string]
+$Planet
+```
+
 Getting Enums
 
 ```ps1
